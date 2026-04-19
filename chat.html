@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NivoChat v1.0</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #121212; color: white; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        #chat-box { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        .mesaj { background: #1e1e1e; padding: 10px 15px; border-radius: 15px; max-width: 80%; border: 1px solid #333; }
+        .isim { font-weight: bold; color: #00ff00; font-size: 0.8em; display: block; margin-bottom: 3px; }
+        #input-area { background: #1e1e1e; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #333; }
+        input { background: #2d2d2d; border: 1px solid #444; color: white; padding: 10px; border-radius: 5px; outline: none; }
+        #username { width: 80px; }
+        #msg { flex: 1; }
+        button { background: #00ff00; color: black; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #00cc00; }
+    </style>
+</head>
+<body>
+
+    <div id="chat-box"></div>
+
+    <div id="input-area">
+        <input type="text" id="username" placeholder="İsim">
+        <input type="text" id="msg" placeholder="Mesaj gönder..." onkeypress="handleKeyPress(event)">
+        <button onclick="gonder()">GÖNDER</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+    <script>
+        // SENİN BİLGİLERİN BURAYA GELDİ
+        const firebaseConfig = {
+            apiKey: "AIzaSyBG70J_njlRPdsd_eWS0zxgOVb4r7dNM8s",
+            authDomain: "nivochat-6a15e.firebaseapp.com",
+            databaseURL: "https://nivochat-6a15e-default-rtdb.firebaseio.com", // Bunu ekledim
+            projectId: "nivochat-6a15e",
+            storageBucket: "nivochat-6a15e.firebasestorage.app",
+            messagingSenderId: "520948298454",
+            appId: "1:520948298454:web:bfb57438d4fb79158a4f77"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') gonder();
+        }
+
+        function gonder() {
+            const isim = document.getElementById('username').value || "Anonim";
+            const icerik = document.getElementById('msg').value;
+
+            if(icerik.trim() !== "") {
+                db.ref("mesajlar").push({
+                    kullanici: isim,
+                    metin: icerik,
+                    zaman: Date.now()
+                });
+                document.getElementById('msg').value = "";
+            }
+        }
+
+        db.ref("mesajlar").limitToLast(50).on("child_added", (data) => {
+            const m = data.val();
+            const div = document.createElement("div");
+            div.className = "mesaj";
+            div.innerHTML = `<span class="isim">${m.kullanici}</span>${m.metin}`;
+            document.getElementById("chat-box").appendChild(div);
+            document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
+        });
+    </script>
+</body>
+</html>
