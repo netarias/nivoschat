@@ -4,118 +4,168 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NivoChat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* DISCORD TEMASI */
-        body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: #36393f; color: #dcddde; display: flex; height: 100vh; overflow: hidden; }
+        /* MODERN SİBER/DISCORD TEMASI */
+        :root {
+            --bg-main: #0f172a;
+            --bg-panel: #1e293b;
+            --bg-hover: #334155;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
-        /* SOL MENÜ (Sidebar) */
-        #sidebar { width: 250px; background: #2f3136; display: flex; flex-direction: column; border-right: 1px solid #202225; }
-        .sidebar-header { padding: 15px; background: #202225; font-weight: bold; color: white; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-        #my-profile { padding: 15px; background: #292b2f; margin-top: auto; font-weight: bold; color: #43b581; display: flex; align-items: center; gap: 10px;}
-        .my-avatar { width: 32px; height: 32px; background: #43b581; border-radius: 50%; display: inline-block; }
+        /* GİRİŞ EKRANI */
+        #auth-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .auth-box { background: var(--bg-panel); padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 320px; text-align: center; border: 1px solid #334155; }
+        .auth-box h2 { margin-top: 0; color: var(--primary); font-weight: 800; font-size: 24px; letter-spacing: 1px; }
+        .auth-input { width: 90%; background: #0f172a; border: 1px solid #334155; color: white; padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s; font-family: 'Inter'; }
+        .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
+        .auth-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 10px; }
+        .auth-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+        .auth-btn.register { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
+        .auth-btn.register:hover { background: rgba(99, 102, 241, 0.1); }
+
+        /* ANA UYGULAMA (Giriş yapana kadar gizli) */
+        #app-container { display: none; width: 100%; height: 100%; }
+
+        /* SOL MENÜ */
+        #sidebar { width: 280px; background: var(--bg-panel); display: flex; flex-direction: column; border-right: 1px solid #0f172a; }
+        .sidebar-header { padding: 20px; font-weight: 800; color: var(--primary); font-size: 1.2em; border-bottom: 1px solid #0f172a; letter-spacing: 1px;}
         
-        /* Butonlar ve Listeler */
-        .nav-btn { padding: 10px 15px; margin: 5px 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; font-weight: bold; color: #8e9297; }
-        .nav-btn:hover, .nav-btn.active { background: #393c43; color: white; }
-        .friend-item { padding: 10px 15px; margin: 2px 10px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
-        .friend-item:hover { background: #393c43; color: white; }
-        .friend-avatar { width: 30px; height: 30px; background: #7289da; border-radius: 50%; }
+        .nav-btn { padding: 12px 20px; margin: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 10px;}
+        .nav-btn:hover, .nav-btn.active { background: var(--bg-hover); color: white; }
+        
+        #friends-list { flex: 1; overflow-y: auto; padding-top: 10px; }
+        .friend-item { padding: 10px 15px; margin: 2px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s; font-weight: 600;}
+        .friend-item:hover { background: var(--bg-hover); color: white; }
+        .friend-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), #8b5cf6); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+
+        #my-profile { padding: 15px 20px; background: rgba(0,0,0,0.2); font-weight: 600; color: white; display: flex; align-items: center; gap: 12px; border-top: 1px solid #0f172a;}
+        .my-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, var(--success), #34d399); border-radius: 50%; }
 
         /* ANA EKRAN */
-        #main-area { flex: 1; display: flex; flex-direction: column; background: #36393f; }
-        .top-bar { height: 50px; background: #36393f; border-bottom: 1px solid #202225; display: flex; align-items: center; padding: 0 20px; font-weight: bold; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }
+        #main-area { flex: 1; display: flex; flex-direction: column; background: var(--bg-main); }
+        .top-bar { height: 60px; background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--bg-panel); display: flex; align-items: center; padding: 0 25px; font-weight: 600; font-size: 1.1em; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10;}
         
-        /* PANELLER (Sekmeler) */
-        .panel { display: none; flex: 1; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .panel { display: none; flex: 1; flex-direction: column; padding: 30px; overflow-y: auto; }
         .panel.active { display: flex; }
 
-        /* ARKADAŞ EKLE KISMI */
-        .add-friend-box { background: #2f3136; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-        .input-group { display: flex; gap: 10px; margin-top: 10px; }
-        input { flex: 1; background: #202225; border: none; padding: 12px; border-radius: 5px; color: white; outline: none; }
-        button { background: #7289da; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        button:hover { background: #5b6eae; }
-        button.bg-green { background: #43b581; } button.bg-red { background: #f04747; }
+        /* ARKADAŞ EKLE */
+        .add-friend-box { background: var(--bg-panel); padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #334155; }
+        .input-group { display: flex; gap: 15px; margin-top: 15px; }
+        .input-group input { flex: 1; background: var(--bg-main); border: 1px solid #334155; padding: 15px; border-radius: 8px; color: white; outline: none; font-size: 1em; }
+        .input-group input:focus { border-color: var(--primary); }
+        button.action-btn { background: var(--primary); color: white; border: none; padding: 0 25px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+        button.action-btn:hover { background: var(--primary-hover); }
+        button.bg-green { background: var(--success); border:none; padding: 8px 15px; border-radius: 6px; color:white; font-weight:600; cursor:pointer; }
+        button.bg-red { background: var(--danger); border:none; padding: 8px 15px; border-radius: 6px; color:white; font-weight:600; cursor:pointer; }
 
-        /* İSTEKLER KISMI */
-        .request-item { background: #2f3136; padding: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-left: 4px solid #faa61a;}
+        /* İSTEKLER */
+        .request-item { background: var(--bg-panel); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-left: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
 
-        /* SOHBET KISMI */
-        #chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .msg { display: flex; flex-direction: column; }
-        .msg-header { display: flex; gap: 10px; align-items: baseline; margin-bottom: 5px; }
-        .msg-isim { font-weight: bold; color: #43b581; font-size: 1.1em; }
-        .msg-isim.me { color: #7289da; }
-        .msg-text { background: #2f3136; padding: 10px 15px; border-radius: 0 10px 10px 10px; width: fit-content; max-width: 70%; word-break: break-word; }
-        
-        #chat-input-area { padding: 20px; background: #36393f; }
-        .chat-input-wrapper { display: flex; background: #40444b; border-radius: 8px; padding: 10px; }
-        .chat-input-wrapper input { background: transparent; padding: 5px; border-radius: 0; }
-        
-        /* Gizleme Sınıfı */
-        .hidden { display: none !important; }
+        /* SOHBET */
+        #chat-messages { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 20px; }
+        .msg { display: flex; flex-direction: column; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .msg-header { display: flex; gap: 12px; align-items: center; margin-bottom: 5px; }
+        .msg-isim { font-weight: 600; color: var(--success); font-size: 1rem; }
+        .msg-isim.me { color: var(--primary); }
+        .msg-text { background: var(--bg-panel); padding: 12px 18px; border-radius: 4px 16px 16px 16px; width: fit-content; max-width: 75%; word-break: break-word; font-size: 0.95em; line-height: 1.5; border: 1px solid #334155; }
+        .msg.me-align { align-items: flex-end; }
+        .msg.me-align .msg-text { border-radius: 16px 4px 16px 16px; background: var(--primary); border: none; }
+        .msg.me-align .msg-header { flex-direction: row-reverse; }
+
+        #chat-input-area { padding: 20px 25px; background: var(--bg-main); border-top: 1px solid var(--bg-panel); }
+        .chat-input-wrapper { display: flex; background: var(--bg-panel); border-radius: 12px; padding: 8px; border: 1px solid #334155; transition: 0.3s; }
+        .chat-input-wrapper:focus-within { border-color: var(--primary); }
+        .chat-input-wrapper input { flex: 1; background: transparent; padding: 10px 15px; border: none; color: white; outline: none; font-size: 1em; font-family: 'Inter'; }
+
+        /* GİZLİ ADMİN TETİKLEYİCİ */
+        #secret-admin-trigger { position: fixed; top: 0; right: 0; width: 30px; height: 30px; z-index: 9999; cursor: default; }
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
-        <div class="sidebar-header">NivoChat</div>
-        <div class="nav-btn active" onclick="showPanel('home-panel')">👋 Arkadaşlar & İstekler</div>
-        <div style="padding: 10px; font-size: 0.8em; font-weight: bold; color: #8e9297; margin-top: 10px;">DİREKT MESAJLAR</div>
-        
-        <div id="friends-list">
-            </div>
-
-        <div id="my-profile">
-            <div class="my-avatar"></div>
-            <span id="my-name-display">Yükleniyor...</span>
+    <div id="auth-screen">
+        <div class="auth-box">
+            <h2>NivoChat</h2>
+            <p style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 25px;">Modern iletişime katıl.</p>
+            <input type="text" id="auth-user" class="auth-input" placeholder="Kullanıcı Adı">
+            <input type="password" id="auth-pass" class="auth-input" placeholder="Şifre">
+            <button class="auth-btn" onclick="girisYap()">Giriş Yap</button>
+            <button class="auth-btn register" onclick="kayitOl()">Yeni Kayıt Ol</button>
+            <div id="auth-error" style="color: var(--danger); font-size: 0.8em; margin-top: 10px; font-weight: bold;"></div>
         </div>
     </div>
 
-    <div id="main-area">
-        
-        <div class="top-bar" id="top-bar-title">Ana Sayfa</div>
-
-        <div id="home-panel" class="panel active">
-            
-            <div class="add-friend-box">
-                <h3 style="margin-top: 0;">Arkadaş Ekle</h3>
-                <p style="color: #8e9297; font-size: 0.9em;">NivoChat kullanan birinin adını yazarak ona istek gönder.</p>
-                <div class="input-group">
-                    <input type="text" id="add-friend-input" placeholder="Örn: 32">
-                    <button onclick="istekGonder()">İstek Gönder</button>
-                </div>
+    <div id="app-container">
+        <div id="sidebar">
+            <div class="sidebar-header">NIVO<span style="color:white;">CHAT</span></div>
+            <div class="nav-btn active" onclick="showPanel('home-panel')" id="btn-home">
+                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg> 
+                Arkadaşlar & İstekler
             </div>
-
-            <h3>Gelen İstekler <span id="req-count" style="color: #faa61a;">(0)</span></h3>
-            <div id="requests-list">
-                </div>
-        </div>
-
-        <div id="chat-panel" class="panel" style="padding: 0;">
-            <div style="background: #202225; padding: 10px; text-align: right;">
-                <button class="bg-red" onclick="showPanel('home-panel')" style="padding: 5px 10px;">✖ DM'yi Kapat</button>
-            </div>
+            <div style="padding: 15px; font-size: 0.75em; font-weight: 800; color: var(--text-muted); margin-top: 10px; letter-spacing: 1px;">DİREKT MESAJLAR</div>
             
-            <div id="chat-messages">
-                </div>
+            <div id="friends-list"></div>
 
-            <div id="chat-input-area">
-                <div class="chat-input-wrapper">
-                    <input type="text" id="msg-input" placeholder="Mesaj yaz..." onkeypress="if(event.key === 'Enter') mesajGonder()">
-                    <button onclick="mesajGonder()" style="margin-left: 10px;">Gönder</button>
+            <div id="my-profile">
+                <div class="my-avatar"></div>
+                <div>
+                    <div id="my-name-display" style="line-height: 1.2;">...</div>
+                    <div style="font-size: 0.7em; color: var(--success);">Çevrimiçi</div>
                 </div>
             </div>
         </div>
 
+        <div id="main-area">
+            <div class="top-bar" id="top-bar-title">Ana Sayfa</div>
+
+            <div id="home-panel" class="panel active">
+                <div class="add-friend-box">
+                    <h3 style="margin-top: 0; color: white;">Arkadaş Ekle</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95em;">NivoChat kullanan birinin adını yazarak ona istek gönder.</p>
+                    <div class="input-group">
+                        <input type="text" id="add-friend-input" placeholder="Kullanıcı Adı Girin...">
+                        <button class="action-btn" onclick="istekGonder()">İstek Gönder</button>
+                    </div>
+                </div>
+
+                <h3 style="color: white; border-bottom: 1px solid var(--bg-panel); padding-bottom: 10px;">Gelen İstekler <span id="req-count" style="color: var(--primary);">0</span></h3>
+                <div id="requests-list"></div>
+            </div>
+
+            <div id="chat-panel" class="panel" style="padding: 0;">
+                <div style="background: rgba(0,0,0,0.1); padding: 10px 25px; text-align: right; border-bottom: 1px solid var(--bg-panel);">
+                    <button class="bg-red" onclick="showPanel('home-panel')">✖ Sohbeti Kapat</button>
+                </div>
+                
+                <div id="chat-messages"></div>
+
+                <div id="chat-input-area">
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="msg-input" placeholder="Mesajınızı yazın..." onkeypress="if(event.key === 'Enter') mesajGonder()">
+                        <button class="action-btn" onclick="mesajGonder()" style="margin-left: 10px;">Gönder</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <div id="secret-admin-trigger" onclick="checkAdmin()"></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        // ======== 1. FIREBASE BİLGİLERİN ========
-        // BURAYI KENDİ BİLGİLERİNLE DEĞİŞTİR!!!
+        // ======== FIREBASE BİLGİLERİN ========
         const firebaseConfig = {
             apiKey: "AIzaSyBG70J_njlRPdsd_eWS0zxgOVb4r7dNM8s",
             authDomain: "nivochat-6a15e.firebaseapp.com",
@@ -129,108 +179,168 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ======== 2. KULLANICI GİRİŞİ ========
         let myName = "";
-        // Kullanıcı adı alana kadar sor
-        while(!myName || myName.trim() === "") {
-            myName = prompt("NivoChat'e Hoşgeldin!\nLütfen Kullanıcı Adını Gir (Örn: 31):");
-        }
-        document.getElementById('my-name-display').innerText = myName;
-
-        // ======== 3. SİSTEM DEĞİŞKENLERİ ========
         let activeChatUser = null; 
         let activeChatId = null;
+        let mesajDinleyici = null;
 
-        // ======== 4. ARAYÜZ KONTROLLERİ ========
+        // ======== GİRİŞ VE KAYIT SİSTEMİ ========
+        function showError(msg) {
+            document.getElementById('auth-error').innerText = msg;
+            setTimeout(() => document.getElementById('auth-error').innerText = "", 3000);
+        }
+
+        function kayitOl() {
+            const user = document.getElementById('auth-user').value.trim();
+            const pass = document.getElementById('auth-pass').value.trim();
+            
+            if(user.length < 3 || pass.length < 3) return showError("Kullanıcı adı ve şifre en az 3 karakter olmalı!");
+
+            db.ref(`kullanicilar/${user}`).once('value', snap => {
+                if(snap.exists()) {
+                    showError("Bu kullanıcı adı zaten alınmış!");
+                } else {
+                    db.ref(`kullanicilar/${user}`).set({ sifre: pass });
+                    basariliGiris(user);
+                }
+            });
+        }
+
+        function girisYap() {
+            const user = document.getElementById('auth-user').value.trim();
+            const pass = document.getElementById('auth-pass').value.trim();
+            
+            if(!user || !pass) return showError("Lütfen boş alan bırakmayın.");
+
+            db.ref(`kullanicilar/${user}`).once('value', snap => {
+                if(snap.exists()) {
+                    if(snap.val().sifre === pass) {
+                        basariliGiris(user);
+                    } else {
+                        showError("Şifre hatalı!");
+                    }
+                } else {
+                    showError("Böyle bir kullanıcı bulunamadı!");
+                }
+            });
+        }
+
+        function basariliGiris(isim) {
+            myName = isim;
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('app-container').style.display = 'flex';
+            document.getElementById('my-name-display').innerText = myName;
+            uygulamayiBaslat();
+        }
+
+        // ======== GİZLİ ADMİN SİSTEMİ ========
+        function checkAdmin() {
+            const pw = prompt("Yönetici Şifresi:");
+            if (pw === "Nivoria1") {
+                const onay = confirm("DİKKAT: Bütün sunucu verilerini (mesajlar, istekler, arkadaşlar) silmek istediğinize emin misiniz? Bu işlem geri alınamaz!");
+                if(onay) {
+                    db.ref('dm_mesajlari').remove();
+                    db.ref('istekler').remove();
+                    db.ref('arkadaslar').remove();
+                    alert("Sistem tamamen temizlendi. Bütün DM'ler kapatıldı.");
+                    showPanel('home-panel'); // Herkesi ana sayfaya atar
+                }
+            }
+        }
+
+        // ======== UYGULAMA MANTIĞI ========
+        function uygulamayiBaslat() {
+            // Gelen İstekleri Dinle
+            db.ref(`istekler/${myName}`).on('value', snap => {
+                const list = document.getElementById('requests-list');
+                list.innerHTML = "";
+                let count = 0;
+                
+                snap.forEach(child => {
+                    const kimden = child.key;
+                    count++;
+                    list.innerHTML += `
+                        <div class="request-item">
+                            <div><strong style="color:white; font-size:1.1em;">${kimden}</strong> <span style="color:var(--text-muted);">sana arkadaşlık isteği gönderdi.</span></div>
+                            <div style="display:flex; gap:10px;">
+                                <button class="bg-green" onclick="istekCevapla('${kimden}', true)">Kabul Et</button>
+                                <button class="bg-red" onclick="istekCevapla('${kimden}', false)">Reddet</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('req-count').innerText = count;
+                if(count === 0) list.innerHTML = "<div style='color:var(--text-muted); padding:20px; text-align:center; background:var(--bg-panel); border-radius:12px;'>Bekleyen isteğin yok.</div>";
+            });
+
+            // Arkadaş Listesini Dinle
+            db.ref(`arkadaslar/${myName}`).on('value', snap => {
+                const list = document.getElementById('friends-list');
+                list.innerHTML = "";
+                snap.forEach(child => {
+                    const arkadas = child.key;
+                    list.innerHTML += `
+                        <div class="friend-item" onclick="sohbetBaslat('${arkadas}')" id="friend-${arkadas}">
+                            <div class="friend-avatar"></div>
+                            <div>${arkadas}</div>
+                        </div>
+                    `;
+                });
+            });
+        }
+
         function showPanel(panelId) {
             document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
             document.getElementById(panelId).classList.add('active');
             
+            // Menü buton vurguları
+            document.querySelectorAll('.nav-btn, .friend-item').forEach(btn => btn.classList.remove('active'));
+            
             if(panelId === 'home-panel') {
-                document.getElementById('top-bar-title').innerText = "👋 Arkadaşlar & İstekler";
+                document.getElementById('top-bar-title').innerHTML = "👋 Ana Sayfa & İstekler";
+                document.getElementById('btn-home').classList.add('active');
                 activeChatUser = null;
             }
         }
 
-        // ======== 5. ARKADAŞ EKLEME SİSTEMİ ========
         function istekGonder() {
             const hedef = document.getElementById('add-friend-input').value.trim();
-            if(!hedef || hedef === myName) return alert("Geçersiz kullanıcı adı!");
+            if(!hedef || hedef === myName) return alert("Kendine istek atamazsın veya boş bırakamazsın!");
             
-            // Hedefin veritabanında 'istekler' kısmına kendini yaz
-            db.ref(`istekler/${hedef}/${myName}`).set("bekliyor");
-            alert(`${hedef} kullanıcısına istek gönderildi!`);
-            document.getElementById('add-friend-input').value = "";
-        }
-
-        // Gelen İstekleri Dinle
-        db.ref(`istekler/${myName}`).on('value', snap => {
-            const list = document.getElementById('requests-list');
-            list.innerHTML = "";
-            let count = 0;
-            
-            snap.forEach(child => {
-                const kimden = child.key;
-                count++;
-                list.innerHTML += `
-                    <div class="request-item">
-                        <div style="font-weight:bold;">${kimden} <span style="color:#8e9297; font-weight:normal;">sana arkadaşlık isteği gönderdi.</span></div>
-                        <div>
-                            <button class="bg-green" onclick="istekCevapla('${kimden}', true)">Kabul Et</button>
-                            <button class="bg-red" onclick="istekCevapla('${kimden}', false)">Reddet</button>
-                        </div>
-                    </div>
-                `;
+            // Önce kullanıcı var mı diye bak
+            db.ref(`kullanicilar/${hedef}`).once('value', snap => {
+                if(snap.exists()) {
+                    db.ref(`istekler/${hedef}/${myName}`).set("bekliyor");
+                    alert(`${hedef} kullanıcısına istek gönderildi!`);
+                    document.getElementById('add-friend-input').value = "";
+                } else {
+                    alert("Böyle bir kullanıcı bulunamadı!");
+                }
             });
-            document.getElementById('req-count').innerText = `(${count})`;
-            if(count === 0) list.innerHTML = "<div style='color:#8e9297;'>Şu an hiç isteğin yok.</div>";
-        });
+        }
 
         function istekCevapla(kimden, kabulMu) {
             if(kabulMu) {
-                // İki tarafa da arkadaşı ekle
                 db.ref(`arkadaslar/${myName}/${kimden}`).set(true);
                 db.ref(`arkadaslar/${kimden}/${myName}`).set(true);
             }
-            // İsteği sil
             db.ref(`istekler/${myName}/${kimden}`).remove();
         }
 
-        // ======== 6. ARKADAŞ LİSTESİ ========
-        db.ref(`arkadaslar/${myName}`).on('value', snap => {
-            const list = document.getElementById('friends-list');
-            list.innerHTML = "";
-            snap.forEach(child => {
-                const arkadas = child.key;
-                list.innerHTML += `
-                    <div class="friend-item" onclick="sohbetBaslat('${arkadas}')">
-                        <div class="friend-avatar"></div>
-                        <div>${arkadas}</div>
-                    </div>
-                `;
-            });
-        });
-
-        // ======== 7. DM (ÖZEL SOHBET) SİSTEMİ ========
-        // Mesaj dinleyiciyi iptal etmek için değişken
-        let mesajDinleyici = null;
-
         function sohbetBaslat(arkadas) {
             activeChatUser = arkadas;
-            document.getElementById('top-bar-title').innerText = `💬 @${arkadas}`;
+            document.getElementById('top-bar-title').innerText = `@${arkadas} ile sohbet ediyorsun`;
             showPanel('chat-panel');
-            document.getElementById('chat-messages').innerHTML = ""; // Ekranı temizle
+            
+            // Sol menüde aktif arkadaşı vurgula
+            document.getElementById(`friend-${arkadas}`).classList.add('active');
 
-            // İki kişi için benzersiz bir ID oluştur (A ve B hep aynı ID'yi bulsun diye alfabetik sırala)
+            document.getElementById('chat-messages').innerHTML = ""; 
             const users = [myName, arkadas].sort();
             activeChatId = `${users[0]}_${users[1]}`;
 
-            // Eski dinleyiciyi kapat (başka sohbete geçerse mesajlar karışmasın)
-            if(mesajDinleyici) {
-                db.ref(`dm_mesajlari/${activeChatId}`).off('child_added', mesajDinleyici);
-            }
+            if(mesajDinleyici) db.ref(`dm_mesajlari/${activeChatId}`).off('child_added', mesajDinleyici);
 
-            // Yeni mesajları dinle
             mesajDinleyici = db.ref(`dm_mesajlari/${activeChatId}`).on('child_added', snap => {
                 const m = snap.val();
                 ekranaMesajBas(m.gonderen, m.metin);
@@ -255,18 +365,23 @@
         function ekranaMesajBas(gonderen, metin) {
             const box = document.getElementById('chat-messages');
             const isMe = (gonderen === myName);
-            const isimClass = isMe ? "msg-isim me" : "msg-isim";
             
+            // Eğer mesaj benimse sağa yasla ve farklı renk yap
+            const divClass = isMe ? "msg me-align" : "msg";
+            const isimClass = isMe ? "msg-isim me" : "msg-isim";
+            const avatarColor = isMe ? "linear-gradient(135deg, var(--primary), #8b5cf6)" : "linear-gradient(135deg, var(--success), #34d399)";
+            const displayName = isMe ? "Sen" : gonderen;
+
             box.innerHTML += `
-                <div class="msg">
+                <div class="${divClass}">
                     <div class="msg-header">
-                        <div class="friend-avatar" style="width:20px; height:20px; background: ${isMe ? '#43b581' : '#7289da'}"></div>
-                        <span class="${isimClass}">${gonderen}</span>
+                        <div class="friend-avatar" style="width:24px; height:24px; background: ${avatarColor}"></div>
+                        <span class="${isimClass}">${displayName}</span>
                     </div>
                     <div class="msg-text">${metin}</div>
                 </div>
             `;
-            box.scrollTop = box.scrollHeight; // En alta kaydır
+            box.scrollTop = box.scrollHeight;
         }
     </script>
 </body>
