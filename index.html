@@ -208,7 +208,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        // Firebase Config (Senin bilgilerini korudum)
+        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBG70J_njlRPdsd_eWS0zxgOVb4r7dNM8s",
             authDomain: "nivochat-6a15e.firebaseapp.com",
@@ -281,7 +281,6 @@
         }
 
         function baslat() {
-            // Arkadaş Listesi
             db.ref(`arkadaslar/${myName}`).on('value', snap => {
                 const list = document.getElementById('friends-list');
                 list.innerHTML = "";
@@ -307,7 +306,6 @@
                 });
             });
 
-            // İstek Takibi
             db.ref(`istekler/${myName}`).on('value', snap => {
                 document.getElementById('req-count').innerText = snap.numChildren();
                 const list = document.getElementById('requests-list');
@@ -403,7 +401,6 @@
             cancelReply();
         }
 
-        // Context Menu & Reply
         function showContextMenu(e, id, text, isMe) {
             e.preventDefault();
             selectedMsgId = id;
@@ -454,7 +451,6 @@
             }
         }
 
-        // Profil ve Diğer
         function openProfileModal(user) {
             document.getElementById('profile-modal').style.display = 'flex';
             document.getElementById('prof-name').innerText = "@" + user;
@@ -504,7 +500,6 @@
             db.ref(`istekler/${myName}/${kim}`).remove();
         }
 
-        // Ses Kayıt
         async function startRecording() {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
