@@ -3,223 +3,1771 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NivoChat</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>NivoChat Control Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-main: #0b0f1a; --bg-panel: #161b2c; --bg-hover: #232a42;
-            --primary: #8b5cf6; --primary-light: #a78bfa; --primary-hover: #7c3aed;
-            --success: #10b981; --danger: #f43f5e; --warning: #f59e0b;
-            --text-main: #f1f5f9; --text-muted: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --bg-main: #06111f;
+            --bg-layer: #0a1730;
+            --bg-panel: rgba(11, 23, 44, 0.88);
+            --bg-panel-strong: rgba(15, 28, 51, 0.96);
+            --bg-soft: rgba(96, 165, 250, 0.08);
+            --bg-hover: rgba(148, 163, 184, 0.12);
+            --primary: #4f9cff;
+            --primary-strong: #2463eb;
+            --accent: #16c7b7;
+            --accent-soft: #7ee7df;
+            --success: #22c55e;
+            --danger: #fb7185;
+            --warning: #fbbf24;
+            --text-main: #e5eefb;
+            --text-soft: #bfd1ea;
+            --text-muted: #7f92ad;
+            --border: rgba(148, 163, 184, 0.18);
+            --border-strong: rgba(96, 165, 250, 0.24);
+            --shadow-lg: 0 26px 70px rgba(0, 0, 0, 0.32);
+            --shadow-md: 0 14px 36px rgba(0, 0, 0, 0.24);
+            --radius-xl: 28px;
+            --radius-lg: 22px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
         }
 
-        * { box-sizing: border-box; transition: all 0.2s ease; }
-        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
-        button, input { font-family: inherit; }
+        * {
+            box-sizing: border-box;
+            transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease, opacity 0.22s ease;
+        }
 
-        #toast-container { position: fixed; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 5000; }
-        .toast { min-width: 260px; max-width: 360px; background: rgba(12, 16, 28, 0.92); border: 1px solid var(--glass-border); color: white; padding: 14px 16px; border-radius: 16px; box-shadow: 0 20px 35px rgba(0,0,0,0.35); backdrop-filter: blur(12px); animation: toastIn 0.25s ease; }
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Manrope", sans-serif;
+            color: var(--text-main);
+            background:
+                radial-gradient(circle at 15% 20%, rgba(79, 156, 255, 0.15), transparent 30%),
+                radial-gradient(circle at 85% 10%, rgba(22, 199, 183, 0.12), transparent 28%),
+                linear-gradient(135deg, #020816 0%, #07111f 45%, #0a1730 100%);
+            overflow: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: auto;
+            border-radius: 999px;
+            filter: blur(80px);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 260px;
+            height: 260px;
+            top: 10%;
+            right: -80px;
+            background: rgba(79, 156, 255, 0.15);
+        }
+
+        body::after {
+            width: 220px;
+            height: 220px;
+            left: -60px;
+            bottom: 8%;
+            background: rgba(22, 199, 183, 0.11);
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .glass-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(18px);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #toast-container {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 5000;
+        }
+
+        .toast {
+            min-width: 280px;
+            max-width: 360px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid var(--border);
+            color: white;
+            background: rgba(5, 15, 27, 0.92);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(14px);
+            animation: toastIn 0.26s ease;
+        }
+
         .toast.success { border-left: 4px solid var(--success); }
         .toast.error { border-left: 4px solid var(--danger); }
-        .toast.info { border-left: 4px solid var(--primary-light); }
+        .toast.info { border-left: 4px solid var(--primary); }
         .toast.warning { border-left: 4px solid var(--warning); }
-        @keyframes toastIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* GİRİŞ EKRANI */
-        #auth-screen { position: fixed; inset: 0; background: radial-gradient(circle at center, #1e1b4b, #0b0f1a); display: flex; justify-content: center; align-items: center; z-index: 2000; }
-        .auth-box { background: var(--bg-panel); padding: 40px; border-radius: 24px; width: 360px; border: 1px solid var(--glass-border); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); text-align: center; }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* APP LAYOUT */
-        #app-container { display: none; width: 100%; height: 100%; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
+        #auth-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 2200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px;
+            background:
+                radial-gradient(circle at top left, rgba(79, 156, 255, 0.24), transparent 28%),
+                radial-gradient(circle at bottom right, rgba(22, 199, 183, 0.18), transparent 32%),
+                linear-gradient(135deg, rgba(2, 8, 22, 0.92), rgba(5, 13, 25, 0.98));
+            backdrop-filter: blur(20px);
+        }
 
-        /* SIDEBAR */
-        #sidebar { width: 300px; background: var(--bg-panel); border-right: 1px solid var(--glass-border); display: flex; flex-direction: column; }
-        .sidebar-header { padding: 25px; font-weight: 800; letter-spacing: 1px; color: var(--primary-light); font-size: 1.4em; }
-        .nav-btn { padding: 12px 20px; margin: 4px 15px; border-radius: 12px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 12px; }
-        .nav-btn:hover, .nav-btn.active { background: var(--glass); color: white; }
+        .auth-shell {
+            width: min(1040px, 100%);
+            display: grid;
+            grid-template-columns: 1.1fr 0.95fr;
+            gap: 28px;
+            align-items: stretch;
+        }
 
-        #friends-list { flex: 1; overflow-y: auto; padding: 10px; }
-        .friend-item { padding: 12px; border-radius: 14px; cursor: pointer; display: flex; align-items: center; gap: 15px; margin-bottom: 5px; position: relative; }
-        .friend-item:hover, .friend-item.active { background: var(--bg-hover); }
-        .status-dot { width: 12px; height: 12px; border-radius: 50%; background: #475569; border: 2.5px solid var(--bg-panel); position: absolute; left: 38px; bottom: 12px; }
-        .status-dot.online { background: var(--success); box-shadow: 0 0 10px var(--success); }
-        .status-dot.away { background: var(--warning); box-shadow: 0 0 10px rgba(245, 158, 11, 0.45); }
-        .avatar { width: 42px; height: 42px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-weight: 800; }
-        .sidebar-actions { padding: 15px 20px 18px; border-top: 1px solid var(--glass-border); display: flex; gap: 10px; }
+        .auth-side,
+        .auth-box {
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            background: rgba(8, 17, 32, 0.78);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(18px);
+        }
 
-        /* MAIN AREA */
-        #main-area { flex: 1; display: flex; flex-direction: column; background: #0f1423; position: relative; }
-        .top-bar { height: 70px; background: rgba(22, 27, 44, 0.7); backdrop-filter: blur(15px); display: flex; align-items: center; padding: 0 30px; border-bottom: 1px solid var(--glass-border); justify-content: space-between; z-index: 100; }
+        .auth-side {
+            padding: 42px;
+            position: relative;
+            overflow: hidden;
+        }
 
-        /* MESSAGES */
-        #chat-messages { flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; gap: 15px; scroll-behavior: smooth; }
-        .msg { display: flex; flex-direction: column; max-width: 70%; animation: msgSlide 0.3s ease; position: relative; }
-        @keyframes msgSlide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .msg.me-align { align-self: flex-end; }
-        .msg-text { background: var(--bg-panel); padding: 12px 18px; border-radius: 18px; line-height: 1.5; border: 1px solid var(--glass-border); box-shadow: 0 4px 15px rgba(0,0,0,0.1); word-break: break-word; }
-        .msg.me-align .msg-text { background: linear-gradient(135deg, var(--primary), var(--primary-hover)); border: none; color: white; }
-        .empty-state { padding: 18px; border-radius: 18px; border: 1px dashed var(--glass-border); color: var(--text-muted); text-align: center; background: rgba(255,255,255,0.015); }
+        .auth-side::before {
+            content: "";
+            position: absolute;
+            inset: auto -80px -80px auto;
+            width: 240px;
+            height: 240px;
+            border-radius: 999px;
+            background: radial-gradient(circle, rgba(79, 156, 255, 0.32), transparent 65%);
+        }
 
-        /* REPLY STYLE */
-        .reply-box { font-size: 0.8em; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 10px; border-left: 4px solid var(--primary-light); margin-bottom: 4px; color: var(--text-muted); cursor: pointer; }
+        .brand-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(79, 156, 255, 0.12);
+            color: var(--accent-soft);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
 
-        /* CONTEXT MENU */
-        #context-menu { position: fixed; background: var(--bg-panel); border: 1px solid var(--bg-hover); border-radius: 12px; display: none; flex-direction: column; min-width: 150px; z-index: 3000; box-shadow: 0 10px 30px rgba(0,0,0,0.6); overflow: hidden; backdrop-filter: blur(10px); }
-        .menu-item { padding: 12px 16px; font-size: 0.9em; cursor: pointer; display: flex; align-items: center; gap: 10px; }
-        .menu-item:hover { background: var(--primary); color: white; }
+        .auth-side h1 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: clamp(2.2rem, 3vw, 3.5rem);
+            line-height: 1.02;
+            margin: 26px 0 16px;
+            max-width: 9ch;
+        }
 
-        /* INPUT AREA */
-        #chat-input-area { padding: 20px 30px 30px; }
-        .reply-preview { display: none; background: var(--bg-panel); padding: 12px 20px; border-radius: 16px 16px 0 0; border: 1px solid var(--glass-border); border-bottom: none; justify-content: space-between; align-items: center; animation: slideUp 0.2s ease; }
-        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } }
+        .auth-side p {
+            color: var(--text-soft);
+            line-height: 1.75;
+            max-width: 54ch;
+            margin: 0 0 24px;
+        }
 
-        .input-wrapper { display: flex; background: var(--bg-panel); border-radius: 16px; padding: 8px 12px; gap: 10px; align-items: center; border: 1px solid var(--glass-border); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
-        .input-wrapper input { flex: 1; background: transparent; border: none; color: white; outline: none; font-size: 1em; padding: 10px; }
+        .feature-list {
+            display: grid;
+            gap: 14px;
+            margin-top: 30px;
+        }
 
-        /* BUTTONS */
-        .btn { border: none; padding: 12px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .primary { background: var(--primary); color: white; }
-        .primary:hover { background: var(--primary-hover); transform: translateY(-1px); box-shadow: 0 5px 15px rgba(139, 92, 246, 0.4); }
-        .ghost-btn { background: rgba(255,255,255,0.04); color: white; }
-        .ghost-btn:hover { background: var(--bg-hover); }
-        .danger-btn { background: rgba(244, 63, 94, 0.18); color: #fecdd3; }
-        .danger-btn:hover { background: rgba(244, 63, 94, 0.28); }
-        .input-field { background: var(--bg-main); border: 1px solid var(--glass-border); color: white; padding: 12px; border-radius: 12px; outline: none; width: 100%; margin-bottom: 15px; }
+        .feature-chip {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-soft);
+        }
 
-        /* MODAL */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2500; align-items: center; justify-content: center; }
-        .modal-content { background: var(--bg-panel); padding: 40px; border-radius: 28px; width: 450px; border: 1px solid var(--glass-border); animation: modalIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        @keyframes modalIn { from { transform: scale(0.9); opacity: 0; } }
+        .feature-chip strong {
+            color: white;
+            display: block;
+            font-size: 0.98rem;
+            margin-bottom: 4px;
+        }
 
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 10px; }
+        .auth-box {
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-box h2 {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 2rem;
+            margin: 0 0 10px;
+        }
+
+        .auth-box p {
+            color: var(--text-muted);
+            margin: 0 0 26px;
+            line-height: 1.65;
+        }
+
+        .input-field,
+        .search-input,
+        #msg-input {
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            outline: none;
+        }
+
+        .input-field {
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            font-size: 0.98rem;
+        }
+
+        .input-field:focus,
+        .search-input:focus,
+        #msg-input:focus {
+            border-color: var(--border-strong);
+            box-shadow: 0 0 0 4px rgba(79, 156, 255, 0.08);
+        }
+
+        .btn {
+            border: none;
+            border-radius: 16px;
+            padding: 13px 18px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .primary {
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+            box-shadow: 0 14px 28px rgba(36, 99, 235, 0.28);
+        }
+
+        .primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 34px rgba(36, 99, 235, 0.34);
+        }
+
+        .secondary-btn,
+        .ghost-btn {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .secondary-btn:hover,
+        .ghost-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .danger-btn {
+            color: #ffe2e7;
+            background: rgba(251, 113, 133, 0.14);
+            border: 1px solid rgba(251, 113, 133, 0.16);
+        }
+
+        .danger-btn:hover {
+            background: rgba(251, 113, 133, 0.22);
+        }
+
+        .mini-btn {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            border-radius: 12px;
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .mini-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .mini-btn.danger {
+            background: rgba(251, 113, 133, 0.1);
+            color: #ffd6dd;
+        }
+
+        .mini-btn.success {
+            background: rgba(34, 197, 94, 0.12);
+            color: #d9ffe8;
+        }
+
+        .text-link {
+            color: var(--accent-soft);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        #app-container {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        #sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 8, 20, 0.55);
+            backdrop-filter: blur(6px);
+            z-index: 1090;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        body.sidebar-open #sidebar-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #sidebar {
+            width: 330px;
+            flex: 0 0 330px;
+            margin: 18px 0 18px 18px;
+            border-radius: 30px;
+            background: rgba(8, 18, 34, 0.84);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            z-index: 1100;
+        }
+
+        .sidebar-top {
+            padding: 24px 22px 16px;
+        }
+
+        .brand-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .brand-mark {
+            width: 46px;
+            height: 46px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            background: linear-gradient(135deg, rgba(79, 156, 255, 0.95), rgba(22, 199, 183, 0.9));
+            box-shadow: 0 18px 36px rgba(22, 199, 183, 0.18);
+        }
+
+        .brand-copy h2 {
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.15rem;
+        }
+
+        .brand-copy p {
+            margin: 4px 0 0;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+
+        .search-shell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 18px;
+        }
+
+        .search-shell span {
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            background: transparent;
+            border: none;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        .search-input:focus {
+            box-shadow: none;
+        }
+
+        .nav-btn {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: var(--text-soft);
+            padding: 14px 16px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: rgba(79, 156, 255, 0.12);
+            color: white;
+        }
+
+        .section-label {
+            padding: 0 22px 10px;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            letter-spacing: 0.16em;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        #friends-list {
+            flex: 1;
+            padding: 0 14px 10px;
+            overflow-y: auto;
+        }
+
+        .empty-state {
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px dashed rgba(148, 163, 184, 0.18);
+            background: rgba(255, 255, 255, 0.025);
+            text-align: center;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .friend-item {
+            width: 100%;
+            border: 1px solid transparent;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            padding: 14px;
+            border-radius: 20px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            align-items: center;
+            text-align: left;
+            margin-bottom: 10px;
+        }
+
+        .friend-item:hover,
+        .friend-item.active {
+            background: rgba(79, 156, 255, 0.08);
+            border-color: rgba(79, 156, 255, 0.14);
+        }
+
+        .avatar,
+        .avatar-lg {
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            background: linear-gradient(135deg, rgba(79, 156, 255, 0.95), rgba(22, 199, 183, 0.88));
+            box-shadow: 0 14px 30px rgba(36, 99, 235, 0.18);
+        }
+
+        .avatar {
+            width: 46px;
+            height: 46px;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .avatar-lg {
+            width: 86px;
+            height: 86px;
+            font-size: 2rem;
+        }
+
+        .status-dot {
+            position: absolute;
+            right: -2px;
+            bottom: -2px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid rgba(8, 18, 34, 0.9);
+            background: #475569;
+        }
+
+        .status-dot.online { background: var(--success); }
+        .status-dot.away { background: var(--warning); }
+        .status-dot.banned { background: var(--danger); }
+
+        .friend-copy strong {
+            display: block;
+            font-size: 0.96rem;
+            margin-bottom: 4px;
+        }
+
+        .friend-copy span {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .side-action-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-soft);
+        }
+
+        .side-action-icon:hover {
+            color: white;
+            background: rgba(79, 156, 255, 0.14);
+        }
+
+        .sidebar-footer {
+            padding: 14px;
+            border-top: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .profile-chip {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            border-radius: 22px;
+            padding: 14px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .profile-chip:hover {
+            background: rgba(79, 156, 255, 0.1);
+        }
+
+        .sidebar-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .sidebar-actions .btn {
+            flex: 1;
+        }
+
+        #main-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            margin: 18px;
+            border-radius: 34px;
+            background: rgba(6, 15, 29, 0.74);
+            border: 1px solid rgba(148, 163, 184, 0.12);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(18px);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .top-bar {
+            height: 86px;
+            padding: 0 26px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: rgba(7, 16, 31, 0.74);
+            backdrop-filter: blur(20px);
+            gap: 20px;
+        }
+
+        .header-main {
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        #mobile-sidebar-toggle {
+            display: none;
+        }
+
+        .icon-btn {
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: white;
+            border-radius: 14px;
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+
+        .icon-btn:hover {
+            background: rgba(79, 156, 255, 0.12);
+        }
+
+        #active-avatar {
+            width: 44px;
+            height: 44px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            font-weight: 800;
+            background: linear-gradient(135deg, rgba(79, 156, 255, 0.95), rgba(22, 199, 183, 0.88));
+            box-shadow: 0 16px 30px rgba(36, 99, 235, 0.18);
+        }
+
+        #top-bar-title {
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+        }
+
+        #online-status-header {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .chip {
+            padding: 10px 14px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-soft);
+            font-size: 0.82rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .badge.primary { background: rgba(79, 156, 255, 0.16); color: #dce8ff; }
+        .badge.accent { background: rgba(22, 199, 183, 0.16); color: #d6fffb; }
+        .badge.success { background: rgba(34, 197, 94, 0.14); color: #ddffea; }
+        .badge.warning { background: rgba(251, 191, 36, 0.14); color: #fff4c7; }
+        .badge.danger { background: rgba(251, 113, 133, 0.14); color: #ffe1e8; }
+        .badge.subtle { background: rgba(255, 255, 255, 0.06); color: var(--text-soft); }
+
+        .panel {
+            display: none;
+            min-height: 0;
+            flex: 1;
+        }
+
+        .panel.active-panel {
+            display: block;
+        }
+
+        #home-panel {
+            overflow-y: auto;
+            padding: 34px;
+        }
+
+        .dashboard {
+            display: grid;
+            gap: 24px;
+        }
+
+        .hero-card {
+            padding: 28px;
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(79, 156, 255, 0.12);
+            background:
+                linear-gradient(135deg, rgba(79, 156, 255, 0.12), rgba(22, 199, 183, 0.06)),
+                rgba(9, 19, 37, 0.84);
+            box-shadow: var(--shadow-md);
+            display: grid;
+            gap: 24px;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.95fr);
+            align-items: center;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(79, 156, 255, 0.12);
+            color: var(--accent-soft);
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .hero-card h1 {
+            font-family: "Space Grotesk", sans-serif;
+            margin: 18px 0 14px;
+            font-size: clamp(2rem, 2.6vw, 3.2rem);
+            line-height: 1.05;
+            max-width: 11ch;
+        }
+
+        .hero-card p {
+            margin: 0;
+            color: var(--text-soft);
+            line-height: 1.8;
+            max-width: 58ch;
+        }
+
+        .hero-grid {
+            display: grid;
+            gap: 14px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .metric-card {
+            padding: 16px 18px;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .metric-card span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 800;
+        }
+
+        .metric-card strong {
+            display: block;
+            font-size: 1.6rem;
+            font-family: "Space Grotesk", sans-serif;
+            margin-bottom: 6px;
+        }
+
+        .metric-card small {
+            color: var(--text-soft);
+            line-height: 1.5;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .card {
+            border-radius: var(--radius-xl);
+            padding: 22px;
+            border: 1px solid var(--border);
+            background: rgba(8, 18, 34, 0.84);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 0;
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .card-head h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .card-head p {
+            margin: 4px 0 0;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+        }
+
+        .stack {
+            display: grid;
+            gap: 12px;
+            min-height: 0;
+        }
+
+        .list-card {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .list-card strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .list-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.6;
+        }
+
+        .list-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        #chat-panel {
+            display: none;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        #chat-lock-banner {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 24px 0;
+            padding: 14px 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(251, 191, 36, 0.18);
+            background: rgba(251, 191, 36, 0.08);
+            color: #fff2bf;
+            font-size: 0.9rem;
+        }
+
+        #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            min-height: 0;
+        }
+
+        .msg {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-width: min(72%, 720px);
+            animation: messageIn 0.22s ease;
+        }
+
+        .msg.me-align {
+            align-self: flex-end;
+        }
+
+        @keyframes messageIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reply-box {
+            font-size: 0.8rem;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border-left: 3px solid var(--accent);
+            color: var(--text-soft);
+            cursor: pointer;
+        }
+
+        .msg-text {
+            padding: 14px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.045);
+            line-height: 1.7;
+            word-break: break-word;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .msg.me-align .msg-text {
+            background: linear-gradient(135deg, rgba(79, 156, 255, 0.96), rgba(36, 99, 235, 0.94));
+            border-color: rgba(79, 156, 255, 0.2);
+        }
+
+        .msg-meta {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            padding: 0 6px;
+        }
+
+        .msg.me-align .msg-meta {
+            text-align: right;
+        }
+
+        .msg audio {
+            width: 100%;
+            min-width: 240px;
+        }
+
+        #chat-input-area {
+            padding: 0 24px 24px;
+        }
+
+        .reply-preview {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 18px 18px 0 0;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            background: rgba(8, 18, 34, 0.88);
+        }
+
+        .composer {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 22px;
+            border: 1px solid var(--border);
+            background: rgba(8, 18, 34, 0.9);
+            box-shadow: var(--shadow-md);
+        }
+
+        #msg-input {
+            border: none;
+            background: transparent;
+            padding: 10px 4px;
+            box-shadow: none;
+            font-size: 0.98rem;
+        }
+
+        #msg-input:focus {
+            box-shadow: none;
+        }
+
+        #voice-btn,
+        #send-btn {
+            flex: 0 0 auto;
+        }
+
+        #context-menu {
+            position: fixed;
+            display: none;
+            flex-direction: column;
+            min-width: 180px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(8, 18, 34, 0.96);
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(18px);
+            z-index: 4200;
+            overflow: hidden;
+        }
+
+        .menu-item {
+            border: none;
+            width: 100%;
+            background: transparent;
+            color: white;
+            padding: 13px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .menu-item:hover {
+            background: rgba(79, 156, 255, 0.12);
+        }
+
+        .menu-item.danger {
+            color: #ffd8df;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 22px;
+            background: rgba(2, 8, 18, 0.72);
+            backdrop-filter: blur(10px);
+            z-index: 3600;
+        }
+
+        .modal-card,
+        .wide-modal-card {
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: rgba(8, 18, 34, 0.95);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .modal-card {
+            width: min(620px, 100%);
+        }
+
+        .wide-modal-card {
+            width: min(1240px, 100%);
+            height: min(860px, 92vh);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-head {
+            padding: 22px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-head h3 {
+            margin: 0;
+            font-family: "Space Grotesk", sans-serif;
+            font-size: 1.25rem;
+        }
+
+        .modal-head p {
+            margin: 6px 0 0;
+            color: var(--text-muted);
+            font-size: 0.86rem;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .profile-summary {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .stat-tile {
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .stat-tile span {
+            display: block;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+
+        .stat-tile strong {
+            display: block;
+            font-size: 1rem;
+        }
+
+        .profile-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .modal-footer {
+            padding: 0 24px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .admin-tabs {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-soft);
+            border-radius: 999px;
+            padding: 10px 14px;
+            font-weight: 800;
+            font-size: 0.82rem;
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: rgba(79, 156, 255, 0.16);
+            border-color: rgba(79, 156, 255, 0.18);
+        }
+
+        .admin-grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.15fr);
+        }
+
+        .admin-list,
+        .admin-detail {
+            min-height: 0;
+            overflow-y: auto;
+            padding: 20px 24px 24px;
+        }
+
+        .admin-list {
+            border-right: 1px solid var(--border);
+        }
+
+        .admin-section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .admin-section-title h4 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .admin-card {
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
+            margin-bottom: 12px;
+            cursor: pointer;
+        }
+
+        .admin-card.active {
+            border-color: rgba(79, 156, 255, 0.16);
+            background: rgba(79, 156, 255, 0.08);
+        }
+
+        .admin-card-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .admin-card p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.84rem;
+            line-height: 1.6;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .detail-pane {
+            display: grid;
+            gap: 18px;
+        }
+
+        .detail-box {
+            padding: 18px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .detail-box h4 {
+            margin: 0 0 10px;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .detail-box p {
+            margin: 0;
+            color: var(--text-soft);
+            line-height: 1.7;
+        }
+
+        .detail-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .detail-item {
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .detail-item strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .transcript {
+            display: grid;
+            gap: 10px;
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .transcript-item {
+            padding: 12px 14px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .transcript-item .meta {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        #admin-fab {
+            position: fixed;
+            right: 22px;
+            bottom: 22px;
+            width: 52px;
+            height: 52px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(9, 18, 34, 0.82);
+            color: rgba(229, 238, 251, 0.7);
+            border-radius: 18px;
+            box-shadow: var(--shadow-md);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3100;
+            backdrop-filter: blur(16px);
+        }
+
+        #admin-fab:hover {
+            transform: translateY(-2px);
+            color: white;
+            background: rgba(79, 156, 255, 0.16);
+        }
+
+        body.is-admin #admin-fab {
+            display: inline-flex;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.2);
+            border-radius: 999px;
+        }
+
+        @media (max-width: 1180px) {
+            .hero-card,
+            .dashboard-grid,
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-list {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+        }
+
+        @media (max-width: 980px) {
+            #sidebar {
+                position: fixed;
+                left: 16px;
+                top: 16px;
+                bottom: 16px;
+                margin: 0;
+                transform: translateX(calc(-100% - 28px));
+            }
+
+            body.sidebar-open #sidebar {
+                transform: translateX(0);
+            }
+
+            #main-area {
+                margin: 16px;
+            }
+
+            #mobile-sidebar-toggle {
+                display: inline-flex;
+            }
+
+            .auth-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-side {
+                display: none;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .top-bar {
+                height: auto;
+                min-height: 86px;
+                padding: 16px;
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            #home-panel {
+                padding: 20px;
+            }
+
+            #chat-messages {
+                padding: 18px;
+            }
+
+            #chat-input-area {
+                padding: 0 16px 16px;
+            }
+
+            .profile-summary {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .profile-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .msg {
+                max-width: 90%;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .auth-box {
+                padding: 24px;
+            }
+
+            .composer {
+                flex-wrap: wrap;
+            }
+
+            .composer .btn {
+                width: 100%;
+            }
+
+            #voice-btn {
+                width: 48px;
+                height: 48px;
+            }
+
+            .modal,
+            #auth-screen {
+                padding: 12px;
+            }
+        }
     </style>
 </head>
-<body onclick="hideMenu(event)" oncontextmenu="return false;">
+<body onclick="hideMenu(event)">
     <div id="toast-container"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar(false)"></div>
+    <button id="admin-fab" onclick="openAdminPanel()" aria-label="Yönetim merkezi">⌘</button>
 
     <div id="auth-screen">
-        <div class="auth-box">
-            <div style="font-size: 3em; margin-bottom: 10px;">🌌</div>
-            <h1 style="color:var(--primary); margin: 0 0 10px;">NivoChat</h1>
-            <p style="color:var(--text-muted); margin-bottom:30px;">Geleceğin mesajlaşma deneyimi.</p>
-            <input type="text" id="auth-user" class="input-field" placeholder="Kullanıcı Adı">
-            <input type="password" id="auth-pass" class="input-field" placeholder="Şifre">
-            <button class="btn primary" style="width:100%" onclick="girisYap()">Giriş Yap</button>
-            <p style="margin-top:20px; font-size:0.9em; color:var(--text-muted)">
-                Hesabın yok mu? <a href="#" onclick="kayitOl(); return false;" style="color:var(--primary); text-decoration: none; font-weight: 600;">Kayıt Ol</a>
-            </p>
+        <div class="auth-shell">
+            <div class="auth-side">
+                <div class="brand-kicker">NivoChat Suite</div>
+                <h1>DM ve moderasyon akışını tek merkezden yönet.</h1>
+                <p>
+                    Daha düzenli bir sohbet deneyimi, mobil uyumlu yapı ve yönetim için tek ekranda toplanmış
+                    profesyonel bir çalışma alanı.
+                </p>
+
+                <div class="feature-list">
+                    <div class="feature-chip">
+                        <div class="brand-mark">N</div>
+                        <div>
+                            <strong>Temiz kontrol merkezi</strong>
+                            Arkadaş yönetimi, gizlenen DM'ler ve gelen istekler tek panelde.
+                        </div>
+                    </div>
+                    <div class="feature-chip">
+                        <div class="brand-mark">M</div>
+                        <div>
+                            <strong>Mobil uyumlu yeni arayüz</strong>
+                            Sidebar çekmece davranışı ve daha profesyonel renk sistemi.
+                        </div>
+                    </div>
+                    <div class="feature-chip">
+                        <div class="brand-mark">Y</div>
+                        <div>
+                            <strong>Rol bazlı yönetim</strong>
+                            Gizli arka kapı yerine görünür ve yönetici hesabına bağlı moderasyon merkezi.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-box">
+                <div class="badge primary" style="width:max-content;">NivoChat Access</div>
+                <h2>Giriş yap</h2>
+                <p>Oturum açtığında cihazın hatırlanır; çıkış yaparsan otomatik giriş kapatılır.</p>
+                <input type="text" id="auth-user" class="input-field" placeholder="Kullanıcı adı">
+                <input type="password" id="auth-pass" class="input-field" placeholder="Şifre">
+                <button class="btn primary" style="width:100%; margin-top:4px;" onclick="girisYap()">Giriş Yap</button>
+                <p style="margin-top:18px;">
+                    Hesabın yok mu?
+                    <a class="text-link" href="#" onclick="kayitOl(); return false;">Kayıt ol</a>
+                </p>
+            </div>
         </div>
     </div>
 
     <div id="app-container">
-        <div id="sidebar">
-            <div class="sidebar-header">NIVOCHAT</div>
-            <div class="nav-btn active" id="btn-home" onclick="showPanel('home-panel')"><span>🏠</span> Ana Sayfa</div>
-            <div style="padding:20px 25px 10px; font-size:0.75em; color:var(--text-muted); font-weight:800; opacity:0.5; letter-spacing: 1px;">SOHBETLER</div>
-            <div id="friends-list"></div>
-
-            <div id="my-profile-card" style="padding:20px; background:rgba(255,255,255,0.02); display:flex; align-items:center; gap:15px; cursor:pointer; border-top: 1px solid var(--glass-border);" onclick="openProfileModal(myName)">
-                <div class="avatar" id="my-avatar-display" style="box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);">?</div>
-                <div style="flex:1">
-                    <div id="my-name-display" style="font-weight:700;">...</div>
-                    <div style="font-size:0.75em; color:var(--success); display: flex; align-items: center; gap: 4px;">
-                        <span style="font-size: 1.2em;">•</span> Çevrimiçi
-                    </div>
-                </div>
-            </div>
-            <div class="sidebar-actions">
-                <button class="btn ghost-btn" style="flex:1" onclick="showPanel('home-panel')">Panel</button>
-                <button class="btn danger-btn" style="flex:1" onclick="cikisYap()">Çıkış</button>
-            </div>
-        </div>
-
-        <div id="main-area">
-            <div class="top-bar">
-                <div style="display:flex; align-items:center; gap:15px;">
-                    <div id="active-avatar" class="avatar" style="width:38px; height:38px; display:none; font-size: 0.9em;"></div>
-                    <div>
-                        <div id="top-bar-title" style="font-weight:700; font-size:1.1em;">Hoş Geldin</div>
-                        <div id="online-status-header" style="font-size:0.75em; margin-top: 2px;"></div>
-                    </div>
-                </div>
-                <div style="display: flex; gap: 15px; align-items:center;">
-                    <span style="opacity: 0.6; font-size:0.8em;" id="device-badge">Cihaz kaydı aktif</span>
-                    <span style="cursor:pointer; opacity: 0.6;" onclick="openProfileModal(myName)">👤</span>
-                </div>
-            </div>
-
-            <div id="home-panel" class="panel active" style="padding:60px 40px; overflow-y:auto; flex:1; display: flex; justify-content: center;">
-                <div style="max-width:500px; width: 100%;">
-                    <h2 style="margin-bottom:10px; font-size: 2em;">Merhaba, <span id="welcome-name" style="color: var(--primary-light);">...</span>! 🚀</h2>
-                    <p style="color: var(--text-muted); margin-bottom: 40px;">Sohbet etmek için bir arkadaşını seç veya yenisini ekle.</p>
-
-                    <div style="background:var(--bg-panel); padding:30px; border-radius:24px; border:1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
-                        <h4 style="margin-top:0; margin-bottom: 15px;">Arkadaş Ekle</h4>
-                        <div style="display:flex; gap:10px;">
-                            <input type="text" id="add-friend-input" class="input-field" style="margin-bottom:0" placeholder="Kullanıcı adı...">
-                            <button class="btn primary" onclick="istekGonder()">Ekle</button>
+        <aside id="sidebar">
+            <div class="sidebar-top">
+                <div class="brand-row">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <div class="brand-mark">N</div>
+                        <div class="brand-copy">
+                            <h2>NivoChat</h2>
+                            <p>Control Center</p>
                         </div>
                     </div>
-
-                    <h3 style="margin-top:50px; display: flex; align-items: center; gap: 10px;">
-                        İstekler <span id="req-count" style="background: var(--danger); padding: 2px 8px; border-radius: 10px; font-size: 0.6em;">0</span>
-                    </h3>
-                    <div id="requests-list"></div>
+                    <span id="my-role-badge" class="badge subtle hidden">Yönetici</span>
                 </div>
+
+                <div class="search-shell">
+                    <span>⌕</span>
+                    <input id="friend-search" class="search-input" type="text" placeholder="Arkadaş ara..." oninput="handleFriendSearch(this.value)">
+                </div>
+
+                <button class="nav-btn active" id="btn-home" onclick="showPanel('home-panel')">
+                    <span>⌂</span>
+                    Kontrol Merkezi
+                </button>
             </div>
 
-            <div id="chat-panel" class="panel" style="display:none; flex:1; flex-direction:column;">
+            <div class="section-label">Açık bağlantılar</div>
+            <div id="friends-list"></div>
+
+            <div class="sidebar-footer">
+                <button id="my-profile-card" class="profile-chip" onclick="openProfileModal(state.myName)">
+                    <div class="avatar" id="my-avatar-display">
+                        ?
+                        <span class="status-dot online"></span>
+                    </div>
+                    <div style="min-width:0;">
+                        <strong id="my-name-display" style="display:block; margin-bottom:4px;">...</strong>
+                        <span id="my-status-line" style="color:var(--text-muted); font-size:0.82rem;">Hazır</span>
+                    </div>
+                    <span class="badge accent">Hesap</span>
+                </button>
+
+                <div class="sidebar-actions">
+                    <button class="btn ghost-btn" onclick="showPanel('home-panel')">Panel</button>
+                    <button class="btn danger-btn" onclick="cikisYap()">Çıkış</button>
+                </div>
+            </div>
+        </aside>
+
+        <main id="main-area">
+            <header class="top-bar">
+                <div class="header-main">
+                    <button id="mobile-sidebar-toggle" class="icon-btn" onclick="toggleSidebar()">☰</button>
+                    <div id="active-avatar">?</div>
+                    <div style="min-width:0;">
+                        <div id="top-bar-title">Kontrol Merkezi</div>
+                        <div id="online-status-header">Mesajlar, istekler ve hesap yönetimi burada.</div>
+                    </div>
+                </div>
+
+                <div id="chat-header-actions" class="header-actions"></div>
+            </header>
+
+            <section id="home-panel" class="panel active-panel">
+                <div class="dashboard">
+                    <section class="hero-card">
+                        <div>
+                            <div class="eyebrow">Yeni Nesil Sohbet Kontrolü</div>
+                            <h1>Profesyonel bir DM deneyimi.</h1>
+                            <p>
+                                Arkadaş ekle, gelen talepleri yönet, gizlediğin DM'leri geri aç ve hesabını tek
+                                bakışta kontrol et. Yöneticiysen moderasyon akışı da bu arayüze entegre.
+                            </p>
+                        </div>
+
+                        <div class="hero-grid">
+                            <div class="metric-card">
+                                <span>Arkadaşlar</span>
+                                <strong id="metric-friends">0</strong>
+                                <small>Görünen arkadaş sayın</small>
+                            </div>
+                            <div class="metric-card">
+                                <span>İstekler</span>
+                                <strong id="metric-requests">0</strong>
+                                <small>Onay bekleyen yeni bağlantılar</small>
+                            </div>
+                            <div class="metric-card">
+                                <span>Gizli DM</span>
+                                <strong id="metric-hidden">0</strong>
+                                <small>Daha sonra açmak için kenara aldığın sohbetler</small>
+                            </div>
+                            <div class="metric-card">
+                                <span>Mod</span>
+                                <strong id="metric-mode">Standart</strong>
+                                <small>Hesabının yetki seviyesi</small>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="dashboard-grid">
+                        <section class="card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Arkadaş Ekle</h3>
+                                    <p>Doğrudan kullanıcı adına istek gönder.</p>
+                                </div>
+                            </div>
+                            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                                <input type="text" id="add-friend-input" class="input-field" style="margin:0; flex:1; min-width:220px;" placeholder="Kullanıcı adı...">
+                                <button class="btn primary" onclick="istekGonder()">İstek Gönder</button>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Gelen İstekler</h3>
+                                    <p>Yeni bağlantı taleplerini buradan yönet.</p>
+                                </div>
+                                <span id="req-count" class="badge danger">0</span>
+                            </div>
+                            <div id="requests-list" class="stack"></div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Gizlenen DM'ler</h3>
+                                    <p>Kapattığın sohbetleri tek tıkla geri getir.</p>
+                                </div>
+                            </div>
+                            <div id="hidden-dms-list" class="stack"></div>
+                        </section>
+
+                        <section class="card hidden" id="admin-summary-card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Moderasyon Özeti</h3>
+                                    <p>Yönetici görünümü için hızlı durum özeti.</p>
+                                </div>
+                                <span class="badge primary">Admin</span>
+                            </div>
+                            <div id="admin-summary" class="stack"></div>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <section id="chat-panel" class="panel">
+                <div id="chat-lock-banner"></div>
                 <div id="chat-messages"></div>
 
                 <div id="chat-input-area">
                     <div id="reply-preview" class="reply-preview">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span style="color: var(--primary-light);">↩</span>
-                            <div id="reply-text" style="font-size:0.85em; opacity:0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px;"></div>
+                        <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+                            <span style="color:var(--accent-soft);">↩</span>
+                            <div id="reply-text" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:520px; color:var(--text-soft);"></div>
                         </div>
-                        <span onclick="cancelReply()" style="cursor:pointer; font-weight:800; opacity: 0.5;">✕</span>
+                        <button class="mini-btn" onclick="cancelReply()">Kapat</button>
                     </div>
-                    <div class="input-wrapper">
-                        <button class="btn" id="voice-btn" onmousedown="startRecording()" onmouseup="stopRecording()" onmouseleave="stopRecording()" style="background:transparent; font-size:1.2em; padding: 5px;">🎤</button>
-                        <input type="text" id="msg-input" placeholder="Mesajını buraya yaz..." onkeypress="if(event.key==='Enter') mesajGonder()">
-                        <button class="btn primary" onclick="mesajGonder()" style="padding: 10px 25px;">Gönder</button>
+
+                    <div class="composer">
+                        <button class="btn ghost-btn" id="voice-btn" onmousedown="startRecording()" onmouseup="stopRecording()" onmouseleave="stopRecording()">🎤</button>
+                        <input type="text" id="msg-input" placeholder="Mesajını yaz..." onkeypress="if(event.key==='Enter') mesajGonder()">
+                        <button class="btn primary" id="send-btn" onclick="mesajGonder()">Gönder</button>
                     </div>
                 </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="context-menu">
+        <button class="menu-item" id="menu-reply" onclick="initReply()"><span>↩</span> Yanıtla</button>
+        <button class="menu-item" id="menu-edit" onclick="initEdit()"><span>✎</span> Düzenle</button>
+        <button class="menu-item danger" id="menu-delete" onclick="initDelete()"><span>🗑</span> Sil</button>
+    </div>
+
+    <div id="profile-modal" class="modal" onclick="closeModalOnBackdrop(event, 'profile-modal')">
+        <div class="modal-card">
+            <div class="modal-head">
+                <div>
+                    <h3>Profil Merkezi</h3>
+                    <p>Temizlenmiş hesap görünümü ve hızlı aksiyonlar.</p>
+                </div>
+                <button class="icon-btn" onclick="closeModal('profile-modal')">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="profile-summary">
+                    <div class="avatar-lg" id="profile-avatar">?</div>
+                    <div>
+                        <div id="profile-name" style="font-family:'Space Grotesk', sans-serif; font-size:1.4rem; font-weight:700;">@kullanici</div>
+                        <div id="profile-status" style="margin-top:8px; color:var(--text-muted);">Çevrimdışı</div>
+                    </div>
+                </div>
+
+                <div id="profile-modal-body"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn ghost-btn" onclick="closeModal('profile-modal')">Kapat</button>
             </div>
         </div>
     </div>
 
-    <div id="context-menu">
-        <div class="menu-item" id="menu-reply" onclick="initReply()"><span>↩</span> Yanıtla</div>
-        <div class="menu-item" id="menu-edit" onclick="initEdit()"><span>✏️</span> Düzenle</div>
-        <div class="menu-item" id="menu-delete" onclick="initDelete()" style="color:var(--danger)"><span>🗑️</span> Sil</div>
-    </div>
-
-    <div id="profile-modal" class="modal">
-        <div class="modal-content">
-            <div style="display:flex; align-items:center; gap:25px; margin-bottom:30px;">
-                <div id="prof-avatar" class="avatar" style="width:90px; height:90px; font-size:2.2em; box-shadow: 0 10px 20px rgba(0,0,0,0.3);">?</div>
+    <div id="admin-modal" class="modal" onclick="closeModalOnBackdrop(event, 'admin-modal')">
+        <div class="wide-modal-card">
+            <div class="modal-head">
                 <div>
-                    <h2 id="prof-name" style="margin:0; font-size: 1.6em;">@Kullanıcı</h2>
-                    <div id="prof-status" style="color:var(--text-muted); margin-top:5px; font-size: 0.9em;">Çevrimdışı</div>
+                    <h3>Yönetim Merkezi</h3>
+                    <p>Rol bazlı moderasyon paneli. Gizli arka kapı yerine açık ve kontrollü yönetim akışı.</p>
                 </div>
+                <button class="icon-btn" onclick="closeModal('admin-modal')">✕</button>
             </div>
 
-            <div style="background:rgba(0,0,0,0.2); padding:20px; border-radius:18px; border: 1px solid var(--glass-border);">
-                <label style="font-size:0.7em; color:var(--primary-light); font-weight: 800; letter-spacing: 1px; text-transform: uppercase;">Biyografi</label>
-                <p id="prof-bio" style="font-style:italic; margin:10px 0 0; line-height:1.6; color: var(--text-main);"></p>
+            <div class="admin-tabs">
+                <button id="admin-tab-conversations" class="tab-btn active" onclick="switchAdminTab('conversations')">Aktif DM'ler</button>
+                <button id="admin-tab-users" class="tab-btn" onclick="switchAdminTab('users')">Kullanıcılar</button>
+                <button id="admin-tab-bans" class="tab-btn" onclick="switchAdminTab('bans')">Kısıtlamalar</button>
+                <button id="admin-tab-devices" class="tab-btn" onclick="switchAdminTab('devices')">Cihazlar</button>
             </div>
 
-            <div id="prof-edit-area" style="display:none; margin-top:25px;">
-                <input type="text" id="new-bio" class="input-field" placeholder="Yeni biyografin...">
-                <button class="btn primary" style="width:100%" onclick="biyoGuncelle()">Güncelle</button>
+            <div class="admin-grid">
+                <div id="admin-list-panel" class="admin-list"></div>
+                <div id="admin-detail-panel" class="admin-detail"></div>
             </div>
-
-            <button class="btn" style="width:100%; margin-top:20px; background:var(--bg-hover); color:white;" onclick="closeModal()">Kapat</button>
         </div>
     </div>
 
@@ -235,38 +1783,102 @@
             messagingSenderId: "520948298454",
             appId: "1:520948298454:web:bfb57438d4fb79158a4f77"
         };
+
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         const STORAGE_KEYS = {
-            remember: "nivo_remember_v2",
+            remember: "nivo_remember_v3",
             device: "nivo_device_id"
         };
 
-        let myName = "";
-        let activeChatId = null;
-        let activeChatUser = null;
-        let selectedMsgId = null;
-        let replyingToId = null;
-        let mediaRecorder = null;
-        let audioChunks = [];
-        let currentFriendListener = null;
-        let currentChatRef = null;
-        let currentStatusRef = null;
+        const DEFAULT_ADMIN_USERS = ["admin", "nivoadmin", "root"];
 
-        window.onload = () => {
-            ensureDeviceId();
-            const savedSession = getSavedSession();
-            if (savedSession?.user && savedSession?.pass) {
-                document.getElementById("auth-user").value = savedSession.user;
-                document.getElementById("auth-pass").value = savedSession.pass;
-                girisYap(true);
+        const state = {
+            myName: "",
+            isAdmin: false,
+            activeChatId: null,
+            activeChatUser: null,
+            currentChatLocked: false,
+            friendSearch: "",
+            replyingToId: null,
+            selectedMsgId: null,
+            selectedMsgText: "",
+            selectedMsgIsText: false,
+            selectedMsgIsMine: false,
+            mediaRecorder: null,
+            audioChunks: [],
+            sessionHeartbeat: null,
+            isLoggingOut: false,
+            listeners: {
+                app: [],
+                chat: [],
+                presence: [],
+                guards: [],
+                admin: []
+            },
+            presenceBound: {},
+            friendMap: {},
+            hiddenMap: {},
+            requestMap: {},
+            userPresence: {},
+            adminView: {
+                tab: "conversations",
+                inspectChatId: null,
+                inspectUser: null
+            },
+            adminData: {
+                chats: {},
+                users: {},
+                userBans: {},
+                deviceBans: {},
+                closedChats: {},
+                sessions: {}
             }
         };
 
+        window.onload = initApp;
+        document.addEventListener("keydown", handleGlobalShortcuts);
+
+        async function initApp() {
+            ensureDeviceId();
+            bindStaticFormShortcuts();
+            renderHeaderActions();
+            renderHomeStats();
+            renderHiddenChats();
+            renderRequests();
+            updateComposeAvailability();
+
+            const saved = getSavedSession();
+            if (saved?.user && saved?.pass) {
+                document.getElementById("auth-user").value = saved.user;
+                document.getElementById("auth-pass").value = saved.pass;
+                await girisYap(true);
+            }
+        }
+
+        function bindStaticFormShortcuts() {
+            document.getElementById("auth-pass").addEventListener("keydown", event => {
+                if (event.key === "Enter") girisYap();
+            });
+
+            document.getElementById("auth-user").addEventListener("keydown", event => {
+                if (event.key === "Enter") girisYap();
+            });
+        }
+
+        function handleGlobalShortcuts(event) {
+            if (event.key === "Escape") {
+                hideMenu();
+                closeModal("profile-modal");
+                closeModal("admin-modal");
+                document.body.classList.remove("sidebar-open");
+            }
+        }
+
         function ensureDeviceId() {
             if (!localStorage.getItem(STORAGE_KEYS.device)) {
-                const deviceId = `nivo-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+                const deviceId = `nivo-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
                 localStorage.setItem(STORAGE_KEYS.device, deviceId);
             }
         }
@@ -298,15 +1910,16 @@
             toast.className = `toast ${type}`;
             toast.textContent = message;
             container.appendChild(toast);
+
             setTimeout(() => {
                 toast.style.opacity = "0";
-                toast.style.transform = "translateY(-8px)";
+                toast.style.transform = "translateY(-10px)";
                 setTimeout(() => toast.remove(), 180);
-            }, 2600);
+            }, 2800);
         }
 
         function escapeHtml(text = "") {
-            return text
+            return String(text)
                 .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
@@ -314,233 +1927,811 @@
                 .replace(/'/g, "&#39;");
         }
 
-        function girisYap(isAuto = false) {
+        function getInitial(name = "?") {
+            return String(name).trim().charAt(0).toUpperCase() || "?";
+        }
+
+        function inlineToken(value) {
+            return encodeURIComponent(String(value ?? ""));
+        }
+
+        function formatTime(value) {
+            if (!value) return "--:--";
+            return new Date(value).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+        }
+
+        function formatDateTime(value) {
+            if (!value) return "Bilinmiyor";
+            return new Date(value).toLocaleString("tr-TR", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+        }
+
+        function relativeTime(value) {
+            if (!value) return "Bilinmiyor";
+            const seconds = Math.floor((Date.now() - value) / 1000);
+            if (seconds < 60) return "Az önce";
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} dk önce`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} sa önce`;
+            const days = Math.floor(hours / 24);
+            return `${days} gün önce`;
+        }
+
+        function normalizeChatId(userA, userB) {
+            return [userA, userB].sort().join("_");
+        }
+
+        function isUserFriend(user) {
+            return Boolean(state.friendMap?.[user]);
+        }
+
+        function isUserHidden(user) {
+            return Boolean(state.hiddenMap?.[user]);
+        }
+
+        function toggleSidebar(force) {
+            const shouldOpen = typeof force === "boolean" ? force : !document.body.classList.contains("sidebar-open");
+            document.body.classList.toggle("sidebar-open", shouldOpen);
+        }
+
+        function closeModalOnBackdrop(event, id) {
+            if (event.target.id === id) {
+                closeModal(id);
+            }
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).style.display = "none";
+        }
+
+        function listen(ref, eventName, callback, bucket = "app") {
+            ref.on(eventName, callback);
+            state.listeners[bucket].push({ ref, eventName, callback });
+        }
+
+        function clearListenerBucket(bucket) {
+            (state.listeners[bucket] || []).forEach(item => item.ref.off(item.eventName, item.callback));
+            state.listeners[bucket] = [];
+            if (bucket === "presence") {
+                state.presenceBound = {};
+            }
+        }
+
+        function clearAllRealtime() {
+            Object.keys(state.listeners).forEach(clearListenerBucket);
+        }
+
+        function bindPresence(user) {
+            if (!user || state.presenceBound[user]) return;
+            state.presenceBound[user] = true;
+            const ref = db.ref(`kullanicilar/${user}/durum`);
+            listen(ref, "value", snap => {
+                state.userPresence[user] = snap.val() || "offline";
+                renderFriendsList();
+                if (state.activeChatUser === user) updateActiveHeader(user);
+            }, "presence");
+        }
+
+        async function determineAdmin(user) {
+            const snap = await db.ref(`yoneticiler/${user}`).once("value");
+            return snap.exists() || DEFAULT_ADMIN_USERS.includes(String(user).toLowerCase());
+        }
+
+        async function girisYap(isAuto = false) {
             const user = document.getElementById("auth-user").value.trim();
             const pass = document.getElementById("auth-pass").value.trim();
+
             if (!user || !pass) {
                 if (!isAuto) showToast("Kullanıcı adı ve şifre gerekli.", "warning");
                 return;
             }
 
-            db.ref(`kullanicilar/${user}`).once("value", snap => {
-                if (snap.exists() && snap.val().sifre === pass) {
-                    saveSession(user, pass);
-                    basariliGiris(user);
-                } else if (!isAuto) {
-                    showToast("Hatalı kullanıcı adı veya şifre.", "error");
+            try {
+                const userSnap = await db.ref(`kullanicilar/${user}`).once("value");
+                if (!userSnap.exists() || userSnap.val().sifre !== pass) {
+                    if (!isAuto) showToast("Hatalı kullanıcı adı veya şifre.", "error");
+                    return;
                 }
-            });
+
+                const deviceId = localStorage.getItem(STORAGE_KEYS.device);
+                const [userBanSnap, deviceBanSnap] = await Promise.all([
+                    db.ref(`moderasyon/bans/users/${user}`).once("value"),
+                    db.ref(`moderasyon/bans/devices/${deviceId}`).once("value")
+                ]);
+
+                if (userBanSnap.exists()) {
+                    clearSession();
+                    showToast("Bu hesap moderasyon tarafından kısıtlandı.", "error");
+                    return;
+                }
+
+                if (deviceBanSnap.exists()) {
+                    clearSession();
+                    showToast("Bu cihazın erişimi yöneticiler tarafından kapatıldı.", "error");
+                    return;
+                }
+
+                saveSession(user, pass);
+                await basariliGiris(user);
+            } catch (error) {
+                console.error(error);
+                if (!isAuto) showToast("Giriş sırasında beklenmedik bir hata oldu.", "error");
+            }
         }
 
-        function kayitOl() {
+        function isValidUsername(name) {
+            return /^[a-zA-Z0-9_]{3,20}$/.test(name);
+        }
+
+        async function kayitOl() {
             const user = document.getElementById("auth-user").value.trim();
             const pass = document.getElementById("auth-pass").value.trim();
 
-            if (user.length < 3) return showToast("Kullanıcı adı en az 3 karakter olmalı.", "warning");
-            if (pass.length < 3) return showToast("Şifre en az 3 karakter olmalı.", "warning");
+            if (!isValidUsername(user)) {
+                showToast("Yeni kullanıcı adı 3-20 karakter olmalı ve sadece harf, sayı, alt çizgi içermeli.", "warning");
+                return;
+            }
 
-            db.ref(`kullanicilar/${user}`).once("value", snap => {
-                if (snap.exists()) return showToast("Bu kullanıcı adı zaten kayıtlı.", "warning");
+            if (pass.length < 3) {
+                showToast("Şifre en az 3 karakter olmalı.", "warning");
+                return;
+            }
 
-                db.ref(`kullanicilar/${user}`).set({
+            try {
+                const userSnap = await db.ref(`kullanicilar/${user}`).once("value");
+                if (userSnap.exists()) {
+                    showToast("Bu kullanıcı adı zaten alınmış.", "warning");
+                    return;
+                }
+
+                await db.ref(`kullanicilar/${user}`).set({
                     sifre: pass,
-                    biyo: "NivoChat dünyasına hoş geldim!",
-                    durum: "online"
-                }).then(() => {
-                    showToast("Hesap oluşturuldu, giriş yapılıyor.", "success");
-                    girisYap();
+                    durum: "online",
+                    createdAt: Date.now(),
+                    lastLoginAt: Date.now()
                 });
+
+                showToast("Hesap oluşturuldu, giriş yapılıyor.", "success");
+                await girisYap();
+            } catch (error) {
+                console.error(error);
+                showToast("Kayıt oluşturulamadı.", "error");
+            }
+        }
+
+        async function basariliGiris(user) {
+            state.myName = user;
+            state.isAdmin = await determineAdmin(user);
+            document.body.classList.toggle("is-admin", state.isAdmin);
+
+            document.getElementById("auth-screen").style.display = "none";
+            document.getElementById("app-container").style.display = "flex";
+            document.getElementById("my-name-display").innerText = user;
+            document.getElementById("my-avatar-display").innerHTML = `${getInitial(user)}<span class="status-dot online"></span>`;
+            document.getElementById("my-status-line").innerText = state.isAdmin ? "Yönetici oturumu aktif" : "Hazır";
+            document.getElementById("my-role-badge").classList.toggle("hidden", !state.isAdmin);
+            document.getElementById("metric-mode").innerText = state.isAdmin ? "Yönetici" : "Standart";
+            document.getElementById("admin-summary-card").classList.toggle("hidden", !state.isAdmin);
+
+            await db.ref(`kullanicilar/${user}`).update({
+                durum: "online",
+                lastLoginAt: Date.now(),
+                lastDevice: localStorage.getItem(STORAGE_KEYS.device)
+            });
+
+            db.ref(`kullanicilar/${user}/durum`).onDisconnect().set("offline");
+            await registerDeviceSession();
+
+            startSessionHeartbeat();
+            startModerationGuards();
+            baslat();
+
+            if (state.isAdmin) {
+                startAdminRealtime();
+            } else {
+                clearListenerBucket("admin");
+            }
+
+            renderHeaderActions();
+            renderHomeStats();
+            showPanel("home-panel");
+            showToast(`Tekrar hoş geldin ${user}.`, "success");
+        }
+
+        async function registerDeviceSession() {
+            if (!state.myName) return;
+            const deviceId = localStorage.getItem(STORAGE_KEYS.device);
+            await db.ref(`oturumlar/${state.myName}/${deviceId}`).update({
+                deviceId,
+                active: true,
+                userAgent: navigator.userAgent,
+                lastSeen: Date.now(),
+                createdAt: Date.now()
             });
         }
 
-        function basariliGiris(user) {
-            myName = user;
-            document.getElementById("auth-screen").style.display = "none";
-            document.getElementById("app-container").style.display = "flex";
-            document.getElementById("my-name-display").innerText = myName;
-            document.getElementById("welcome-name").innerText = myName;
-            document.getElementById("my-avatar-display").innerText = myName[0].toUpperCase();
-            document.getElementById("device-badge").innerText = "Bu cihazda otomatik giriş açık";
+        function startSessionHeartbeat() {
+            if (state.sessionHeartbeat) clearInterval(state.sessionHeartbeat);
+            state.sessionHeartbeat = setInterval(async () => {
+                if (!state.myName) return;
+                const deviceId = localStorage.getItem(STORAGE_KEYS.device);
+                try {
+                    await db.ref(`oturumlar/${state.myName}/${deviceId}`).update({
+                        active: true,
+                        lastSeen: Date.now()
+                    });
+                    await db.ref(`kullanicilar/${state.myName}`).update({
+                        durum: "online",
+                        lastLoginAt: Date.now()
+                    });
+                } catch (error) {
+                    console.error(error);
+                }
+            }, 60000);
+        }
 
-            db.ref(`kullanicilar/${myName}/durum`).set("online");
-            db.ref(`kullanicilar/${myName}/durum`).onDisconnect().set("offline");
-            baslat();
-            showToast(`Tekrar hoş geldin ${myName}!`, "success");
+        function startModerationGuards() {
+            clearListenerBucket("guards");
+            if (!state.myName) return;
+
+            const deviceId = localStorage.getItem(STORAGE_KEYS.device);
+            listen(db.ref(`moderasyon/bans/users/${state.myName}`), "value", snap => {
+                if (snap.exists()) {
+                    forceLogout("Hesabın yönetici tarafından kısıtlandı.");
+                }
+            }, "guards");
+
+            listen(db.ref(`moderasyon/bans/devices/${deviceId}`), "value", snap => {
+                if (snap.exists()) {
+                    forceLogout("Bu cihaz yöneticiler tarafından engellendi.");
+                }
+            }, "guards");
         }
 
         function baslat() {
-            db.ref(`arkadaslar/${myName}`).on("value", snap => {
-                const list = document.getElementById("friends-list");
-                list.innerHTML = "";
+            clearListenerBucket("app");
+            clearListenerBucket("presence");
 
-                if (!snap.exists()) {
-                    list.innerHTML = `<div class="empty-state">Henüz arkadaş eklemedin.</div>`;
-                    return;
-                }
+            listen(db.ref(`arkadaslar/${state.myName}`), "value", snap => {
+                state.friendMap = snap.val() || {};
+                Object.keys(state.friendMap).forEach(bindPresence);
+                renderFriendsList();
+                renderHomeStats();
+            }, "app");
 
-                snap.forEach(child => {
-                    const friend = child.key;
-                    db.ref(`kullanicilar/${friend}/durum`).on("value", st => {
-                        const status = st.val();
-                        let el = document.getElementById(`friend-${friend}`);
-                        if (!el) {
-                            const item = document.createElement("div");
-                            item.className = "friend-item";
-                            item.id = `friend-${friend}`;
-                            item.onclick = () => sohbetBaslat(friend);
-                            item.innerHTML = `
-                                <div class="avatar">${escapeHtml(friend[0].toUpperCase())}</div>
-                                <div class="status-dot ${status === "online" ? "online" : status === "away" ? "away" : ""}"></div>
-                                <span style="font-weight:600">${escapeHtml(friend)}</span>`;
-                            list.appendChild(item);
-                        } else {
-                            const dot = el.querySelector(".status-dot");
-                            dot.className = `status-dot ${status === "online" ? "online" : status === "away" ? "away" : ""}`;
-                        }
-                    });
-                });
-            });
+            listen(db.ref(`gizli_sohbetler/${state.myName}`), "value", snap => {
+                state.hiddenMap = snap.val() || {};
+                renderFriendsList();
+                renderHiddenChats();
+                renderHomeStats();
+            }, "app");
 
-            db.ref(`istekler/${myName}`).on("value", snap => {
-                document.getElementById("req-count").innerText = snap.numChildren();
-                const list = document.getElementById("requests-list");
-                list.innerHTML = "";
+            listen(db.ref(`istekler/${state.myName}`), "value", snap => {
+                state.requestMap = snap.val() || {};
+                renderRequests();
+                renderHomeStats();
+            }, "app");
+        }
 
-                if (!snap.exists()) {
-                    list.innerHTML = `<div class="empty-state">Yeni arkadaş isteğin yok.</div>`;
-                    return;
-                }
+        function renderHomeStats() {
+            const visibleFriends = Object.keys(state.friendMap || {}).filter(friend => !isUserHidden(friend)).length;
+            const requestCount = Object.keys(state.requestMap || {}).length;
+            const hiddenCount = Object.keys(state.hiddenMap || {}).length;
 
-                snap.forEach(c => {
-                    list.innerHTML += `
-                        <div style="display:flex; justify-content:space-between; align-items:center; background:var(--glass); padding:15px; border-radius:18px; margin-top:10px; border: 1px solid var(--glass-border); gap:10px;">
-                            <span><b>${escapeHtml(c.key)}</b></span>
-                            <div style="display:flex; gap:8px;">
-                                <button onclick="istekCevapla('${c.key}', true)" class="btn primary" style="padding:6px 12px; font-size:0.8em;">Onayla</button>
-                                <button onclick="istekCevapla('${c.key}', false)" class="btn" style="padding:6px 12px; background:var(--danger); font-size:0.8em; color:white;">Reddet</button>
-                            </div>
-                        </div>`;
-                });
+            document.getElementById("metric-friends").innerText = String(visibleFriends);
+            document.getElementById("metric-requests").innerText = String(requestCount);
+            document.getElementById("metric-hidden").innerText = String(hiddenCount);
+            document.getElementById("metric-mode").innerText = state.isAdmin ? "Yönetici" : "Standart";
+            document.getElementById("req-count").innerText = String(requestCount);
+
+            renderAdminSummary();
+        }
+
+        function renderFriendsList() {
+            const list = document.getElementById("friends-list");
+            list.innerHTML = "";
+
+            const friends = Object.keys(state.friendMap || {})
+                .filter(friend => !isUserHidden(friend))
+                .filter(friend => friend.toLowerCase().includes(state.friendSearch))
+                .sort((a, b) => a.localeCompare(b, "tr"));
+
+            if (!friends.length) {
+                list.innerHTML = `<div class="empty-state">Görünecek arkadaş yok. Yeni bağlantı ekleyebilir ya da gizlenen DM'leri geri açabilirsin.</div>`;
+                return;
+            }
+
+            friends.forEach(friend => {
+                const item = document.createElement("div");
+                item.className = `friend-item ${state.activeChatUser === friend ? "active" : ""}`;
+                item.onclick = () => sohbetBaslat(friend);
+
+                const avatar = document.createElement("div");
+                avatar.className = "avatar";
+                avatar.innerHTML = `${escapeHtml(getInitial(friend))}<span class="status-dot ${getStatusClass(friend)}"></span>`;
+
+                const content = document.createElement("div");
+                content.className = "friend-copy";
+                content.innerHTML = `
+                    <strong>${escapeHtml(friend)}</strong>
+                    <span>${escapeHtml(getStatusLabel(friend))}</span>
+                `;
+
+                const archiveBtn = document.createElement("button");
+                archiveBtn.className = "side-action-icon";
+                archiveBtn.type = "button";
+                archiveBtn.title = "DM gizle";
+                archiveBtn.innerHTML = "×";
+                archiveBtn.onclick = event => {
+                    event.stopPropagation();
+                    hideDM(friend);
+                };
+
+                item.appendChild(avatar);
+                item.appendChild(content);
+                item.appendChild(archiveBtn);
+                list.appendChild(item);
             });
         }
 
-        function sohbetBaslat(friend) {
-            activeChatUser = friend;
-            const users = [myName, friend].sort();
-            activeChatId = `${users[0]}_${users[1]}`;
+        function getStatusClass(user) {
+            if (state.adminData.userBans?.[user]) return "banned";
+            const status = state.userPresence[user];
+            if (status === "online") return "online";
+            if (status === "away") return "away";
+            return "";
+        }
 
-            document.querySelectorAll(".friend-item").forEach(item => item.classList.remove("active"));
-            document.getElementById(`friend-${friend}`)?.classList.add("active");
+        function getStatusLabel(user) {
+            if (state.adminData.userBans?.[user]) return "Kısıtlı kullanıcı";
+            const status = state.userPresence[user];
+            if (status === "online") return "Çevrimiçi";
+            if (status === "away") return "Meşgul";
+            return "Çevrimdışı";
+        }
 
-            document.getElementById("top-bar-title").innerText = "@" + friend;
-            document.getElementById("active-avatar").style.display = "flex";
-            document.getElementById("active-avatar").innerText = friend[0].toUpperCase();
-            showPanel("chat-panel");
+        function renderRequests() {
+            const list = document.getElementById("requests-list");
+            list.innerHTML = "";
 
-            if (currentStatusRef) currentStatusRef.off();
-            currentStatusRef = db.ref(`kullanicilar/${friend}/durum`);
-            currentStatusRef.on("value", s => {
-                const st = s.val();
-                const el = document.getElementById("online-status-header");
-                el.innerText = st === "online" ? "● Çevrimiçi" : "Çevrimdışı";
-                el.style.color = st === "online" ? "var(--success)" : "var(--text-muted)";
+            const requests = Object.keys(state.requestMap || {}).sort((a, b) => a.localeCompare(b, "tr"));
+            if (!requests.length) {
+                list.innerHTML = `<div class="empty-state">Bekleyen arkadaş isteği bulunmuyor.</div>`;
+                return;
+            }
+
+            requests.forEach(user => {
+                const card = document.createElement("div");
+                card.className = "list-card";
+                card.innerHTML = `
+                    <strong>@${escapeHtml(user)}</strong>
+                    <p>Yeni bağlantı talebi gönderdi. İstersen hemen onaylayabilir ya da reddedebilirsin.</p>
+                `;
+
+                const actions = document.createElement("div");
+                actions.className = "list-actions";
+
+                const accept = document.createElement("button");
+                accept.className = "mini-btn success";
+                accept.innerText = "Onayla";
+                accept.onclick = () => istekCevapla(user, true);
+
+                const reject = document.createElement("button");
+                reject.className = "mini-btn danger";
+                reject.innerText = "Reddet";
+                reject.onclick = () => istekCevapla(user, false);
+
+                actions.appendChild(accept);
+                actions.appendChild(reject);
+                card.appendChild(actions);
+                list.appendChild(card);
             });
+        }
+
+        function renderHiddenChats() {
+            const list = document.getElementById("hidden-dms-list");
+            list.innerHTML = "";
+
+            const hiddenEntries = Object.entries(state.hiddenMap || {})
+                .map(([friend, meta]) => ({
+                    friend,
+                    hiddenAt: typeof meta === "object" ? (meta.hiddenAt || 0) : 0
+                }))
+                .sort((a, b) => (b.hiddenAt || 0) - (a.hiddenAt || 0));
+
+            if (!hiddenEntries.length) {
+                list.innerHTML = `<div class="empty-state">Gizlenen DM yok. Bir sohbeti kenara almak istersen chat başlığındaki DM Gizle aksiyonunu kullan.</div>`;
+                return;
+            }
+
+            hiddenEntries.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "list-card";
+                card.innerHTML = `
+                    <strong>@${escapeHtml(item.friend)}</strong>
+                    <p>${item.hiddenAt ? `${relativeTime(item.hiddenAt)} gizlendi.` : "Bu DM gizlenmiş durumda."}</p>
+                `;
+
+                const actions = document.createElement("div");
+                actions.className = "list-actions";
+
+                const restore = document.createElement("button");
+                restore.className = "mini-btn success";
+                restore.innerText = "Geri Aç";
+                restore.onclick = () => restoreHiddenChat(item.friend);
+
+                const open = document.createElement("button");
+                open.className = "mini-btn";
+                open.innerText = "DM Aç";
+                open.onclick = async () => {
+                    await restoreHiddenChat(item.friend, false);
+                    await sohbetBaslat(item.friend);
+                };
+
+                actions.appendChild(restore);
+                actions.appendChild(open);
+                card.appendChild(actions);
+                list.appendChild(card);
+            });
+        }
+
+        function renderAdminSummary() {
+            const summary = document.getElementById("admin-summary");
+            if (!state.isAdmin) {
+                summary.innerHTML = "";
+                return;
+            }
+
+            const chatCount = Object.keys(state.adminData.chats || {}).length;
+            const userCount = Object.keys(state.adminData.users || {}).length;
+            const userBanCount = Object.keys(state.adminData.userBans || {}).length;
+            const deviceBanCount = Object.keys(state.adminData.deviceBans || {}).length;
+            const lockedCount = Object.keys(state.adminData.closedChats || {}).length;
+
+            summary.innerHTML = `
+                <div class="list-card">
+                    <strong>Aktif DM kayıtları</strong>
+                    <p>${chatCount} konuşma, ${lockedCount} kilitli DM.</p>
+                </div>
+                <div class="list-card">
+                    <strong>Kullanıcı görünümü</strong>
+                    <p>${userCount} hesap izleniyor. Kullanıcı banı: ${userBanCount}, cihaz kısıtı: ${deviceBanCount}.</p>
+                </div>
+            `;
+        }
+
+        function handleFriendSearch(value) {
+            state.friendSearch = value.trim().toLowerCase();
+            renderFriendsList();
+        }
+
+        async function istekGonder() {
+            const target = document.getElementById("add-friend-input").value.trim();
+            if (!target || target === state.myName) {
+                showToast("Kendine istek gönderemezsin.", "warning");
+                return;
+            }
+
+            try {
+                const [userSnap, alreadyFriendSnap, bannedSnap] = await Promise.all([
+                    db.ref(`kullanicilar/${target}`).once("value"),
+                    db.ref(`arkadaslar/${state.myName}/${target}`).once("value"),
+                    db.ref(`moderasyon/bans/users/${target}`).once("value")
+                ]);
+
+                if (!userSnap.exists()) {
+                    showToast("Böyle bir kullanıcı bulunamadı.", "error");
+                    return;
+                }
+
+                if (bannedSnap.exists()) {
+                    showToast("Bu kullanıcı şu anda erişime kapalı.", "warning");
+                    return;
+                }
+
+                if (alreadyFriendSnap.exists()) {
+                    showToast("Bu kullanıcı zaten arkadaş listende.", "info");
+                    return;
+                }
+
+                await db.ref(`istekler/${target}/${state.myName}`).set({
+                    at: Date.now()
+                });
+
+                document.getElementById("add-friend-input").value = "";
+                showToast("Arkadaş isteği gönderildi.", "success");
+            } catch (error) {
+                console.error(error);
+                showToast("İstek gönderilemedi.", "error");
+            }
+        }
+
+        async function istekCevapla(user, accepted) {
+            try {
+                if (accepted) {
+                    await Promise.all([
+                        db.ref(`arkadaslar/${state.myName}/${user}`).set(true),
+                        db.ref(`arkadaslar/${user}/${state.myName}`).set(true),
+                        db.ref(`gizli_sohbetler/${state.myName}/${user}`).remove(),
+                        db.ref(`gizli_sohbetler/${user}/${state.myName}`).remove()
+                    ]);
+                    bindPresence(user);
+                    showToast(`${user} artık arkadaş listende.`, "success");
+                } else {
+                    showToast("İstek reddedildi.", "info");
+                }
+
+                await db.ref(`istekler/${state.myName}/${user}`).remove();
+            } catch (error) {
+                console.error(error);
+                showToast("İstek işlenemedi.", "error");
+            }
+        }
+
+        function updateActiveHeader(friend) {
+            const status = getStatusLabel(friend);
+            document.getElementById("top-bar-title").innerText = `@${friend}`;
+            document.getElementById("online-status-header").innerText = status;
+            document.getElementById("online-status-header").style.color = state.userPresence[friend] === "online" ? "var(--success)" : "var(--text-muted)";
+            document.getElementById("active-avatar").style.display = "flex";
+            document.getElementById("active-avatar").innerText = getInitial(friend);
+        }
+
+        function renderHeaderActions() {
+            const container = document.getElementById("chat-header-actions");
+            container.innerHTML = "";
+
+            const sessionChip = document.createElement("div");
+            sessionChip.className = "chip";
+            sessionChip.innerText = getSavedSession() ? "Bu cihaz hatırlanıyor" : "Manuel oturum";
+            container.appendChild(sessionChip);
+
+            if (state.activeChatUser && document.getElementById("chat-panel").style.display === "flex") {
+                const profileBtn = document.createElement("button");
+                profileBtn.className = "btn ghost-btn";
+                profileBtn.innerText = "Profili Aç";
+                profileBtn.onclick = () => openProfileModal(state.activeChatUser);
+
+                const hideBtn = document.createElement("button");
+                hideBtn.className = "btn ghost-btn";
+                hideBtn.innerText = "DM Gizle";
+                hideBtn.onclick = () => hideDM(state.activeChatUser);
+
+                const removeBtn = document.createElement("button");
+                removeBtn.className = "btn danger-btn";
+                removeBtn.innerText = "Arkadaşı Çıkar";
+                removeBtn.onclick = () => removeFriend(state.activeChatUser);
+
+                container.appendChild(profileBtn);
+                container.appendChild(hideBtn);
+                container.appendChild(removeBtn);
+            }
+
+            const selfBtn = document.createElement("button");
+            selfBtn.className = "btn ghost-btn";
+            selfBtn.innerText = "Hesap";
+            selfBtn.onclick = () => openProfileModal(state.myName);
+            container.appendChild(selfBtn);
+
+            if (state.isAdmin) {
+                const adminBtn = document.createElement("button");
+                adminBtn.className = "btn primary";
+                adminBtn.innerText = "Yönetim";
+                adminBtn.onclick = () => openAdminPanel();
+                container.appendChild(adminBtn);
+            }
+        }
+
+        function showPanel(id) {
+            document.querySelectorAll(".panel").forEach(panel => {
+                panel.classList.remove("active-panel");
+                panel.style.display = "none";
+            });
+
+            const panel = document.getElementById(id);
+            panel.classList.add("active-panel");
+            panel.style.display = id === "chat-panel" ? "flex" : "block";
+
+            document.getElementById("btn-home").classList.toggle("active", id === "home-panel");
+
+            if (id === "home-panel") {
+                document.getElementById("top-bar-title").innerText = "Kontrol Merkezi";
+                document.getElementById("online-status-header").innerText = "Mesajlar, istekler ve hesap yönetimi burada.";
+                document.getElementById("online-status-header").style.color = "var(--text-muted)";
+                document.getElementById("active-avatar").style.display = "none";
+            } else if (id === "chat-panel" && state.activeChatUser) {
+                updateActiveHeader(state.activeChatUser);
+            }
+
+            renderHeaderActions();
+            toggleSidebar(false);
+        }
+
+        async function sohbetBaslat(friend) {
+            state.activeChatUser = friend;
+            state.activeChatId = normalizeChatId(state.myName, friend);
+            state.currentChatLocked = false;
+
+            renderFriendsList();
+            updateActiveHeader(friend);
+            renderHeaderActions();
+            showPanel("chat-panel");
+            updateComposeAvailability();
+
+            clearListenerBucket("chat");
+            bindPresence(friend);
 
             const chatBox = document.getElementById("chat-messages");
             chatBox.innerHTML = `<div class="empty-state">Mesajlar yükleniyor...</div>`;
 
-            if (currentChatRef) currentChatRef.off();
-            currentChatRef = db.ref(`dm_mesajlari/${activeChatId}`);
+            const chatRef = db.ref(`dm_mesajlari/${state.activeChatId}`);
+            const lockRef = db.ref(`moderasyon/closedChats/${state.activeChatId}`);
 
-            currentChatRef.once("value", snap => {
+            try {
+                const snap = await chatRef.once("value");
                 if (!snap.exists()) {
                     chatBox.innerHTML = `<div class="empty-state">Henüz mesaj yok. İlk mesajı sen gönder.</div>`;
                 } else {
                     chatBox.innerHTML = "";
                     snap.forEach(child => ekranaMesajBas(child.key, child.val()));
                 }
-            });
+            } catch (error) {
+                console.error(error);
+                chatBox.innerHTML = `<div class="empty-state">Mesajlar yüklenemedi.</div>`;
+            }
 
-            currentChatRef.on("child_added", snap => {
+            listen(chatRef, "child_added", snap => {
                 if (document.getElementById(`msg-${snap.key}`)) return;
                 if (chatBox.querySelector(".empty-state")) chatBox.innerHTML = "";
                 ekranaMesajBas(snap.key, snap.val());
-            });
+            }, "chat");
 
-            currentChatRef.on("child_changed", snap => {
+            listen(chatRef, "child_changed", snap => {
                 const el = document.getElementById(`text-${snap.key}`);
                 if (el) {
-                    el.innerHTML = `${escapeHtml(snap.val().metin)} <small style="opacity:0.4; font-size:0.7em;">(düzenlendi)</small>`;
+                    const data = snap.val();
+                    el.innerHTML = `${escapeHtml(data.metin || "")}${data.duzenlendi ? ' <small style="opacity:0.6;">(düzenlendi)</small>' : ""}`;
                 }
-            });
+            }, "chat");
 
-            currentChatRef.on("child_removed", snap => {
+            listen(chatRef, "child_removed", snap => {
                 document.getElementById(`msg-${snap.key}`)?.remove();
                 if (!chatBox.children.length) {
                     chatBox.innerHTML = `<div class="empty-state">Bu sohbette mesaj kalmadı.</div>`;
                 }
-            });
+            }, "chat");
+
+            listen(lockRef, "value", snap => {
+                state.currentChatLocked = snap.exists();
+                updateChatLockBanner(snap.val());
+                updateComposeAvailability();
+            }, "chat");
         }
 
-        function ekranaMesajBas(id, m) {
-            const chatBox = document.getElementById("chat-messages");
-            const isMe = m.gonderen === myName;
-
-            const msgDiv = document.createElement("div");
-            msgDiv.className = `msg ${isMe ? "me-align" : ""}`;
-            msgDiv.id = `msg-${id}`;
-            msgDiv.oncontextmenu = e => showContextMenu(e, id, m.metin || "Ses kaydı", isMe);
-
-            let replyHtml = "";
-            if (m.yanitlananId && m.yanitlananMetin) {
-                replyHtml = `<div class="reply-box" onclick="scrollToMsg('${m.yanitlananId}')"><b>${escapeHtml(m.yanitlananMetin.substring(0, 40))}${m.yanitlananMetin.length > 40 ? "..." : ""}</b></div>`;
+        function updateChatLockBanner(data) {
+            const banner = document.getElementById("chat-lock-banner");
+            if (!data) {
+                banner.style.display = "none";
+                banner.innerHTML = "";
+                return;
             }
 
-            const content = m.metin
-                ? `<span id="text-${id}">${escapeHtml(m.metin)}${m.duzenlendi ? ' <small style="opacity:0.4; font-size:0.7em;">(düzenlendi)</small>' : ""}</span>`
-                : `<audio controls style="height:35px;" src="${m.ses}"></audio>`;
+            banner.style.display = "flex";
+            banner.innerHTML = `
+                <div>
+                    <strong style="display:block; margin-bottom:6px;">Bu DM şu anda kapalı.</strong>
+                    <span>${escapeHtml(data.closedBy || "Yönetici")} tarafından ${formatDateTime(data.closedAt)} tarihinde kilitlendi.</span>
+                </div>
+                ${state.isAdmin ? '<span class="badge warning">Admin müdahalesi gerekli</span>' : ''}
+            `;
+        }
 
-            msgDiv.innerHTML = `
+        function updateComposeAvailability() {
+            const input = document.getElementById("msg-input");
+            const sendBtn = document.getElementById("send-btn");
+            const voiceBtn = document.getElementById("voice-btn");
+
+            const disabled = !state.activeChatId || state.currentChatLocked;
+            input.disabled = disabled;
+            sendBtn.disabled = disabled;
+            voiceBtn.disabled = disabled;
+
+            if (!state.activeChatId) {
+                input.placeholder = "Önce bir sohbet aç...";
+            } else if (state.currentChatLocked) {
+                input.placeholder = "Bu DM yöneticiler tarafından kapatıldı.";
+            } else {
+                input.placeholder = "Mesajını yaz...";
+            }
+        }
+
+        function ekranaMesajBas(id, message) {
+            const chatBox = document.getElementById("chat-messages");
+            const isMine = message.gonderen === state.myName;
+
+            const wrapper = document.createElement("div");
+            wrapper.className = `msg ${isMine ? "me-align" : ""}`;
+            wrapper.id = `msg-${id}`;
+            wrapper.oncontextmenu = event => showContextMenu(event, id, message, isMine);
+
+            let replyHtml = "";
+            if (message.yanitlananId && message.yanitlananMetin) {
+                const preview = message.yanitlananMetin.length > 48 ? `${message.yanitlananMetin.slice(0, 48)}...` : message.yanitlananMetin;
+                replyHtml = `<div class="reply-box" onclick="scrollToMsg('${message.yanitlananId}')">${escapeHtml(preview)}</div>`;
+            }
+
+            const content = message.metin
+                ? `<span id="text-${id}">${escapeHtml(message.metin)}${message.duzenlendi ? ' <small style="opacity:0.6;">(düzenlendi)</small>' : ""}</span>`
+                : `<audio controls src="${message.ses}"></audio>`;
+
+            wrapper.innerHTML = `
                 ${replyHtml}
                 <div class="msg-text">${content}</div>
-                <div style="font-size:0.6em; color:var(--text-muted); margin-top:4px; padding:0 5px; text-align:${isMe ? "right" : "left"}">${new Date(m.zaman).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</div>
+                <div class="msg-meta">${formatTime(message.zaman)}</div>
             `;
-            chatBox.appendChild(msgDiv);
+
+            chatBox.appendChild(wrapper);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function mesajGonder() {
-            const inp = document.getElementById("msg-input");
-            const metin = inp.value.trim();
-            if (!metin || !activeChatId) return;
+        async function mesajGonder() {
+            if (!state.activeChatId) {
+                showToast("Önce bir sohbet seç.", "warning");
+                return;
+            }
 
-            const msgData = {
-                gonderen: myName,
-                metin,
+            if (state.currentChatLocked) {
+                showToast("Bu DM şu anda kapalı.", "warning");
+                return;
+            }
+
+            const input = document.getElementById("msg-input");
+            const text = input.value.trim();
+            if (!text) return;
+
+            const payload = {
+                gonderen: state.myName,
+                metin: text,
                 zaman: Date.now()
             };
 
-            if (replyingToId) {
-                msgData.yanitlananId = replyingToId;
-                msgData.yanitlananMetin = document.getElementById("reply-text").innerText;
+            if (state.replyingToId) {
+                payload.yanitlananId = state.replyingToId;
+                payload.yanitlananMetin = document.getElementById("reply-text").innerText;
             }
 
-            db.ref(`dm_mesajlari/${activeChatId}`).push(msgData);
-            inp.value = "";
-            cancelReply();
+            try {
+                await db.ref(`dm_mesajlari/${state.activeChatId}`).push(payload);
+                input.value = "";
+                cancelReply();
+                await touchSession();
+            } catch (error) {
+                console.error(error);
+                showToast("Mesaj gönderilemedi.", "error");
+            }
         }
 
-        function showContextMenu(e, id, text, isMe) {
-            e.preventDefault();
-            e.stopPropagation();
-            selectedMsgId = id;
+        function showContextMenu(event, id, message, isMine) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            state.selectedMsgId = id;
+            state.selectedMsgText = message.metin || "";
+            state.selectedMsgIsText = Boolean(message.metin);
+            state.selectedMsgIsMine = isMine;
+
             const menu = document.getElementById("context-menu");
             menu.style.display = "flex";
-            menu.style.left = e.pageX + "px";
-            menu.style.top = e.pageY + "px";
-            document.getElementById("menu-edit").style.display = isMe ? "flex" : "none";
-            document.getElementById("menu-delete").style.display = isMe ? "flex" : "none";
-            menu.dataset.tempText = text;
+            menu.style.left = `${Math.min(event.pageX, window.innerWidth - 200)}px`;
+            menu.style.top = `${Math.min(event.pageY, window.innerHeight - 180)}px`;
+            document.getElementById("menu-edit").style.display = isMine && message.metin ? "flex" : "none";
+            document.getElementById("menu-delete").style.display = isMine ? "flex" : "none";
         }
 
         function hideMenu(event) {
@@ -549,178 +2740,925 @@
         }
 
         function initReply() {
-            const text = document.getElementById("context-menu").dataset.tempText;
-            replyingToId = selectedMsgId;
             document.getElementById("reply-preview").style.display = "flex";
-            document.getElementById("reply-text").innerText = text;
+            document.getElementById("reply-text").innerText = state.selectedMsgText || "Ses kaydı";
+            state.replyingToId = state.selectedMsgId;
             document.getElementById("msg-input").focus();
             hideMenu();
         }
 
         function cancelReply() {
-            replyingToId = null;
+            state.replyingToId = null;
             document.getElementById("reply-preview").style.display = "none";
+            document.getElementById("reply-text").innerText = "";
         }
 
-        function initDelete() {
-            if (!activeChatId || !selectedMsgId) return;
-            db.ref(`dm_mesajlari/${activeChatId}/${selectedMsgId}`).remove();
+        async function initDelete() {
+            if (!state.activeChatId || !state.selectedMsgId) return;
+            try {
+                await db.ref(`dm_mesajlari/${state.activeChatId}/${state.selectedMsgId}`).remove();
+                showToast("Mesaj silindi.", "info");
+            } catch (error) {
+                console.error(error);
+                showToast("Mesaj silinemedi.", "error");
+            }
             hideMenu();
-            showToast("Mesaj silindi.", "info");
         }
 
-        function initEdit() {
-            const textEl = document.getElementById(`text-${selectedMsgId}`);
-            if (!textEl) return;
+        async function initEdit() {
+            if (!state.activeChatId || !state.selectedMsgId || !state.selectedMsgIsText) return;
+            const newText = prompt("Mesajı düzenle:", state.selectedMsgText);
+            if (!newText || !newText.trim() || newText.trim() === state.selectedMsgText.trim()) {
+                hideMenu();
+                return;
+            }
 
-            const oldText = textEl.innerText.replace("(düzenlendi)", "").trim();
-            const newText = prompt("Mesajı düzenle:", oldText);
-            if (newText && newText.trim() && newText !== oldText) {
-                db.ref(`dm_mesajlari/${activeChatId}/${selectedMsgId}`).update({
+            try {
+                await db.ref(`dm_mesajlari/${state.activeChatId}/${state.selectedMsgId}`).update({
                     metin: newText.trim(),
                     duzenlendi: true
                 });
                 showToast("Mesaj güncellendi.", "success");
+            } catch (error) {
+                console.error(error);
+                showToast("Mesaj güncellenemedi.", "error");
             }
             hideMenu();
         }
 
         function scrollToMsg(id) {
             const el = document.getElementById(`msg-${id}`);
-            if (el) {
-                el.scrollIntoView({ behavior: "smooth", block: "center" });
-                el.style.filter = "brightness(1.5)";
-                setTimeout(() => el.style.filter = "none", 1000);
+            if (!el) return;
+            el.scrollIntoView({ behavior: "smooth", block: "center" });
+            el.style.transform = "scale(1.02)";
+            el.style.filter = "brightness(1.12)";
+            setTimeout(() => {
+                el.style.transform = "";
+                el.style.filter = "";
+            }, 900);
+        }
+
+        async function hideDM(friend) {
+            if (!friend) return;
+
+            try {
+                await db.ref(`gizli_sohbetler/${state.myName}/${friend}`).set({
+                    chatId: normalizeChatId(state.myName, friend),
+                    hiddenAt: Date.now()
+                });
+
+                if (state.activeChatUser === friend) {
+                    resetActiveChat();
+                    showPanel("home-panel");
+                }
+
+                showToast(`@${friend} DM'i gizlendi.`, "info");
+            } catch (error) {
+                console.error(error);
+                showToast("DM gizlenemedi.", "error");
             }
         }
 
-        function openProfileModal(user) {
-            document.getElementById("profile-modal").style.display = "flex";
-            document.getElementById("prof-name").innerText = "@" + user;
-            document.getElementById("prof-avatar").innerText = user[0].toUpperCase();
-            document.getElementById("prof-edit-area").style.display = user === myName ? "block" : "none";
+        async function restoreHiddenChat(friend, notify = true) {
+            try {
+                await db.ref(`gizli_sohbetler/${state.myName}/${friend}`).remove();
+                if (notify) showToast(`@${friend} tekrar görünür oldu.`, "success");
+            } catch (error) {
+                console.error(error);
+                showToast("DM geri getirilemedi.", "error");
+            }
+        }
 
-            db.ref(`kullanicilar/${user}`).once("value", snap => {
-                const d = snap.val() || {};
-                document.getElementById("prof-bio").innerText = d.biyo || "Henüz bir biyografi yok.";
-                document.getElementById("prof-status").innerText = d.durum === "online" ? "● Çevrimiçi" : "Çevrimdışı";
+        async function removeFriend(friend) {
+            if (!friend) return;
+
+            try {
+                await Promise.all([
+                    db.ref(`arkadaslar/${state.myName}/${friend}`).remove(),
+                    db.ref(`arkadaslar/${friend}/${state.myName}`).remove(),
+                    db.ref(`gizli_sohbetler/${state.myName}/${friend}`).remove(),
+                    db.ref(`gizli_sohbetler/${friend}/${state.myName}`).remove()
+                ]);
+
+                if (state.activeChatUser === friend) {
+                    resetActiveChat();
+                    showPanel("home-panel");
+                }
+
+                showToast(`@${friend} arkadaş listesinden çıkarıldı.`, "info");
+            } catch (error) {
+                console.error(error);
+                showToast("Arkadaş kaldırılamadı.", "error");
+            }
+        }
+
+        function resetActiveChat() {
+            clearListenerBucket("chat");
+            state.activeChatId = null;
+            state.activeChatUser = null;
+            state.currentChatLocked = false;
+            state.selectedMsgId = null;
+            state.selectedMsgText = "";
+            cancelReply();
+            renderFriendsList();
+            renderHeaderActions();
+            updateComposeAvailability();
+            document.getElementById("chat-lock-banner").style.display = "none";
+            document.getElementById("chat-messages").innerHTML = "";
+        }
+
+        async function touchSession() {
+            if (!state.myName) return;
+            const deviceId = localStorage.getItem(STORAGE_KEYS.device);
+            await db.ref(`oturumlar/${state.myName}/${deviceId}`).update({
+                active: true,
+                lastSeen: Date.now()
             });
         }
 
-        function closeModal() {
-            document.getElementById("profile-modal").style.display = "none";
-        }
+        async function openProfileModal(user) {
+            if (!user) return;
 
-        function biyoGuncelle() {
-            const yeni = document.getElementById("new-bio").value.trim();
-            if (!yeni) return showToast("Biyografi boş bırakılamaz.", "warning");
+            try {
+                const [userSnap, userBanSnap] = await Promise.all([
+                    db.ref(`kullanicilar/${user}`).once("value"),
+                    db.ref(`moderasyon/bans/users/${user}`).once("value")
+                ]);
 
-            db.ref(`kullanicilar/${myName}/biyo`).set(yeni);
-            document.getElementById("prof-bio").innerText = yeni;
-            document.getElementById("new-bio").value = "";
-            showToast("Biyografi güncellendi.", "success");
-        }
+                const data = userSnap.val() || {};
+                const modalBody = document.getElementById("profile-modal-body");
+                document.getElementById("profile-avatar").innerText = getInitial(user);
+                document.getElementById("profile-name").innerText = `@${user}`;
+                document.getElementById("profile-status").innerText = userBanSnap.exists()
+                    ? "Kısıtlı hesap"
+                    : data.durum === "online"
+                        ? "● Çevrimiçi"
+                        : "Çevrimdışı";
 
-        function showPanel(id) {
-            document.querySelectorAll(".panel").forEach(p => p.style.display = "none");
-            document.getElementById(id).style.display = id === "chat-panel" ? "flex" : "block";
-            document.getElementById("btn-home").classList.toggle("active", id === "home-panel");
+                const hiddenCount = Object.keys(state.hiddenMap || {}).length;
+                const friendCount = Object.keys(state.friendMap || {}).length;
+                const sessionCount = Object.keys((state.adminData.sessions || {})[user] || {}).length;
+                const userChats = Object.values(state.adminData.chats || {}).filter(chat => chat.participants.includes(user)).length;
 
-            if (id === "home-panel") {
-                document.getElementById("top-bar-title").innerText = "Ana Sayfa";
-                document.getElementById("online-status-header").innerText = "";
-                document.getElementById("active-avatar").style.display = "none";
+                const actions = [];
+                if (user === state.myName) {
+                    actions.push(`<button class="btn ghost-btn" onclick="showPanel('home-panel'); closeModal('profile-modal')">Ana panele dön</button>`);
+                    if (state.isAdmin) {
+                        actions.push(`<button class="btn primary" onclick="closeModal('profile-modal'); openAdminPanel()">Yönetim paneli</button>`);
+                    }
+                } else {
+                    if (isUserFriend(user) || isUserHidden(user)) {
+                        actions.push(`<button class="btn primary" onclick="closeModal('profile-modal'); sohbetBaslat(decodeURIComponent('${inlineToken(user)}'))">DM Aç</button>`);
+                    }
+                    if (isUserFriend(user)) {
+                        actions.push(`<button class="btn ghost-btn" onclick="closeModal('profile-modal'); hideDM(decodeURIComponent('${inlineToken(user)}'))">DM Gizle</button>`);
+                        actions.push(`<button class="btn danger-btn" onclick="closeModal('profile-modal'); removeFriend(decodeURIComponent('${inlineToken(user)}'))">Arkadaşı Çıkar</button>`);
+                    }
+                    if (state.isAdmin) {
+                        actions.push(`<button class="btn ${userBanSnap.exists() ? "ghost-btn" : "danger-btn"}" onclick="closeModal('profile-modal'); adminToggleUserBan(decodeURIComponent('${inlineToken(user)}'))">${userBanSnap.exists() ? "Banı Kaldır" : "Banla"}</button>`);
+                    }
+                }
+
+                modalBody.innerHTML = `
+                    <div class="profile-stats">
+                        <div class="stat-tile">
+                            <span>Hesap Durumu</span>
+                            <strong>${userBanSnap.exists() ? "Kısıtlı" : (data.durum === "online" ? "Aktif" : "Pasif")}</strong>
+                        </div>
+                        <div class="stat-tile">
+                            <span>Son Giriş</span>
+                            <strong>${formatDateTime(data.lastLoginAt)}</strong>
+                        </div>
+                        <div class="stat-tile">
+                            <span>Bağlantılar</span>
+                            <strong>${user === state.myName ? `${friendCount} arkadaş` : (isUserFriend(user) ? "Arkadaş listende" : "Bağlı değil")}</strong>
+                        </div>
+                        <div class="stat-tile">
+                            <span>Ek Bilgi</span>
+                            <strong>${user === state.myName ? `${hiddenCount} gizli DM` : `${userChats} DM kaydı`}</strong>
+                        </div>
+                        <div class="stat-tile">
+                            <span>Cihazlar</span>
+                            <strong>${sessionCount || 0} kayıtlı oturum</strong>
+                        </div>
+                        <div class="stat-tile">
+                            <span>Rol</span>
+                            <strong>${state.isAdmin && user === state.myName ? "Yönetici" : "Standart kullanıcı"}</strong>
+                        </div>
+                    </div>
+                    <div class="profile-actions">${actions.join("") || '<span style="color:var(--text-muted);">Bu profil için ekstra aksiyon yok.</span>'}</div>
+                `;
+
+                document.getElementById("profile-modal").style.display = "flex";
+            } catch (error) {
+                console.error(error);
+                showToast("Profil bilgisi açılamadı.", "error");
             }
         }
 
-        function istekGonder() {
-            const target = document.getElementById("add-friend-input").value.trim();
-            if (!target || target === myName) return showToast("Kendine istek gönderemezsin.", "warning");
+        function startAdminRealtime() {
+            clearListenerBucket("admin");
 
-            db.ref(`kullanicilar/${target}`).once("value", snap => {
-                if (!snap.exists()) return showToast("Böyle bir kullanıcı bulunamadı.", "error");
+            listen(db.ref("dm_mesajlari"), "value", snap => {
+                state.adminData.chats = parseChatData(snap);
+                renderAdminSummary();
+                if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
+            }, "admin");
 
-                db.ref(`arkadaslar/${myName}/${target}`).once("value", friendSnap => {
-                    if (friendSnap.exists()) return showToast("Bu kullanıcı zaten arkadaş listende.", "info");
+            listen(db.ref("kullanicilar"), "value", snap => {
+                state.adminData.users = snap.val() || {};
+                if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
+            }, "admin");
 
-                    db.ref(`istekler/${target}/${myName}`).set(true);
-                    document.getElementById("add-friend-input").value = "";
-                    showToast("İstek başarıyla gönderildi.", "success");
+            listen(db.ref("moderasyon/bans/users"), "value", snap => {
+                state.adminData.userBans = snap.val() || {};
+                renderFriendsList();
+                renderAdminSummary();
+                if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
+            }, "admin");
+
+            listen(db.ref("moderasyon/bans/devices"), "value", snap => {
+                state.adminData.deviceBans = snap.val() || {};
+                renderAdminSummary();
+                if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
+            }, "admin");
+
+            listen(db.ref("moderasyon/closedChats"), "value", snap => {
+                state.adminData.closedChats = snap.val() || {};
+                renderAdminSummary();
+                if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
+            }, "admin");
+
+            listen(db.ref("oturumlar"), "value", snap => {
+                state.adminData.sessions = snap.val() || {};
+                if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
+            }, "admin");
+        }
+
+        function parseChatData(snapshot) {
+            const chats = {};
+            snapshot.forEach(chatSnap => {
+                const messages = [];
+                chatSnap.forEach(messageSnap => {
+                    messages.push({ id: messageSnap.key, ...(messageSnap.val() || {}) });
+                });
+
+                chats[chatSnap.key] = {
+                    chatId: chatSnap.key,
+                    participants: chatSnap.key.split("_"),
+                    messages,
+                    count: messages.length,
+                    lastMessage: messages[messages.length - 1] || null
+                };
+            });
+            return chats;
+        }
+
+        function getSortedChats() {
+            return Object.values(state.adminData.chats || {}).sort((a, b) => {
+                const aTime = a.lastMessage?.zaman || 0;
+                const bTime = b.lastMessage?.zaman || 0;
+                return bTime - aTime;
+            });
+        }
+
+        function openAdminPanel() {
+            if (!state.isAdmin) {
+                showToast("Bu bölüm sadece yönetici hesaplarında açılır.", "warning");
+                return;
+            }
+
+            document.getElementById("admin-modal").style.display = "flex";
+            renderAdminPanel();
+        }
+
+        function switchAdminTab(tab) {
+            state.adminView.tab = tab;
+            renderAdminPanel();
+        }
+
+        function renderAdminPanel() {
+            if (!state.isAdmin) return;
+
+            ["conversations", "users", "bans", "devices"].forEach(tab => {
+                document.getElementById(`admin-tab-${tab}`).classList.toggle("active", state.adminView.tab === tab);
+            });
+
+            if (state.adminView.tab === "conversations") {
+                renderAdminConversations();
+                return;
+            }
+
+            if (state.adminView.tab === "users") {
+                renderAdminUsers();
+                return;
+            }
+
+            if (state.adminView.tab === "bans") {
+                renderAdminBans();
+                return;
+            }
+
+            renderAdminDevices();
+        }
+
+        function renderAdminConversations() {
+            const listPanel = document.getElementById("admin-list-panel");
+            const detailPanel = document.getElementById("admin-detail-panel");
+            const chats = getSortedChats();
+
+            listPanel.innerHTML = `<div class="admin-section-title"><h4>Aktif DM kayıtları</h4><span class="badge subtle">${chats.length} sohbet</span></div>`;
+
+            if (!chats.length) {
+                listPanel.innerHTML += `<div class="empty-state">Kayıtlı DM bulunamadı.</div>`;
+                detailPanel.innerHTML = `<div class="empty-state">Detay göstermek için önce bir konuşma olmalı.</div>`;
+                return;
+            }
+
+            if (!state.adminView.inspectChatId || !state.adminData.chats[state.adminView.inspectChatId]) {
+                state.adminView.inspectChatId = chats[0].chatId;
+            }
+
+            chats.forEach(chat => {
+                const card = document.createElement("div");
+                card.className = `admin-card ${state.adminView.inspectChatId === chat.chatId ? "active" : ""}`;
+                card.onclick = () => {
+                    state.adminView.inspectChatId = chat.chatId;
+                    renderAdminConversations();
+                };
+
+                const locked = Boolean(state.adminData.closedChats?.[chat.chatId]);
+                const lastText = chat.lastMessage?.metin || (chat.lastMessage?.ses ? "Ses kaydı" : "Henüz içerik yok");
+
+                card.innerHTML = `
+                    <div class="admin-card-head">
+                        <div>
+                            <strong>${escapeHtml(chat.participants.join(" ⟷ "))}</strong>
+                            <p>${chat.count} mesaj • ${chat.lastMessage?.zaman ? formatDateTime(chat.lastMessage.zaman) : "Henüz aktivite yok"}</p>
+                        </div>
+                        <span class="badge ${locked ? "warning" : "success"}">${locked ? "Kilitli" : "Açık"}</span>
+                    </div>
+                    <p>${escapeHtml(lastText)}</p>
+                `;
+
+                const actions = document.createElement("div");
+                actions.className = "admin-actions";
+
+                const inspect = document.createElement("button");
+                inspect.className = "mini-btn";
+                inspect.innerText = "İncele";
+                inspect.onclick = event => {
+                    event.stopPropagation();
+                    state.adminView.inspectChatId = chat.chatId;
+                    renderAdminConversations();
+                };
+
+                const toggle = document.createElement("button");
+                toggle.className = `mini-btn ${locked ? "success" : "danger"}`;
+                toggle.innerText = locked ? "DM Aç" : "DM Kapat";
+                toggle.onclick = event => {
+                    event.stopPropagation();
+                    adminToggleChatLock(chat.chatId);
+                };
+
+                actions.appendChild(inspect);
+                actions.appendChild(toggle);
+                card.appendChild(actions);
+                listPanel.appendChild(card);
+            });
+
+            const selected = state.adminData.chats[state.adminView.inspectChatId];
+            if (!selected) {
+                detailPanel.innerHTML = `<div class="empty-state">Detay bulunamadı.</div>`;
+                return;
+            }
+
+            const closedMeta = state.adminData.closedChats?.[selected.chatId];
+            const transcript = selected.messages.length
+                ? selected.messages.map(message => `
+                    <div class="transcript-item">
+                        <div class="meta">@${escapeHtml(message.gonderen || "Bilinmiyor")} • ${formatDateTime(message.zaman)}</div>
+                        <div>${message.metin ? escapeHtml(message.metin) : "<em>Ses kaydı gönderildi</em>"}</div>
+                    </div>
+                `).join("")
+                : `<div class="empty-state">Bu DM içinde mesaj bulunmuyor.</div>`;
+
+            detailPanel.innerHTML = `
+                <div class="detail-pane">
+                    <div class="detail-box">
+                        <h4>${escapeHtml(selected.participants.join(" ↔ "))}</h4>
+                        <p>Toplam ${selected.count} mesaj. Son aktivite: ${selected.lastMessage?.zaman ? formatDateTime(selected.lastMessage.zaman) : "Yok"}.</p>
+                        <div class="admin-actions" style="margin-top:14px;">
+                            <button class="mini-btn ${closedMeta ? "success" : "danger"}" onclick="adminToggleChatLock(decodeURIComponent('${inlineToken(selected.chatId)}'))">${closedMeta ? "DM Aç" : "DM Kapat"}</button>
+                            <button class="mini-btn" onclick="inspectAdminUser(decodeURIComponent('${inlineToken(selected.participants[0])}'))">İlk kullanıcıyı aç</button>
+                            <button class="mini-btn" onclick="inspectAdminUser(decodeURIComponent('${inlineToken(selected.participants[1])}'))">İkinci kullanıcıyı aç</button>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Konuşma Akışı</h4>
+                        <div class="transcript">${transcript}</div>
+                    </div>
+                    ${closedMeta ? `
+                        <div class="detail-box">
+                            <h4>Kilit bilgisi</h4>
+                            <p>${escapeHtml(closedMeta.closedBy || "Yönetici")} tarafından ${formatDateTime(closedMeta.closedAt)} tarihinde kapatıldı.</p>
+                        </div>
+                    ` : ""}
+                </div>
+            `;
+        }
+
+        function renderAdminUsers() {
+            const listPanel = document.getElementById("admin-list-panel");
+            const detailPanel = document.getElementById("admin-detail-panel");
+            const users = Object.keys(state.adminData.users || {}).sort((a, b) => a.localeCompare(b, "tr"));
+
+            listPanel.innerHTML = `<div class="admin-section-title"><h4>Kullanıcılar</h4><span class="badge subtle">${users.length} hesap</span></div>`;
+
+            if (!users.length) {
+                listPanel.innerHTML += `<div class="empty-state">Kullanıcı kaydı bulunamadı.</div>`;
+                detailPanel.innerHTML = `<div class="empty-state">Detay görmek için kullanıcı olmalı.</div>`;
+                return;
+            }
+
+            if (!state.adminView.inspectUser || !state.adminData.users[state.adminView.inspectUser]) {
+                state.adminView.inspectUser = users[0];
+            }
+
+            users.forEach(user => {
+                const data = state.adminData.users[user] || {};
+                const banned = Boolean(state.adminData.userBans?.[user]);
+                const card = document.createElement("div");
+                card.className = `admin-card ${state.adminView.inspectUser === user ? "active" : ""}`;
+                card.onclick = () => {
+                    state.adminView.inspectUser = user;
+                    renderAdminUsers();
+                };
+
+                card.innerHTML = `
+                    <div class="admin-card-head">
+                        <div>
+                            <strong>@${escapeHtml(user)}</strong>
+                            <p>${data.durum === "online" ? "Çevrimiçi" : "Çevrimdışı"} • Son giriş: ${formatDateTime(data.lastLoginAt)}</p>
+                        </div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
+                            ${DEFAULT_ADMIN_USERS.includes(user.toLowerCase()) || user === state.myName ? '<span class="badge primary">Admin</span>' : ""}
+                            ${banned ? '<span class="badge danger">Banlı</span>' : ""}
+                        </div>
+                    </div>
+                `;
+
+                const actions = document.createElement("div");
+                actions.className = "admin-actions";
+
+                const inspect = document.createElement("button");
+                inspect.className = "mini-btn";
+                inspect.innerText = "Detay";
+                inspect.onclick = event => {
+                    event.stopPropagation();
+                    state.adminView.inspectUser = user;
+                    renderAdminUsers();
+                };
+
+                const toggle = document.createElement("button");
+                toggle.className = `mini-btn ${banned ? "success" : "danger"}`;
+                toggle.innerText = banned ? "Banı Kaldır" : "Banla";
+                toggle.onclick = event => {
+                    event.stopPropagation();
+                    adminToggleUserBan(user);
+                };
+
+                actions.appendChild(inspect);
+                actions.appendChild(toggle);
+                card.appendChild(actions);
+                listPanel.appendChild(card);
+            });
+
+            const selected = state.adminView.inspectUser;
+            const data = state.adminData.users[selected] || {};
+            const banned = Boolean(state.adminData.userBans?.[selected]);
+            const sessions = Object.entries((state.adminData.sessions || {})[selected] || {});
+            const chats = getSortedChats().filter(chat => chat.participants.includes(selected));
+
+            detailPanel.innerHTML = `
+                <div class="detail-pane">
+                    <div class="detail-box">
+                        <h4>@${escapeHtml(selected)}</h4>
+                        <p>Durum: ${banned ? "Kısıtlı" : (data.durum === "online" ? "Çevrimiçi" : "Çevrimdışı")} • Son giriş: ${formatDateTime(data.lastLoginAt)}</p>
+                        <div class="admin-actions" style="margin-top:14px;">
+                            <button class="mini-btn ${banned ? "success" : "danger"}" onclick="adminToggleUserBan(decodeURIComponent('${inlineToken(selected)}'))">${banned ? "Banı Kaldır" : "Banla"}</button>
+                            <button class="mini-btn" onclick="openProfileModal(decodeURIComponent('${inlineToken(selected)}'))">Profili Aç</button>
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Oturumlar</h4>
+                        <div class="detail-list">
+                            ${sessions.length ? sessions.map(([deviceId, meta]) => `
+                                <div class="detail-item">
+                                    <strong>${escapeHtml(deviceId)}</strong>
+                                    <div>${meta.active ? "Aktif cihaz" : "Pasif cihaz"} • ${formatDateTime(meta.lastSeen)}</div>
+                                    <div class="admin-actions" style="margin-top:10px;">
+                                        <button class="mini-btn ${state.adminData.deviceBans?.[deviceId] ? "success" : "danger"}" onclick="adminToggleDeviceBan(decodeURIComponent('${inlineToken(deviceId)}'), decodeURIComponent('${inlineToken(selected)}'))">${state.adminData.deviceBans?.[deviceId] ? "Cihaz banını kaldır" : "Cihazı banla"}</button>
+                                    </div>
+                                </div>
+                            `).join("") : `<div class="empty-state">Kayıtlı cihaz yok.</div>`}
+                        </div>
+                    </div>
+                    <div class="detail-box">
+                        <h4>İlgili DM'ler</h4>
+                        <div class="detail-list">
+                            ${chats.length ? chats.map(chat => `
+                                <div class="detail-item">
+                                    <strong>${escapeHtml(chat.participants.join(" ↔ "))}</strong>
+                                    <div>${chat.count} mesaj • ${chat.lastMessage?.zaman ? formatDateTime(chat.lastMessage.zaman) : "Henüz mesaj yok"}</div>
+                                    <div class="admin-actions" style="margin-top:10px;">
+                                        <button class="mini-btn" onclick="inspectAdminChat(decodeURIComponent('${inlineToken(chat.chatId)}'))">DM'i incele</button>
+                                    </div>
+                                </div>
+                            `).join("") : `<div class="empty-state">Bu kullanıcıyla ilişkili kayıtlı DM yok.</div>`}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminBans() {
+            const listPanel = document.getElementById("admin-list-panel");
+            const detailPanel = document.getElementById("admin-detail-panel");
+            const userBans = Object.entries(state.adminData.userBans || {});
+            const deviceBans = Object.entries(state.adminData.deviceBans || {});
+            const closedChats = Object.entries(state.adminData.closedChats || {});
+
+            listPanel.innerHTML = `
+                <div class="admin-section-title">
+                    <h4>Kısıtlamalar</h4>
+                    <span class="badge subtle">${userBans.length + deviceBans.length + closedChats.length} kayıt</span>
+                </div>
+            `;
+
+            if (!userBans.length && !deviceBans.length && !closedChats.length) {
+                listPanel.innerHTML += `<div class="empty-state">Şu anda aktif kısıtlama bulunmuyor.</div>`;
+                detailPanel.innerHTML = `<div class="empty-state">Ban veya kilit bilgisi oluştuğunda burada listelenir.</div>`;
+                return;
+            }
+
+            userBans.forEach(([user, meta]) => {
+                const card = document.createElement("div");
+                card.className = "admin-card";
+                card.innerHTML = `
+                    <div class="admin-card-head">
+                        <div>
+                            <strong>Kullanıcı banı • @${escapeHtml(user)}</strong>
+                            <p>${formatDateTime(meta.bannedAt)} • ${escapeHtml(meta.bannedBy || "Yönetici")}</p>
+                        </div>
+                        <span class="badge danger">Banlı</span>
+                    </div>
+                `;
+                const actions = document.createElement("div");
+                actions.className = "admin-actions";
+                actions.innerHTML = `<button class="mini-btn success" onclick="adminToggleUserBan(decodeURIComponent('${inlineToken(user)}'))">Banı Kaldır</button>`;
+                card.appendChild(actions);
+                listPanel.appendChild(card);
+            });
+
+            deviceBans.forEach(([deviceId, meta]) => {
+                const card = document.createElement("div");
+                card.className = "admin-card";
+                card.innerHTML = `
+                    <div class="admin-card-head">
+                        <div>
+                            <strong>Cihaz kısıtı • ${escapeHtml(deviceId)}</strong>
+                            <p>${formatDateTime(meta.bannedAt)} • ${escapeHtml(meta.user || "Bilinmiyor")}</p>
+                        </div>
+                        <span class="badge warning">Cihaz</span>
+                    </div>
+                `;
+                const actions = document.createElement("div");
+                actions.className = "admin-actions";
+                actions.innerHTML = `<button class="mini-btn success" onclick="adminToggleDeviceBan(decodeURIComponent('${inlineToken(deviceId)}'), decodeURIComponent('${inlineToken(meta.user || "")}'))">Kısıtı Kaldır</button>`;
+                card.appendChild(actions);
+                listPanel.appendChild(card);
+            });
+
+            closedChats.forEach(([chatId, meta]) => {
+                const card = document.createElement("div");
+                card.className = "admin-card";
+                card.innerHTML = `
+                    <div class="admin-card-head">
+                        <div>
+                            <strong>Kapalı DM • ${escapeHtml(chatId)}</strong>
+                            <p>${formatDateTime(meta.closedAt)} • ${escapeHtml(meta.closedBy || "Yönetici")}</p>
+                        </div>
+                        <span class="badge warning">DM Kapalı</span>
+                    </div>
+                `;
+                const actions = document.createElement("div");
+                actions.className = "admin-actions";
+                actions.innerHTML = `
+                    <button class="mini-btn success" onclick="adminToggleChatLock(decodeURIComponent('${inlineToken(chatId)}'))">DM Aç</button>
+                    <button class="mini-btn" onclick="inspectAdminChat(decodeURIComponent('${inlineToken(chatId)}'))">İncele</button>
+                `;
+                card.appendChild(actions);
+                listPanel.appendChild(card);
+            });
+
+            detailPanel.innerHTML = `
+                <div class="detail-pane">
+                    <div class="detail-box">
+                        <h4>Ban mantığı</h4>
+                        <p>GitHub Pages + istemci tarafı yapı gerçek IP ban için güvenilir değil. Bu yüzden yönetim akışı kullanıcı ve cihaz bazlı kısıtlama ile çalışır.</p>
+                    </div>
+                    <div class="detail-box">
+                        <h4>DM kısıtları</h4>
+                        <p>Kapalı bir DM seçildiğinde yeni mesaj gönderimi durur. Yönetici panelinden aynı yerden tekrar açılabilir.</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderAdminDevices() {
+            const listPanel = document.getElementById("admin-list-panel");
+            const detailPanel = document.getElementById("admin-detail-panel");
+            const sessions = [];
+
+            Object.entries(state.adminData.sessions || {}).forEach(([user, devices]) => {
+                Object.entries(devices || {}).forEach(([deviceId, meta]) => {
+                    sessions.push({ user, deviceId, ...meta });
                 });
             });
-        }
 
-        function istekCevapla(kim, ok) {
-            if (ok) {
-                db.ref(`arkadaslar/${myName}/${kim}`).set(true);
-                db.ref(`arkadaslar/${kim}/${myName}`).set(true);
-                showToast(`${kim} artık arkadaş listende.`, "success");
-            } else {
-                showToast("İstek reddedildi.", "info");
+            sessions.sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0));
+
+            listPanel.innerHTML = `<div class="admin-section-title"><h4>Cihaz Oturumları</h4><span class="badge subtle">${sessions.length} kayıt</span></div>`;
+
+            if (!sessions.length) {
+                listPanel.innerHTML += `<div class="empty-state">Henüz cihaz kaydı oluşmadı.</div>`;
+                detailPanel.innerHTML = `<div class="empty-state">Kullanıcılar giriş yaptıkça cihazları burada görünür.</div>`;
+                return;
             }
-            db.ref(`istekler/${myName}/${kim}`).remove();
+
+            sessions.forEach(item => {
+                const banned = Boolean(state.adminData.deviceBans?.[item.deviceId]);
+                const card = document.createElement("div");
+                card.className = "admin-card";
+                card.innerHTML = `
+                    <div class="admin-card-head">
+                        <div>
+                            <strong>${escapeHtml(item.user)}</strong>
+                            <p>${escapeHtml(item.deviceId)} • ${item.active ? "Aktif" : "Pasif"} • ${formatDateTime(item.lastSeen)}</p>
+                        </div>
+                        <span class="badge ${banned ? "danger" : "subtle"}">${banned ? "Engelli" : "Normal"}</span>
+                    </div>
+                `;
+
+                const actions = document.createElement("div");
+                actions.className = "admin-actions";
+                actions.innerHTML = `<button class="mini-btn ${banned ? "success" : "danger"}" onclick="adminToggleDeviceBan(decodeURIComponent('${inlineToken(item.deviceId)}'), decodeURIComponent('${inlineToken(item.user)}'))">${banned ? "Kısıtı kaldır" : "Cihazı kısıtla"}</button>`;
+                card.appendChild(actions);
+                listPanel.appendChild(card);
+            });
+
+            detailPanel.innerHTML = `
+                <div class="detail-pane">
+                    <div class="detail-box">
+                        <h4>Cihaz bazlı kısıtlama</h4>
+                        <p>Bu yapı IP ban yerine cihaz kimliği üstünden çalışır. Kullanıcının yerel cihaz oturumu yönetici tarafından devre dışı bırakılabilir.</p>
+                    </div>
+                    <div class="detail-box">
+                        <h4>Not</h4>
+                        <p>Gerçek IP ban ve daha sert güvenlik kuralları için GitHub Pages üstünde ek backend katmanı gerekir. Şu anki yapı istemci tarafında güvenli ölçüde cihaz-kullanıcı moderasyonu sağlar.</p>
+                    </div>
+                </div>
+            `;
         }
 
-        function cikisYap() {
-            if (!myName) return;
+        async function adminToggleChatLock(chatId) {
+            if (!state.isAdmin) return;
+            try {
+                const ref = db.ref(`moderasyon/closedChats/${chatId}`);
+                const isLocked = Boolean(state.adminData.closedChats?.[chatId]);
+                if (isLocked) {
+                    await ref.remove();
+                    showToast("DM tekrar açıldı.", "success");
+                } else {
+                    const participants = state.adminData.chats?.[chatId]?.participants || chatId.split("_");
+                    await ref.set({
+                        chatId,
+                        participants,
+                        closedBy: state.myName,
+                        closedAt: Date.now()
+                    });
+                    showToast("DM kapatıldı.", "warning");
+                }
+            } catch (error) {
+                console.error(error);
+                showToast("DM kısıtı değiştirilemedi.", "error");
+            }
+        }
 
-            db.ref(`kullanicilar/${myName}/durum`).set("offline");
+        async function adminToggleUserBan(user) {
+            if (!state.isAdmin) return;
+            if (user === state.myName) {
+                showToast("Kendi hesabını bu panelden banlayamazsın.", "warning");
+                return;
+            }
+
+            try {
+                const ref = db.ref(`moderasyon/bans/users/${user}`);
+                const isBanned = Boolean(state.adminData.userBans?.[user]);
+                if (isBanned) {
+                    await ref.remove();
+                    showToast(`@${user} için ban kaldırıldı.`, "success");
+                } else {
+                    await ref.set({
+                        user,
+                        bannedBy: state.myName,
+                        bannedAt: Date.now(),
+                        reason: "Yönetici işlemi"
+                    });
+                    showToast(`@${user} kısıtlandı.`, "warning");
+                }
+            } catch (error) {
+                console.error(error);
+                showToast("Kullanıcı kısıtı güncellenemedi.", "error");
+            }
+        }
+
+        async function adminToggleDeviceBan(deviceId, user) {
+            if (!state.isAdmin || !deviceId) return;
+
+            try {
+                const ref = db.ref(`moderasyon/bans/devices/${deviceId}`);
+                const isBanned = Boolean(state.adminData.deviceBans?.[deviceId]);
+                if (isBanned) {
+                    await ref.remove();
+                    showToast("Cihaz kısıtı kaldırıldı.", "success");
+                } else {
+                    await ref.set({
+                        deviceId,
+                        user: user || "",
+                        bannedBy: state.myName,
+                        bannedAt: Date.now()
+                    });
+                    showToast("Cihaz kısıtlandı.", "warning");
+                }
+            } catch (error) {
+                console.error(error);
+                showToast("Cihaz kısıtı değiştirilemedi.", "error");
+            }
+        }
+
+        function inspectAdminChat(chatId) {
+            state.adminView.tab = "conversations";
+            state.adminView.inspectChatId = chatId;
+            openAdminPanel();
+        }
+
+        function inspectAdminUser(user) {
+            state.adminView.tab = "users";
+            state.adminView.inspectUser = user;
+            openAdminPanel();
+        }
+
+        function flattenDevicesForUser(user) {
+            return Object.entries((state.adminData.sessions || {})[user] || {}).map(([deviceId, meta]) => ({
+                deviceId,
+                ...meta
+            }));
+        }
+
+        async function forceLogout(message) {
+            if (state.isLoggingOut) return;
+            state.isLoggingOut = true;
+            await cikisYap({ forced: true, message });
+            state.isLoggingOut = false;
+        }
+
+        async function cikisYap(options = {}) {
+            const { forced = false, message = forced ? "Oturum kapatıldı." : "Çıkış yapıldı. Bu cihazda otomatik giriş kapatıldı." } = options;
+            const currentUser = state.myName;
+            const deviceId = localStorage.getItem(STORAGE_KEYS.device);
+
+            if (state.sessionHeartbeat) {
+                clearInterval(state.sessionHeartbeat);
+                state.sessionHeartbeat = null;
+            }
+
             clearSession();
 
-            if (currentChatRef) currentChatRef.off();
-            if (currentStatusRef) currentStatusRef.off();
+            if (currentUser) {
+                try {
+                    await Promise.all([
+                        db.ref(`kullanicilar/${currentUser}/durum`).set("offline"),
+                        db.ref(`oturumlar/${currentUser}/${deviceId}`).update({
+                            active: false,
+                            lastSeen: Date.now()
+                        })
+                    ]);
+                } catch (error) {
+                    console.error(error);
+                }
+            }
 
-            myName = "";
-            activeChatId = null;
-            activeChatUser = null;
-            selectedMsgId = null;
-            replyingToId = null;
+            clearAllRealtime();
+            document.body.classList.remove("is-admin", "sidebar-open");
 
-            document.getElementById("app-container").style.display = "none";
-            document.getElementById("auth-screen").style.display = "flex";
+            state.myName = "";
+            state.isAdmin = false;
+            state.activeChatId = null;
+            state.activeChatUser = null;
+            state.currentChatLocked = false;
+            state.friendSearch = "";
+            state.replyingToId = null;
+            state.selectedMsgId = null;
+            state.selectedMsgText = "";
+            state.selectedMsgIsText = false;
+            state.selectedMsgIsMine = false;
+            state.friendMap = {};
+            state.hiddenMap = {};
+            state.requestMap = {};
+            state.userPresence = {};
+            state.adminData = {
+                chats: {},
+                users: {},
+                userBans: {},
+                deviceBans: {},
+                closedChats: {},
+                sessions: {}
+            };
+
+            document.getElementById("friend-search").value = "";
             document.getElementById("auth-user").value = "";
             document.getElementById("auth-pass").value = "";
+            document.getElementById("app-container").style.display = "none";
+            document.getElementById("auth-screen").style.display = "flex";
+            document.getElementById("my-role-badge").classList.add("hidden");
+            document.getElementById("admin-summary-card").classList.add("hidden");
             document.getElementById("chat-messages").innerHTML = "";
             document.getElementById("friends-list").innerHTML = "";
             document.getElementById("requests-list").innerHTML = "";
-            showPanel("home-panel");
-            closeModal();
+            document.getElementById("hidden-dms-list").innerHTML = "";
+            document.getElementById("my-name-display").innerText = "...";
+            document.getElementById("my-avatar-display").innerHTML = "?<span class='status-dot'></span>";
+            document.getElementById("my-status-line").innerText = "Hazır";
+            closeModal("profile-modal");
+            closeModal("admin-modal");
             cancelReply();
-
-            showToast("Çıkış yapıldı. Bu cihazda otomatik giriş kapatıldı.", "info");
+            showPanel("home-panel");
+            renderHeaderActions();
+            renderHomeStats();
+            showToast(message, forced ? "error" : "info");
         }
 
         async function startRecording() {
-            if (!activeChatId) return showToast("Önce bir sohbet seç.", "warning");
+            if (!state.activeChatId) {
+                showToast("Önce bir sohbet aç.", "warning");
+                return;
+            }
+
+            if (state.currentChatLocked) {
+                showToast("Kapalı bir DM'ye ses kaydı gönderemezsin.", "warning");
+                return;
+            }
+
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-                mediaRecorder.onstop = () => {
-                    const blob = new Blob(audioChunks, { type: "audio/webm" });
+                state.mediaRecorder = new MediaRecorder(stream);
+                state.audioChunks = [];
+
+                state.mediaRecorder.ondataavailable = event => state.audioChunks.push(event.data);
+                state.mediaRecorder.onstop = () => {
+                    const blob = new Blob(state.audioChunks, { type: "audio/webm" });
                     const reader = new FileReader();
                     reader.readAsDataURL(blob);
-                    reader.onloadend = () => {
-                        db.ref(`dm_mesajlari/${activeChatId}`).push({
-                            gonderen: myName,
-                            ses: reader.result,
-                            zaman: Date.now()
-                        });
+                    reader.onloadend = async () => {
+                        try {
+                            await db.ref(`dm_mesajlari/${state.activeChatId}`).push({
+                                gonderen: state.myName,
+                                ses: reader.result,
+                                zaman: Date.now()
+                            });
+                            showToast("Ses kaydı gönderildi.", "success");
+                            await touchSession();
+                        } catch (error) {
+                            console.error(error);
+                            showToast("Ses kaydı gönderilemedi.", "error");
+                        }
                         stream.getTracks().forEach(track => track.stop());
-                        showToast("Ses kaydı gönderildi.", "success");
                     };
                 };
-                mediaRecorder.start();
+
+                state.mediaRecorder.start();
                 document.getElementById("voice-btn").style.color = "var(--danger)";
-            } catch (e) {
-                showToast("Mikrofon erişimi reddedildi.", "error");
+            } catch (error) {
+                console.error(error);
+                showToast("Mikrofona erişilemedi.", "error");
             }
         }
 
         function stopRecording() {
-            if (mediaRecorder && mediaRecorder.state !== "inactive") {
-                mediaRecorder.stop();
+            if (state.mediaRecorder && state.mediaRecorder.state !== "inactive") {
+                state.mediaRecorder.stop();
                 document.getElementById("voice-btn").style.color = "white";
             }
         }
