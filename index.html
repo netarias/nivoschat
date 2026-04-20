@@ -32,16 +32,13 @@
             --radius-md: 16px;
             --radius-sm: 12px;
         }
-
         * {
             box-sizing: border-box;
             transition: background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease, transform 0.22s ease, opacity 0.22s ease;
         }
-
         html, body {
             height: 100%;
         }
-
         body {
             margin: 0;
             font-family: "Manrope", sans-serif;
@@ -52,7 +49,6 @@
                 linear-gradient(135deg, #020816 0%, #07111f 45%, #0a1730 100%);
             overflow: hidden;
         }
-
         body::before,
         body::after {
             content: "";
@@ -63,7 +59,6 @@
             z-index: 0;
             pointer-events: none;
         }
-
         body::before {
             width: 260px;
             height: 260px;
@@ -71,7 +66,6 @@
             right: -80px;
             background: rgba(79, 156, 255, 0.15);
         }
-
         body::after {
             width: 220px;
             height: 220px;
@@ -79,31 +73,25 @@
             bottom: 8%;
             background: rgba(22, 199, 183, 0.11);
         }
-
         button,
         input {
             font-family: inherit;
         }
-
         button {
             cursor: pointer;
         }
-
         a {
             color: inherit;
         }
-
         .glass-card {
             background: var(--bg-panel);
             border: 1px solid var(--border);
             box-shadow: var(--shadow-md);
             backdrop-filter: blur(18px);
         }
-
         .hidden {
             display: none !important;
         }
-
         #toast-container {
             position: fixed;
             top: 18px;
@@ -113,7 +101,6 @@
             gap: 10px;
             z-index: 5000;
         }
-
         .toast {
             min-width: 280px;
             max-width: 360px;
@@ -126,17 +113,14 @@
             backdrop-filter: blur(14px);
             animation: toastIn 0.26s ease;
         }
-
         .toast.success { border-left: 4px solid var(--success); }
         .toast.error { border-left: 4px solid var(--danger); }
         .toast.info { border-left: 4px solid var(--primary); }
         .toast.warning { border-left: 4px solid var(--warning); }
-
         @keyframes toastIn {
             from { opacity: 0; transform: translateY(-10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         #auth-screen {
             position: fixed;
             inset: 0;
@@ -151,7 +135,6 @@
                 linear-gradient(135deg, rgba(2, 8, 22, 0.92), rgba(5, 13, 25, 0.98));
             backdrop-filter: blur(20px);
         }
-
         .auth-shell {
             width: min(1040px, 100%);
             display: grid;
@@ -159,7 +142,6 @@
             gap: 28px;
             align-items: stretch;
         }
-
         .auth-side,
         .auth-box {
             border-radius: 32px;
@@ -168,13 +150,11 @@
             box-shadow: var(--shadow-lg);
             backdrop-filter: blur(18px);
         }
-
         .auth-side {
             padding: 42px;
             position: relative;
             overflow: hidden;
         }
-
         .auth-side::before {
             content: "";
             position: absolute;
@@ -184,7 +164,6 @@
             border-radius: 999px;
             background: radial-gradient(circle, rgba(79, 156, 255, 0.32), transparent 65%);
         }
-
         .brand-kicker {
             display: inline-flex;
             align-items: center;
@@ -198,7 +177,6 @@
             letter-spacing: 0.04em;
             text-transform: uppercase;
         }
-
         .auth-side h1 {
             font-family: "Space Grotesk", sans-serif;
             font-size: clamp(2.2rem, 3vw, 3.5rem);
@@ -206,20 +184,17 @@
             margin: 26px 0 16px;
             max-width: 9ch;
         }
-
         .auth-side p {
             color: var(--text-soft);
             line-height: 1.75;
             max-width: 54ch;
             margin: 0 0 24px;
         }
-
         .feature-list {
             display: grid;
             gap: 14px;
             margin-top: 30px;
         }
-
         .feature-chip {
             display: flex;
             align-items: center;
@@ -230,33 +205,28 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             color: var(--text-soft);
         }
-
         .feature-chip strong {
             color: white;
             display: block;
             font-size: 0.98rem;
             margin-bottom: 4px;
         }
-
         .auth-box {
             padding: 36px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
-
         .auth-box h2 {
             font-family: "Space Grotesk", sans-serif;
             font-size: 2rem;
             margin: 0 0 10px;
         }
-
         .auth-box p {
             color: var(--text-muted);
             margin: 0 0 26px;
             line-height: 1.65;
         }
-
         .input-field,
         .search-input,
         #msg-input {
@@ -267,20 +237,17 @@
             color: white;
             outline: none;
         }
-
         .input-field {
             padding: 14px 16px;
             margin-bottom: 14px;
             font-size: 0.98rem;
         }
-
         .input-field:focus,
         .search-input:focus,
         #msg-input:focus {
             border-color: var(--border-strong);
             box-shadow: 0 0 0 4px rgba(79, 156, 255, 0.08);
         }
-
         .btn {
             border: none;
             border-radius: 16px;
@@ -292,40 +259,33 @@
             justify-content: center;
             gap: 10px;
         }
-
         .primary {
             color: white;
             background: linear-gradient(135deg, var(--primary), var(--primary-strong));
             box-shadow: 0 14px 28px rgba(36, 99, 235, 0.28);
         }
-
         .primary:hover {
             transform: translateY(-1px);
             box-shadow: 0 18px 34px rgba(36, 99, 235, 0.34);
         }
-
         .secondary-btn,
         .ghost-btn {
             color: white;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .secondary-btn:hover,
         .ghost-btn:hover {
             background: var(--bg-hover);
         }
-
         .danger-btn {
             color: #ffe2e7;
             background: rgba(251, 113, 133, 0.14);
             border: 1px solid rgba(251, 113, 133, 0.16);
         }
-
         .danger-btn:hover {
             background: rgba(251, 113, 133, 0.22);
         }
-
         .mini-btn {
             border: 1px solid rgba(255, 255, 255, 0.08);
             background: rgba(255, 255, 255, 0.04);
@@ -335,27 +295,22 @@
             font-size: 0.82rem;
             font-weight: 700;
         }
-
         .mini-btn:hover {
             background: var(--bg-hover);
         }
-
         .mini-btn.danger {
             background: rgba(251, 113, 133, 0.1);
             color: #ffd6dd;
         }
-
         .mini-btn.success {
             background: rgba(34, 197, 94, 0.12);
             color: #d9ffe8;
         }
-
         .text-link {
             color: var(--accent-soft);
             font-weight: 700;
             text-decoration: none;
         }
-
         #app-container {
             display: none;
             width: 100%;
@@ -363,7 +318,6 @@
             position: relative;
             z-index: 1;
         }
-
         #sidebar-overlay {
             position: fixed;
             inset: 0;
@@ -373,12 +327,10 @@
             opacity: 0;
             pointer-events: none;
         }
-
         body.sidebar-open #sidebar-overlay {
             opacity: 1;
             pointer-events: auto;
         }
-
         #sidebar {
             width: 330px;
             flex: 0 0 330px;
@@ -394,11 +346,9 @@
             position: relative;
             z-index: 1100;
         }
-
         .sidebar-top {
             padding: 24px 22px 16px;
         }
-
         .brand-row {
             display: flex;
             align-items: center;
@@ -406,7 +356,6 @@
             gap: 12px;
             margin-bottom: 18px;
         }
-
         .brand-mark {
             width: 46px;
             height: 46px;
@@ -419,19 +368,16 @@
             background: linear-gradient(135deg, rgba(79, 156, 255, 0.95), rgba(22, 199, 183, 0.9));
             box-shadow: 0 18px 36px rgba(22, 199, 183, 0.18);
         }
-
         .brand-copy h2 {
             margin: 0;
             font-family: "Space Grotesk", sans-serif;
             font-size: 1.15rem;
         }
-
         .brand-copy p {
             margin: 4px 0 0;
             font-size: 0.78rem;
             color: var(--text-muted);
         }
-
         .search-shell {
             display: flex;
             align-items: center;
@@ -442,22 +388,18 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
             margin-bottom: 18px;
         }
-
         .search-shell span {
             color: var(--text-muted);
         }
-
         .search-input {
             background: transparent;
             border: none;
             padding: 0;
             box-shadow: none;
         }
-
         .search-input:focus {
             box-shadow: none;
         }
-
         .nav-btn {
             width: 100%;
             border: none;
@@ -471,13 +413,11 @@
             font-weight: 700;
             text-align: left;
         }
-
         .nav-btn:hover,
         .nav-btn.active {
             background: rgba(79, 156, 255, 0.12);
             color: white;
         }
-
         .section-label {
             padding: 0 22px 10px;
             font-size: 0.74rem;
@@ -486,13 +426,11 @@
             font-weight: 800;
             text-transform: uppercase;
         }
-
         #friends-list {
             flex: 1;
             padding: 0 14px 10px;
             overflow-y: auto;
         }
-
         .empty-state {
             padding: 18px;
             border-radius: 20px;
@@ -502,13 +440,11 @@
             color: var(--text-muted);
             line-height: 1.65;
         }
-
         .friend-item {
             width: 100%;
             border: 1px solid transparent;
             background: transparent;
             color: white;
-            cursor: pointer;
             padding: 14px;
             border-radius: 20px;
             display: grid;
@@ -518,13 +454,11 @@
             text-align: left;
             margin-bottom: 10px;
         }
-
         .friend-item:hover,
         .friend-item.active {
             background: rgba(79, 156, 255, 0.08);
             border-color: rgba(79, 156, 255, 0.14);
         }
-
         .avatar,
         .avatar-lg {
             border-radius: 18px;
@@ -536,20 +470,17 @@
             background: linear-gradient(135deg, rgba(79, 156, 255, 0.95), rgba(22, 199, 183, 0.88));
             box-shadow: 0 14px 30px rgba(36, 99, 235, 0.18);
         }
-
         .avatar {
             width: 46px;
             height: 46px;
             font-size: 1rem;
             position: relative;
         }
-
         .avatar-lg {
             width: 86px;
             height: 86px;
             font-size: 2rem;
         }
-
         .status-dot {
             position: absolute;
             right: -2px;
@@ -560,22 +491,18 @@
             border: 2px solid rgba(8, 18, 34, 0.9);
             background: #475569;
         }
-
         .status-dot.online { background: var(--success); }
         .status-dot.away { background: var(--warning); }
         .status-dot.banned { background: var(--danger); }
-
         .friend-copy strong {
             display: block;
             font-size: 0.96rem;
             margin-bottom: 4px;
         }
-
         .friend-copy span {
             color: var(--text-muted);
             font-size: 0.8rem;
         }
-
         .side-action-icon {
             width: 34px;
             height: 34px;
@@ -587,18 +514,15 @@
             background: rgba(255, 255, 255, 0.04);
             color: var(--text-soft);
         }
-
         .side-action-icon:hover {
             color: white;
             background: rgba(79, 156, 255, 0.14);
         }
-
         .sidebar-footer {
             padding: 14px;
             border-top: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.02);
         }
-
         .profile-chip {
             width: 100%;
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -611,21 +535,17 @@
             gap: 12px;
             align-items: center;
         }
-
         .profile-chip:hover {
             background: rgba(79, 156, 255, 0.1);
         }
-
         .sidebar-actions {
             display: flex;
             gap: 10px;
             margin-top: 12px;
         }
-
         .sidebar-actions .btn {
             flex: 1;
         }
-
         #main-area {
             flex: 1;
             display: flex;
@@ -640,7 +560,6 @@
             overflow: hidden;
             position: relative;
         }
-
         .top-bar {
             height: 86px;
             padding: 0 26px;
@@ -652,18 +571,15 @@
             backdrop-filter: blur(20px);
             gap: 20px;
         }
-
         .header-main {
             min-width: 0;
             display: flex;
             align-items: center;
             gap: 14px;
         }
-
         #mobile-sidebar-toggle {
             display: none;
         }
-
         .icon-btn {
             border: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
@@ -676,11 +592,9 @@
             justify-content: center;
             flex: 0 0 auto;
         }
-
         .icon-btn:hover {
             background: rgba(79, 156, 255, 0.12);
         }
-
         #active-avatar {
             width: 44px;
             height: 44px;
@@ -692,13 +606,11 @@
             background: linear-gradient(135deg, rgba(79, 156, 255, 0.95), rgba(22, 199, 183, 0.88));
             box-shadow: 0 16px 30px rgba(36, 99, 235, 0.18);
         }
-
         #top-bar-title {
             font-family: "Space Grotesk", sans-serif;
             font-size: 1.05rem;
             font-weight: 700;
         }
-
         #online-status-header {
             font-size: 0.82rem;
             color: var(--text-muted);
@@ -707,7 +619,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
         .header-actions {
             display: flex;
             align-items: center;
@@ -715,7 +626,6 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .chip {
             padding: 10px 14px;
             border-radius: 999px;
@@ -726,7 +636,6 @@
             font-weight: 700;
             white-space: nowrap;
         }
-
         .badge {
             display: inline-flex;
             align-items: center;
@@ -739,34 +648,28 @@
             letter-spacing: 0.04em;
             text-transform: uppercase;
         }
-
         .badge.primary { background: rgba(79, 156, 255, 0.16); color: #dce8ff; }
         .badge.accent { background: rgba(22, 199, 183, 0.16); color: #d6fffb; }
         .badge.success { background: rgba(34, 197, 94, 0.14); color: #ddffea; }
         .badge.warning { background: rgba(251, 191, 36, 0.14); color: #fff4c7; }
         .badge.danger { background: rgba(251, 113, 133, 0.14); color: #ffe1e8; }
         .badge.subtle { background: rgba(255, 255, 255, 0.06); color: var(--text-soft); }
-
         .panel {
             display: none;
             min-height: 0;
             flex: 1;
         }
-
         .panel.active-panel {
             display: block;
         }
-
         #home-panel {
             overflow-y: auto;
             padding: 34px;
         }
-
         .dashboard {
             display: grid;
             gap: 24px;
         }
-
         .hero-card {
             padding: 28px;
             border-radius: var(--radius-xl);
@@ -780,7 +683,6 @@
             grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.95fr);
             align-items: center;
         }
-
         .eyebrow {
             display: inline-flex;
             align-items: center;
@@ -794,7 +696,6 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
         }
-
         .hero-card h1 {
             font-family: "Space Grotesk", sans-serif;
             margin: 18px 0 14px;
@@ -802,27 +703,23 @@
             line-height: 1.05;
             max-width: 11ch;
         }
-
         .hero-card p {
             margin: 0;
             color: var(--text-soft);
             line-height: 1.8;
             max-width: 58ch;
         }
-
         .hero-grid {
             display: grid;
             gap: 14px;
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
-
         .metric-card {
             padding: 16px 18px;
             border-radius: 22px;
             border: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
         }
-
         .metric-card span {
             display: block;
             color: var(--text-muted);
@@ -832,25 +729,21 @@
             margin-bottom: 8px;
             font-weight: 800;
         }
-
         .metric-card strong {
             display: block;
             font-size: 1.6rem;
             font-family: "Space Grotesk", sans-serif;
             margin-bottom: 6px;
         }
-
         .metric-card small {
             color: var(--text-soft);
             line-height: 1.5;
         }
-
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 22px;
         }
-
         .card {
             border-radius: var(--radius-xl);
             padding: 22px;
@@ -862,64 +755,54 @@
             gap: 16px;
             min-height: 0;
         }
-
         .card-head {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 12px;
         }
-
         .card-head h3 {
             margin: 0;
             font-size: 1rem;
             font-weight: 800;
         }
-
         .card-head p {
             margin: 4px 0 0;
             color: var(--text-muted);
             font-size: 0.84rem;
         }
-
         .stack {
             display: grid;
             gap: 12px;
             min-height: 0;
         }
-
         .list-card {
             padding: 16px;
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .list-card strong {
             display: block;
             margin-bottom: 6px;
         }
-
         .list-card p {
             margin: 0;
             color: var(--text-muted);
             font-size: 0.84rem;
             line-height: 1.6;
         }
-
         .list-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 12px;
         }
-
         #chat-panel {
             display: none;
             flex-direction: column;
             min-height: 0;
         }
-
         #chat-lock-banner {
             display: none;
             align-items: center;
@@ -933,7 +816,6 @@
             color: #fff2bf;
             font-size: 0.9rem;
         }
-
         #chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -943,7 +825,6 @@
             gap: 14px;
             min-height: 0;
         }
-
         .msg {
             display: flex;
             flex-direction: column;
@@ -951,16 +832,13 @@
             max-width: min(72%, 720px);
             animation: messageIn 0.22s ease;
         }
-
         .msg.me-align {
             align-self: flex-end;
         }
-
         @keyframes messageIn {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .reply-box {
             font-size: 0.8rem;
             padding: 9px 12px;
@@ -970,7 +848,6 @@
             color: var(--text-soft);
             cursor: pointer;
         }
-
         .msg-text {
             padding: 14px 16px;
             border-radius: 20px;
@@ -980,31 +857,25 @@
             word-break: break-word;
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
         }
-
         .msg.me-align .msg-text {
             background: linear-gradient(135deg, rgba(79, 156, 255, 0.96), rgba(36, 99, 235, 0.94));
             border-color: rgba(79, 156, 255, 0.2);
         }
-
         .msg-meta {
             font-size: 0.72rem;
             color: var(--text-muted);
             padding: 0 6px;
         }
-
         .msg.me-align .msg-meta {
             text-align: right;
         }
-
         .msg audio {
             width: 100%;
             min-width: 240px;
         }
-
         #chat-input-area {
             padding: 0 24px 24px;
         }
-
         .reply-preview {
             display: none;
             align-items: center;
@@ -1016,7 +887,6 @@
             border-bottom: none;
             background: rgba(8, 18, 34, 0.88);
         }
-
         .composer {
             display: flex;
             align-items: center;
@@ -1027,7 +897,6 @@
             background: rgba(8, 18, 34, 0.9);
             box-shadow: var(--shadow-md);
         }
-
         #msg-input {
             border: none;
             background: transparent;
@@ -1035,16 +904,13 @@
             box-shadow: none;
             font-size: 0.98rem;
         }
-
         #msg-input:focus {
             box-shadow: none;
         }
-
         #voice-btn,
         #send-btn {
             flex: 0 0 auto;
         }
-
         #context-menu {
             position: fixed;
             display: none;
@@ -1058,7 +924,6 @@
             z-index: 4200;
             overflow: hidden;
         }
-
         .menu-item {
             border: none;
             width: 100%;
@@ -1071,15 +936,12 @@
             text-align: left;
             font-weight: 700;
         }
-
         .menu-item:hover {
             background: rgba(79, 156, 255, 0.12);
         }
-
         .menu-item.danger {
             color: #ffd8df;
         }
-
         .modal {
             position: fixed;
             inset: 0;
@@ -1091,7 +953,6 @@
             backdrop-filter: blur(10px);
             z-index: 3600;
         }
-
         .modal-card,
         .wide-modal-card {
             border-radius: 30px;
@@ -1100,18 +961,15 @@
             box-shadow: var(--shadow-lg);
             overflow: hidden;
         }
-
         .modal-card {
             width: min(620px, 100%);
         }
-
         .wide-modal-card {
             width: min(1240px, 100%);
             height: min(860px, 92vh);
             display: flex;
             flex-direction: column;
         }
-
         .modal-head {
             padding: 22px 24px;
             display: flex;
@@ -1120,44 +978,37 @@
             gap: 16px;
             border-bottom: 1px solid var(--border);
         }
-
         .modal-head h3 {
             margin: 0;
             font-family: "Space Grotesk", sans-serif;
             font-size: 1.25rem;
         }
-
         .modal-head p {
             margin: 6px 0 0;
             color: var(--text-muted);
             font-size: 0.86rem;
         }
-
         .modal-body {
             padding: 24px;
         }
-
         .profile-summary {
             display: flex;
             align-items: center;
             gap: 18px;
             margin-bottom: 24px;
         }
-
         .profile-stats {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
             margin-bottom: 18px;
         }
-
         .stat-tile {
             padding: 16px;
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-
         .stat-tile span {
             display: block;
             color: var(--text-muted);
@@ -1167,25 +1018,21 @@
             margin-bottom: 6px;
             font-weight: 800;
         }
-
         .stat-tile strong {
             display: block;
             font-size: 1rem;
         }
-
         .profile-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .modal-footer {
             padding: 0 24px 24px;
             display: flex;
             justify-content: flex-end;
             gap: 10px;
         }
-
         .admin-tabs {
             padding: 14px 24px;
             border-bottom: 1px solid var(--border);
@@ -1193,7 +1040,6 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .tab-btn {
             border: 1px solid rgba(255, 255, 255, 0.06);
             background: rgba(255, 255, 255, 0.04);
@@ -1203,31 +1049,26 @@
             font-weight: 800;
             font-size: 0.82rem;
         }
-
         .tab-btn.active {
             color: white;
             background: rgba(79, 156, 255, 0.16);
             border-color: rgba(79, 156, 255, 0.18);
         }
-
         .admin-grid {
             flex: 1;
             min-height: 0;
             display: grid;
             grid-template-columns: minmax(360px, 0.95fr) minmax(0, 1.15fr);
         }
-
         .admin-list,
         .admin-detail {
             min-height: 0;
             overflow-y: auto;
             padding: 20px 24px 24px;
         }
-
         .admin-list {
             border-right: 1px solid var(--border);
         }
-
         .admin-section-title {
             display: flex;
             align-items: center;
@@ -1235,13 +1076,11 @@
             gap: 12px;
             margin-bottom: 14px;
         }
-
         .admin-section-title h4 {
             margin: 0;
             font-size: 1rem;
             font-weight: 800;
         }
-
         .admin-card {
             padding: 16px;
             border-radius: 18px;
@@ -1250,12 +1089,10 @@
             margin-bottom: 12px;
             cursor: pointer;
         }
-
         .admin-card.active {
             border-color: rgba(79, 156, 255, 0.16);
             background: rgba(79, 156, 255, 0.08);
         }
-
         .admin-card-head {
             display: flex;
             align-items: flex-start;
@@ -1263,82 +1100,69 @@
             gap: 12px;
             margin-bottom: 10px;
         }
-
         .admin-card p {
             margin: 0;
             color: var(--text-muted);
             font-size: 0.84rem;
             line-height: 1.6;
         }
-
         .admin-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 12px;
         }
-
         .detail-pane {
             display: grid;
             gap: 18px;
         }
-
         .detail-box {
             padding: 18px;
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             background: rgba(255, 255, 255, 0.04);
         }
-
         .detail-box h4 {
             margin: 0 0 10px;
             font-size: 1rem;
             font-weight: 800;
         }
-
         .detail-box p {
             margin: 0;
             color: var(--text-soft);
             line-height: 1.7;
         }
-
         .detail-list {
             display: grid;
             gap: 10px;
         }
-
         .detail-item {
             padding: 12px 14px;
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
-
         .detail-item strong {
             display: block;
             margin-bottom: 6px;
         }
-
         .transcript {
             display: grid;
             gap: 10px;
             max-height: 420px;
             overflow-y: auto;
         }
-
         .transcript-item {
             padding: 12px 14px;
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
-
         .transcript-item .meta {
             font-size: 0.76rem;
             color: var(--text-muted);
             margin-bottom: 8px;
         }
-
         #admin-fab {
             position: fixed;
             right: 22px;
@@ -1356,40 +1180,33 @@
             z-index: 3100;
             backdrop-filter: blur(16px);
         }
-
         #admin-fab:hover {
             transform: translateY(-2px);
             color: white;
             background: rgba(79, 156, 255, 0.16);
         }
-
         body.is-admin #admin-fab {
             display: inline-flex;
         }
-
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
         }
-
         ::-webkit-scrollbar-thumb {
             background: rgba(148, 163, 184, 0.2);
             border-radius: 999px;
         }
-
         @media (max-width: 1180px) {
             .hero-card,
             .dashboard-grid,
             .admin-grid {
                 grid-template-columns: 1fr;
             }
-
             .admin-list {
                 border-right: none;
                 border-bottom: 1px solid var(--border);
             }
         }
-
         @media (max-width: 980px) {
             #sidebar {
                 position: fixed;
@@ -1399,28 +1216,22 @@
                 margin: 0;
                 transform: translateX(calc(-100% - 28px));
             }
-
             body.sidebar-open #sidebar {
                 transform: translateX(0);
             }
-
             #main-area {
                 margin: 16px;
             }
-
             #mobile-sidebar-toggle {
                 display: inline-flex;
             }
-
             .auth-shell {
                 grid-template-columns: 1fr;
             }
-
             .auth-side {
                 display: none;
             }
         }
-
         @media (max-width: 760px) {
             .top-bar {
                 height: auto;
@@ -1429,60 +1240,47 @@
                 align-items: flex-start;
                 flex-direction: column;
             }
-
             .header-actions {
                 width: 100%;
                 justify-content: flex-start;
             }
-
             #home-panel {
                 padding: 20px;
             }
-
             #chat-messages {
                 padding: 18px;
             }
-
             #chat-input-area {
                 padding: 0 16px 16px;
             }
-
             .profile-summary {
                 flex-direction: column;
                 align-items: flex-start;
             }
-
             .profile-stats {
                 grid-template-columns: 1fr;
             }
-
             .hero-grid {
                 grid-template-columns: 1fr;
             }
-
             .msg {
                 max-width: 90%;
             }
         }
-
         @media (max-width: 560px) {
             .auth-box {
                 padding: 24px;
             }
-
             .composer {
                 flex-wrap: wrap;
             }
-
             .composer .btn {
                 width: 100%;
             }
-
             #voice-btn {
                 width: 48px;
                 height: 48px;
             }
-
             .modal,
             #auth-screen {
                 padding: 12px;
@@ -1494,13 +1292,41 @@
     <div id="toast-container"></div>
     <div id="sidebar-overlay" onclick="toggleSidebar(false)"></div>
     <button id="admin-fab" onclick="openAdminPanel()" aria-label="Yönetim merkezi">⌘</button>
-
     <div id="auth-screen">
         <div class="auth-shell">
             <div class="auth-side">
-
+                <div class="brand-kicker">NivoChat Suite</div>
+                <h1>DM ve moderasyon akışını tek merkezden yönet.</h1>
+                <p>
+                    Daha düzenli bir sohbet deneyimi, mobil uyumlu yapı ve yönetim için tek ekranda toplanmış
+                    profesyonel bir çalışma alanı.
+                </p>
+                <div class="feature-list">
+                    <div class="feature-chip">
+                        <div class="brand-mark">N</div>
+                        <div>
+                            <strong>Temiz kontrol merkezi</strong>
+                            Arkadaş yönetimi, gizlenen DM'ler ve gelen istekler tek panelde.
+                        </div>
+                    </div>
+                    <div class="feature-chip">
+                        <div class="brand-mark">M</div>
+                        <div>
+                            <strong>Mobil uyumlu yeni arayüz</strong>
+                            Sidebar çekmece davranışı ve daha profesyonel renk sistemi.
+                        </div>
+                    </div>
+                    <div class="feature-chip">
+                        <div class="brand-mark">Y</div>
+                        <div>
+                            <strong>Rol bazlı yönetim</strong>
+                            Gizli arka kapı yerine görünür ve yönetici hesabına bağlı moderasyon merkezi.
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="auth-box">
-                <div class="badge primary" style="width:max-content;">NivoChat</div>
+                <div class="badge primary" style="width:max-content;">NivoChat Access</div>
                 <h2>Giriş yap</h2>
                 <p>Oturum açtığında cihazın hatırlanır; çıkış yaparsan otomatik giriş kapatılır.</p>
                 <input type="text" id="auth-user" class="input-field" placeholder="Kullanıcı adı">
@@ -1513,7 +1339,6 @@
             </div>
         </div>
     </div>
-
     <div id="app-container">
         <aside id="sidebar">
             <div class="sidebar-top">
@@ -1527,21 +1352,17 @@
                     </div>
                     <span id="my-role-badge" class="badge subtle hidden">Yönetici</span>
                 </div>
-
                 <div class="search-shell">
                     <span>⌕</span>
                     <input id="friend-search" class="search-input" type="text" placeholder="Arkadaş ara..." oninput="handleFriendSearch(this.value)">
                 </div>
-
                 <button class="nav-btn active" id="btn-home" onclick="showPanel('home-panel')">
                     <span>⌂</span>
                     Kontrol Merkezi
                 </button>
             </div>
-
             <div class="section-label">Açık bağlantılar</div>
             <div id="friends-list"></div>
-
             <div class="sidebar-footer">
                 <button id="my-profile-card" class="profile-chip" onclick="openProfileModal(state.myName)">
                     <div class="avatar" id="my-avatar-display">
@@ -1554,14 +1375,12 @@
                     </div>
                     <span class="badge accent">Hesap</span>
                 </button>
-
                 <div class="sidebar-actions">
                     <button class="btn ghost-btn" onclick="showPanel('home-panel')">Panel</button>
                     <button class="btn danger-btn" onclick="cikisYap()">Çıkış</button>
                 </div>
             </div>
         </aside>
-
         <main id="main-area">
             <header class="top-bar">
                 <div class="header-main">
@@ -1572,10 +1391,8 @@
                         <div id="online-status-header">Mesajlar, istekler ve hesap yönetimi burada.</div>
                     </div>
                 </div>
-
                 <div id="chat-header-actions" class="header-actions"></div>
             </header>
-
             <section id="home-panel" class="panel active-panel">
                 <div class="dashboard">
                     <section class="hero-card">
@@ -1587,7 +1404,6 @@
                                 bakışta kontrol et. Yöneticiysen moderasyon akışı da bu arayüze entegre.
                             </p>
                         </div>
-
                         <div class="hero-grid">
                             <div class="metric-card">
                                 <span>Arkadaşlar</span>
@@ -1611,7 +1427,6 @@
                             </div>
                         </div>
                     </section>
-
                     <div class="dashboard-grid">
                         <section class="card">
                             <div class="card-head">
@@ -1625,7 +1440,6 @@
                                 <button class="btn primary" onclick="istekGonder()">İstek Gönder</button>
                             </div>
                         </section>
-
                         <section class="card">
                             <div class="card-head">
                                 <div>
@@ -1636,7 +1450,6 @@
                             </div>
                             <div id="requests-list" class="stack"></div>
                         </section>
-
                         <section class="card">
                             <div class="card-head">
                                 <div>
@@ -1646,7 +1459,6 @@
                             </div>
                             <div id="hidden-dms-list" class="stack"></div>
                         </section>
-
                         <section class="card hidden" id="admin-summary-card">
                             <div class="card-head">
                                 <div>
@@ -1660,11 +1472,9 @@
                     </div>
                 </div>
             </section>
-
             <section id="chat-panel" class="panel">
                 <div id="chat-lock-banner"></div>
                 <div id="chat-messages"></div>
-
                 <div id="chat-input-area">
                     <div id="reply-preview" class="reply-preview">
                         <div style="display:flex; align-items:center; gap:10px; min-width:0;">
@@ -1673,7 +1483,6 @@
                         </div>
                         <button class="mini-btn" onclick="cancelReply()">Kapat</button>
                     </div>
-
                     <div class="composer">
                         <button class="btn ghost-btn" id="voice-btn" onmousedown="startRecording()" onmouseup="stopRecording()" onmouseleave="stopRecording()">🎤</button>
                         <input type="text" id="msg-input" placeholder="Mesajını yaz..." onkeypress="if(event.key==='Enter') mesajGonder()">
@@ -1683,13 +1492,11 @@
             </section>
         </main>
     </div>
-
     <div id="context-menu">
         <button class="menu-item" id="menu-reply" onclick="initReply()"><span>↩</span> Yanıtla</button>
         <button class="menu-item" id="menu-edit" onclick="initEdit()"><span>✎</span> Düzenle</button>
         <button class="menu-item danger" id="menu-delete" onclick="initDelete()"><span>🗑</span> Sil</button>
     </div>
-
     <div id="profile-modal" class="modal" onclick="closeModalOnBackdrop(event, 'profile-modal')">
         <div class="modal-card">
             <div class="modal-head">
@@ -1707,7 +1514,6 @@
                         <div id="profile-status" style="margin-top:8px; color:var(--text-muted);">Çevrimdışı</div>
                     </div>
                 </div>
-
                 <div id="profile-modal-body"></div>
             </div>
             <div class="modal-footer">
@@ -1715,7 +1521,6 @@
             </div>
         </div>
     </div>
-
     <div id="admin-modal" class="modal" onclick="closeModalOnBackdrop(event, 'admin-modal')">
         <div class="wide-modal-card">
             <div class="modal-head">
@@ -1725,21 +1530,18 @@
                 </div>
                 <button class="icon-btn" onclick="closeModal('admin-modal')">✕</button>
             </div>
-
             <div class="admin-tabs">
                 <button id="admin-tab-conversations" class="tab-btn active" onclick="switchAdminTab('conversations')">Aktif DM'ler</button>
                 <button id="admin-tab-users" class="tab-btn" onclick="switchAdminTab('users')">Kullanıcılar</button>
                 <button id="admin-tab-bans" class="tab-btn" onclick="switchAdminTab('bans')">Kısıtlamalar</button>
                 <button id="admin-tab-devices" class="tab-btn" onclick="switchAdminTab('devices')">Cihazlar</button>
             </div>
-
             <div class="admin-grid">
                 <div id="admin-list-panel" class="admin-list"></div>
                 <div id="admin-detail-panel" class="admin-detail"></div>
             </div>
         </div>
     </div>
-
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
@@ -1752,17 +1554,13 @@
             messagingSenderId: "520948298454",
             appId: "1:520948298454:web:bfb57438d4fb79158a4f77"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
-
         const STORAGE_KEYS = {
             remember: "nivo_remember_v3",
             device: "nivo_device_id"
         };
-
         const DEFAULT_ADMIN_USERS = ["admin", "nivoadmin", "root"];
-
         const state = {
             myName: "",
             isAdmin: false,
@@ -1805,10 +1603,8 @@
                 sessions: {}
             }
         };
-
         window.onload = initApp;
         document.addEventListener("keydown", handleGlobalShortcuts);
-
         async function initApp() {
             ensureDeviceId();
             bindStaticFormShortcuts();
@@ -1817,7 +1613,6 @@
             renderHiddenChats();
             renderRequests();
             updateComposeAvailability();
-
             const saved = getSavedSession();
             if (saved?.user && saved?.pass) {
                 document.getElementById("auth-user").value = saved.user;
@@ -1825,17 +1620,14 @@
                 await girisYap(true);
             }
         }
-
         function bindStaticFormShortcuts() {
             document.getElementById("auth-pass").addEventListener("keydown", event => {
                 if (event.key === "Enter") girisYap();
             });
-
             document.getElementById("auth-user").addEventListener("keydown", event => {
                 if (event.key === "Enter") girisYap();
             });
         }
-
         function handleGlobalShortcuts(event) {
             if (event.key === "Escape") {
                 hideMenu();
@@ -1844,14 +1636,12 @@
                 document.body.classList.remove("sidebar-open");
             }
         }
-
         function ensureDeviceId() {
             if (!localStorage.getItem(STORAGE_KEYS.device)) {
                 const deviceId = `nivo-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
                 localStorage.setItem(STORAGE_KEYS.device, deviceId);
             }
         }
-
         function getSavedSession() {
             try {
                 return JSON.parse(localStorage.getItem(STORAGE_KEYS.remember) || "null");
@@ -1859,7 +1649,6 @@
                 return null;
             }
         }
-
         function saveSession(user, pass) {
             localStorage.setItem(STORAGE_KEYS.remember, JSON.stringify({
                 user,
@@ -1868,25 +1657,21 @@
                 savedAt: Date.now()
             }));
         }
-
         function clearSession() {
             localStorage.removeItem(STORAGE_KEYS.remember);
         }
-
         function showToast(message, type = "info") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
             toast.className = `toast ${type}`;
             toast.textContent = message;
             container.appendChild(toast);
-
             setTimeout(() => {
                 toast.style.opacity = "0";
                 toast.style.transform = "translateY(-10px)";
                 setTimeout(() => toast.remove(), 180);
             }, 2800);
         }
-
         function escapeHtml(text = "") {
             return String(text)
                 .replace(/&/g, "&amp;")
@@ -1895,20 +1680,13 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#39;");
         }
-
         function getInitial(name = "?") {
             return String(name).trim().charAt(0).toUpperCase() || "?";
         }
-
-        function inlineToken(value) {
-            return encodeURIComponent(String(value ?? ""));
-        }
-
         function formatTime(value) {
             if (!value) return "--:--";
             return new Date(value).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
         }
-
         function formatDateTime(value) {
             if (!value) return "Bilinmiyor";
             return new Date(value).toLocaleString("tr-TR", {
@@ -1919,7 +1697,6 @@
                 minute: "2-digit"
             });
         }
-
         function relativeTime(value) {
             if (!value) return "Bilinmiyor";
             const seconds = Math.floor((Date.now() - value) / 1000);
@@ -1931,39 +1708,31 @@
             const days = Math.floor(hours / 24);
             return `${days} gün önce`;
         }
-
         function normalizeChatId(userA, userB) {
             return [userA, userB].sort().join("_");
         }
-
         function isUserFriend(user) {
             return Boolean(state.friendMap?.[user]);
         }
-
         function isUserHidden(user) {
             return Boolean(state.hiddenMap?.[user]);
         }
-
         function toggleSidebar(force) {
             const shouldOpen = typeof force === "boolean" ? force : !document.body.classList.contains("sidebar-open");
             document.body.classList.toggle("sidebar-open", shouldOpen);
         }
-
         function closeModalOnBackdrop(event, id) {
             if (event.target.id === id) {
                 closeModal(id);
             }
         }
-
         function closeModal(id) {
             document.getElementById(id).style.display = "none";
         }
-
         function listen(ref, eventName, callback, bucket = "app") {
             ref.on(eventName, callback);
             state.listeners[bucket].push({ ref, eventName, callback });
         }
-
         function clearListenerBucket(bucket) {
             (state.listeners[bucket] || []).forEach(item => item.ref.off(item.eventName, item.callback));
             state.listeners[bucket] = [];
@@ -1971,11 +1740,9 @@
                 state.presenceBound = {};
             }
         }
-
         function clearAllRealtime() {
             Object.keys(state.listeners).forEach(clearListenerBucket);
         }
-
         function bindPresence(user) {
             if (!user || state.presenceBound[user]) return;
             state.presenceBound[user] = true;
@@ -1986,46 +1753,38 @@
                 if (state.activeChatUser === user) updateActiveHeader(user);
             }, "presence");
         }
-
         async function determineAdmin(user) {
             const snap = await db.ref(`yoneticiler/${user}`).once("value");
             return snap.exists() || DEFAULT_ADMIN_USERS.includes(String(user).toLowerCase());
         }
-
         async function girisYap(isAuto = false) {
             const user = document.getElementById("auth-user").value.trim();
             const pass = document.getElementById("auth-pass").value.trim();
-
             if (!user || !pass) {
                 if (!isAuto) showToast("Kullanıcı adı ve şifre gerekli.", "warning");
                 return;
             }
-
             try {
                 const userSnap = await db.ref(`kullanicilar/${user}`).once("value");
                 if (!userSnap.exists() || userSnap.val().sifre !== pass) {
                     if (!isAuto) showToast("Hatalı kullanıcı adı veya şifre.", "error");
                     return;
                 }
-
                 const deviceId = localStorage.getItem(STORAGE_KEYS.device);
                 const [userBanSnap, deviceBanSnap] = await Promise.all([
                     db.ref(`moderasyon/bans/users/${user}`).once("value"),
                     db.ref(`moderasyon/bans/devices/${deviceId}`).once("value")
                 ]);
-
                 if (userBanSnap.exists()) {
                     clearSession();
                     showToast("Bu hesap moderasyon tarafından kısıtlandı.", "error");
                     return;
                 }
-
                 if (deviceBanSnap.exists()) {
                     clearSession();
                     showToast("Bu cihazın erişimi yöneticiler tarafından kapatıldı.", "error");
                     return;
                 }
-
                 saveSession(user, pass);
                 await basariliGiris(user);
             } catch (error) {
@@ -2033,39 +1792,32 @@
                 if (!isAuto) showToast("Giriş sırasında beklenmedik bir hata oldu.", "error");
             }
         }
-
         function isValidUsername(name) {
             return /^[a-zA-Z0-9_]{3,20}$/.test(name);
         }
-
         async function kayitOl() {
             const user = document.getElementById("auth-user").value.trim();
             const pass = document.getElementById("auth-pass").value.trim();
-
             if (!isValidUsername(user)) {
                 showToast("Yeni kullanıcı adı 3-20 karakter olmalı ve sadece harf, sayı, alt çizgi içermeli.", "warning");
                 return;
             }
-
             if (pass.length < 3) {
                 showToast("Şifre en az 3 karakter olmalı.", "warning");
                 return;
             }
-
             try {
                 const userSnap = await db.ref(`kullanicilar/${user}`).once("value");
                 if (userSnap.exists()) {
                     showToast("Bu kullanıcı adı zaten alınmış.", "warning");
                     return;
                 }
-
                 await db.ref(`kullanicilar/${user}`).set({
                     sifre: pass,
                     durum: "online",
                     createdAt: Date.now(),
                     lastLoginAt: Date.now()
                 });
-
                 showToast("Hesap oluşturuldu, giriş yapılıyor.", "success");
                 await girisYap();
             } catch (error) {
@@ -2073,12 +1825,10 @@
                 showToast("Kayıt oluşturulamadı.", "error");
             }
         }
-
         async function basariliGiris(user) {
             state.myName = user;
             state.isAdmin = await determineAdmin(user);
             document.body.classList.toggle("is-admin", state.isAdmin);
-
             document.getElementById("auth-screen").style.display = "none";
             document.getElementById("app-container").style.display = "flex";
             document.getElementById("my-name-display").innerText = user;
@@ -2087,32 +1837,26 @@
             document.getElementById("my-role-badge").classList.toggle("hidden", !state.isAdmin);
             document.getElementById("metric-mode").innerText = state.isAdmin ? "Yönetici" : "Standart";
             document.getElementById("admin-summary-card").classList.toggle("hidden", !state.isAdmin);
-
             await db.ref(`kullanicilar/${user}`).update({
                 durum: "online",
                 lastLoginAt: Date.now(),
                 lastDevice: localStorage.getItem(STORAGE_KEYS.device)
             });
-
             db.ref(`kullanicilar/${user}/durum`).onDisconnect().set("offline");
             await registerDeviceSession();
-
             startSessionHeartbeat();
             startModerationGuards();
             baslat();
-
             if (state.isAdmin) {
                 startAdminRealtime();
             } else {
                 clearListenerBucket("admin");
             }
-
             renderHeaderActions();
             renderHomeStats();
             showPanel("home-panel");
             showToast(`Tekrar hoş geldin ${user}.`, "success");
         }
-
         async function registerDeviceSession() {
             if (!state.myName) return;
             const deviceId = localStorage.getItem(STORAGE_KEYS.device);
@@ -2124,7 +1868,6 @@
                 createdAt: Date.now()
             });
         }
-
         function startSessionHeartbeat() {
             if (state.sessionHeartbeat) clearInterval(state.sessionHeartbeat);
             state.sessionHeartbeat = setInterval(async () => {
@@ -2144,94 +1887,78 @@
                 }
             }, 60000);
         }
-
         function startModerationGuards() {
             clearListenerBucket("guards");
             if (!state.myName) return;
-
             const deviceId = localStorage.getItem(STORAGE_KEYS.device);
             listen(db.ref(`moderasyon/bans/users/${state.myName}`), "value", snap => {
                 if (snap.exists()) {
                     forceLogout("Hesabın yönetici tarafından kısıtlandı.");
                 }
             }, "guards");
-
             listen(db.ref(`moderasyon/bans/devices/${deviceId}`), "value", snap => {
                 if (snap.exists()) {
                     forceLogout("Bu cihaz yöneticiler tarafından engellendi.");
                 }
             }, "guards");
         }
-
         function baslat() {
             clearListenerBucket("app");
             clearListenerBucket("presence");
-
             listen(db.ref(`arkadaslar/${state.myName}`), "value", snap => {
                 state.friendMap = snap.val() || {};
                 Object.keys(state.friendMap).forEach(bindPresence);
                 renderFriendsList();
                 renderHomeStats();
             }, "app");
-
             listen(db.ref(`gizli_sohbetler/${state.myName}`), "value", snap => {
                 state.hiddenMap = snap.val() || {};
                 renderFriendsList();
                 renderHiddenChats();
                 renderHomeStats();
             }, "app");
-
             listen(db.ref(`istekler/${state.myName}`), "value", snap => {
                 state.requestMap = snap.val() || {};
                 renderRequests();
                 renderHomeStats();
             }, "app");
         }
-
         function renderHomeStats() {
             const visibleFriends = Object.keys(state.friendMap || {}).filter(friend => !isUserHidden(friend)).length;
             const requestCount = Object.keys(state.requestMap || {}).length;
             const hiddenCount = Object.keys(state.hiddenMap || {}).length;
-
             document.getElementById("metric-friends").innerText = String(visibleFriends);
             document.getElementById("metric-requests").innerText = String(requestCount);
             document.getElementById("metric-hidden").innerText = String(hiddenCount);
             document.getElementById("metric-mode").innerText = state.isAdmin ? "Yönetici" : "Standart";
             document.getElementById("req-count").innerText = String(requestCount);
-
             renderAdminSummary();
         }
-
         function renderFriendsList() {
             const list = document.getElementById("friends-list");
             list.innerHTML = "";
-
             const friends = Object.keys(state.friendMap || {})
                 .filter(friend => !isUserHidden(friend))
                 .filter(friend => friend.toLowerCase().includes(state.friendSearch))
                 .sort((a, b) => a.localeCompare(b, "tr"));
-
             if (!friends.length) {
                 list.innerHTML = `<div class="empty-state">Görünecek arkadaş yok. Yeni bağlantı ekleyebilir ya da gizlenen DM'leri geri açabilirsin.</div>`;
                 return;
             }
-
             friends.forEach(friend => {
-                const item = document.createElement("div");
-                item.className = `friend-item ${state.activeChatUser === friend ? "active" : ""}`;
-                item.onclick = () => sohbetBaslat(friend);
-
+                const button = document.createElement("button");
+                button.className = `friend-item ${state.activeChatUser === friend ? "active" : ""}`;
+                button.type = "button";
+                button.onclick = () => sohbetBaslat(friend);
                 const avatar = document.createElement("div");
                 avatar.className = "avatar";
                 avatar.innerHTML = `${escapeHtml(getInitial(friend))}<span class="status-dot ${getStatusClass(friend)}"></span>`;
-
                 const content = document.createElement("div");
                 content.className = "friend-copy";
                 content.innerHTML = `
                     <strong>${escapeHtml(friend)}</strong>
                     <span>${escapeHtml(getStatusLabel(friend))}</span>
                 `;
-
                 const archiveBtn = document.createElement("button");
                 archiveBtn.className = "side-action-icon";
                 archiveBtn.type = "button";
@@ -2241,14 +1968,12 @@
                     event.stopPropagation();
                     hideDM(friend);
                 };
-
-                item.appendChild(avatar);
-                item.appendChild(content);
-                item.appendChild(archiveBtn);
-                list.appendChild(item);
+                button.appendChild(avatar);
+                button.appendChild(content);
+                button.appendChild(archiveBtn);
+                list.appendChild(button);
             });
         }
-
         function getStatusClass(user) {
             if (state.adminData.userBans?.[user]) return "banned";
             const status = state.userPresence[user];
@@ -2256,7 +1981,6 @@
             if (status === "away") return "away";
             return "";
         }
-
         function getStatusLabel(user) {
             if (state.adminData.userBans?.[user]) return "Kısıtlı kullanıcı";
             const status = state.userPresence[user];
@@ -2264,17 +1988,14 @@
             if (status === "away") return "Meşgul";
             return "Çevrimdışı";
         }
-
         function renderRequests() {
             const list = document.getElementById("requests-list");
             list.innerHTML = "";
-
             const requests = Object.keys(state.requestMap || {}).sort((a, b) => a.localeCompare(b, "tr"));
             if (!requests.length) {
                 list.innerHTML = `<div class="empty-state">Bekleyen arkadaş isteği bulunmuyor.</div>`;
                 return;
             }
-
             requests.forEach(user => {
                 const card = document.createElement("div");
                 card.className = "list-card";
@@ -2282,43 +2003,35 @@
                     <strong>@${escapeHtml(user)}</strong>
                     <p>Yeni bağlantı talebi gönderdi. İstersen hemen onaylayabilir ya da reddedebilirsin.</p>
                 `;
-
                 const actions = document.createElement("div");
                 actions.className = "list-actions";
-
                 const accept = document.createElement("button");
                 accept.className = "mini-btn success";
                 accept.innerText = "Onayla";
                 accept.onclick = () => istekCevapla(user, true);
-
                 const reject = document.createElement("button");
                 reject.className = "mini-btn danger";
                 reject.innerText = "Reddet";
                 reject.onclick = () => istekCevapla(user, false);
-
                 actions.appendChild(accept);
                 actions.appendChild(reject);
                 card.appendChild(actions);
                 list.appendChild(card);
             });
         }
-
         function renderHiddenChats() {
             const list = document.getElementById("hidden-dms-list");
             list.innerHTML = "";
-
             const hiddenEntries = Object.entries(state.hiddenMap || {})
                 .map(([friend, meta]) => ({
                     friend,
                     hiddenAt: typeof meta === "object" ? (meta.hiddenAt || 0) : 0
                 }))
                 .sort((a, b) => (b.hiddenAt || 0) - (a.hiddenAt || 0));
-
             if (!hiddenEntries.length) {
                 list.innerHTML = `<div class="empty-state">Gizlenen DM yok. Bir sohbeti kenara almak istersen chat başlığındaki DM Gizle aksiyonunu kullan.</div>`;
                 return;
             }
-
             hiddenEntries.forEach(item => {
                 const card = document.createElement("div");
                 card.className = "list-card";
@@ -2326,15 +2039,12 @@
                     <strong>@${escapeHtml(item.friend)}</strong>
                     <p>${item.hiddenAt ? `${relativeTime(item.hiddenAt)} gizlendi.` : "Bu DM gizlenmiş durumda."}</p>
                 `;
-
                 const actions = document.createElement("div");
                 actions.className = "list-actions";
-
                 const restore = document.createElement("button");
                 restore.className = "mini-btn success";
                 restore.innerText = "Geri Aç";
                 restore.onclick = () => restoreHiddenChat(item.friend);
-
                 const open = document.createElement("button");
                 open.className = "mini-btn";
                 open.innerText = "DM Aç";
@@ -2342,27 +2052,23 @@
                     await restoreHiddenChat(item.friend, false);
                     await sohbetBaslat(item.friend);
                 };
-
                 actions.appendChild(restore);
                 actions.appendChild(open);
                 card.appendChild(actions);
                 list.appendChild(card);
             });
         }
-
         function renderAdminSummary() {
             const summary = document.getElementById("admin-summary");
             if (!state.isAdmin) {
                 summary.innerHTML = "";
                 return;
             }
-
             const chatCount = Object.keys(state.adminData.chats || {}).length;
             const userCount = Object.keys(state.adminData.users || {}).length;
             const userBanCount = Object.keys(state.adminData.userBans || {}).length;
             const deviceBanCount = Object.keys(state.adminData.deviceBans || {}).length;
             const lockedCount = Object.keys(state.adminData.closedChats || {}).length;
-
             summary.innerHTML = `
                 <div class="list-card">
                     <strong>Aktif DM kayıtları</strong>
@@ -2374,45 +2080,37 @@
                 </div>
             `;
         }
-
         function handleFriendSearch(value) {
             state.friendSearch = value.trim().toLowerCase();
             renderFriendsList();
         }
-
         async function istekGonder() {
             const target = document.getElementById("add-friend-input").value.trim();
             if (!target || target === state.myName) {
                 showToast("Kendine istek gönderemezsin.", "warning");
                 return;
             }
-
             try {
                 const [userSnap, alreadyFriendSnap, bannedSnap] = await Promise.all([
                     db.ref(`kullanicilar/${target}`).once("value"),
                     db.ref(`arkadaslar/${state.myName}/${target}`).once("value"),
                     db.ref(`moderasyon/bans/users/${target}`).once("value")
                 ]);
-
                 if (!userSnap.exists()) {
                     showToast("Böyle bir kullanıcı bulunamadı.", "error");
                     return;
                 }
-
                 if (bannedSnap.exists()) {
                     showToast("Bu kullanıcı şu anda erişime kapalı.", "warning");
                     return;
                 }
-
                 if (alreadyFriendSnap.exists()) {
                     showToast("Bu kullanıcı zaten arkadaş listende.", "info");
                     return;
                 }
-
                 await db.ref(`istekler/${target}/${state.myName}`).set({
                     at: Date.now()
                 });
-
                 document.getElementById("add-friend-input").value = "";
                 showToast("Arkadaş isteği gönderildi.", "success");
             } catch (error) {
@@ -2420,7 +2118,6 @@
                 showToast("İstek gönderilemedi.", "error");
             }
         }
-
         async function istekCevapla(user, accepted) {
             try {
                 if (accepted) {
@@ -2435,14 +2132,12 @@
                 } else {
                     showToast("İstek reddedildi.", "info");
                 }
-
                 await db.ref(`istekler/${state.myName}/${user}`).remove();
             } catch (error) {
                 console.error(error);
                 showToast("İstek işlenemedi.", "error");
             }
         }
-
         function updateActiveHeader(friend) {
             const status = getStatusLabel(friend);
             document.getElementById("top-bar-title").innerText = `@${friend}`;
@@ -2451,43 +2146,35 @@
             document.getElementById("active-avatar").style.display = "flex";
             document.getElementById("active-avatar").innerText = getInitial(friend);
         }
-
         function renderHeaderActions() {
             const container = document.getElementById("chat-header-actions");
             container.innerHTML = "";
-
             const sessionChip = document.createElement("div");
             sessionChip.className = "chip";
             sessionChip.innerText = getSavedSession() ? "Bu cihaz hatırlanıyor" : "Manuel oturum";
             container.appendChild(sessionChip);
-
             if (state.activeChatUser && document.getElementById("chat-panel").style.display === "flex") {
                 const profileBtn = document.createElement("button");
                 profileBtn.className = "btn ghost-btn";
                 profileBtn.innerText = "Profili Aç";
                 profileBtn.onclick = () => openProfileModal(state.activeChatUser);
-
                 const hideBtn = document.createElement("button");
                 hideBtn.className = "btn ghost-btn";
                 hideBtn.innerText = "DM Gizle";
                 hideBtn.onclick = () => hideDM(state.activeChatUser);
-
                 const removeBtn = document.createElement("button");
                 removeBtn.className = "btn danger-btn";
                 removeBtn.innerText = "Arkadaşı Çıkar";
                 removeBtn.onclick = () => removeFriend(state.activeChatUser);
-
                 container.appendChild(profileBtn);
                 container.appendChild(hideBtn);
                 container.appendChild(removeBtn);
             }
-
             const selfBtn = document.createElement("button");
             selfBtn.className = "btn ghost-btn";
             selfBtn.innerText = "Hesap";
             selfBtn.onclick = () => openProfileModal(state.myName);
             container.appendChild(selfBtn);
-
             if (state.isAdmin) {
                 const adminBtn = document.createElement("button");
                 adminBtn.className = "btn primary";
@@ -2496,19 +2183,15 @@
                 container.appendChild(adminBtn);
             }
         }
-
         function showPanel(id) {
             document.querySelectorAll(".panel").forEach(panel => {
                 panel.classList.remove("active-panel");
                 panel.style.display = "none";
             });
-
             const panel = document.getElementById(id);
             panel.classList.add("active-panel");
             panel.style.display = id === "chat-panel" ? "flex" : "block";
-
             document.getElementById("btn-home").classList.toggle("active", id === "home-panel");
-
             if (id === "home-panel") {
                 document.getElementById("top-bar-title").innerText = "Kontrol Merkezi";
                 document.getElementById("online-status-header").innerText = "Mesajlar, istekler ve hesap yönetimi burada.";
@@ -2517,31 +2200,24 @@
             } else if (id === "chat-panel" && state.activeChatUser) {
                 updateActiveHeader(state.activeChatUser);
             }
-
             renderHeaderActions();
             toggleSidebar(false);
         }
-
         async function sohbetBaslat(friend) {
             state.activeChatUser = friend;
             state.activeChatId = normalizeChatId(state.myName, friend);
             state.currentChatLocked = false;
-
             renderFriendsList();
             updateActiveHeader(friend);
             renderHeaderActions();
             showPanel("chat-panel");
             updateComposeAvailability();
-
             clearListenerBucket("chat");
             bindPresence(friend);
-
             const chatBox = document.getElementById("chat-messages");
             chatBox.innerHTML = `<div class="empty-state">Mesajlar yükleniyor...</div>`;
-
             const chatRef = db.ref(`dm_mesajlari/${state.activeChatId}`);
             const lockRef = db.ref(`moderasyon/closedChats/${state.activeChatId}`);
-
             try {
                 const snap = await chatRef.once("value");
                 if (!snap.exists()) {
@@ -2554,13 +2230,11 @@
                 console.error(error);
                 chatBox.innerHTML = `<div class="empty-state">Mesajlar yüklenemedi.</div>`;
             }
-
             listen(chatRef, "child_added", snap => {
                 if (document.getElementById(`msg-${snap.key}`)) return;
                 if (chatBox.querySelector(".empty-state")) chatBox.innerHTML = "";
                 ekranaMesajBas(snap.key, snap.val());
             }, "chat");
-
             listen(chatRef, "child_changed", snap => {
                 const el = document.getElementById(`text-${snap.key}`);
                 if (el) {
@@ -2568,21 +2242,18 @@
                     el.innerHTML = `${escapeHtml(data.metin || "")}${data.duzenlendi ? ' <small style="opacity:0.6;">(düzenlendi)</small>' : ""}`;
                 }
             }, "chat");
-
             listen(chatRef, "child_removed", snap => {
                 document.getElementById(`msg-${snap.key}`)?.remove();
                 if (!chatBox.children.length) {
                     chatBox.innerHTML = `<div class="empty-state">Bu sohbette mesaj kalmadı.</div>`;
                 }
             }, "chat");
-
             listen(lockRef, "value", snap => {
                 state.currentChatLocked = snap.exists();
                 updateChatLockBanner(snap.val());
                 updateComposeAvailability();
             }, "chat");
         }
-
         function updateChatLockBanner(data) {
             const banner = document.getElementById("chat-lock-banner");
             if (!data) {
@@ -2590,7 +2261,6 @@
                 banner.innerHTML = "";
                 return;
             }
-
             banner.style.display = "flex";
             banner.innerHTML = `
                 <div>
@@ -2600,17 +2270,14 @@
                 ${state.isAdmin ? '<span class="badge warning">Admin müdahalesi gerekli</span>' : ''}
             `;
         }
-
         function updateComposeAvailability() {
             const input = document.getElementById("msg-input");
             const sendBtn = document.getElementById("send-btn");
             const voiceBtn = document.getElementById("voice-btn");
-
             const disabled = !state.activeChatId || state.currentChatLocked;
             input.disabled = disabled;
             sendBtn.disabled = disabled;
             voiceBtn.disabled = disabled;
-
             if (!state.activeChatId) {
                 input.placeholder = "Önce bir sohbet aç...";
             } else if (state.currentChatLocked) {
@@ -2619,62 +2286,50 @@
                 input.placeholder = "Mesajını yaz...";
             }
         }
-
         function ekranaMesajBas(id, message) {
             const chatBox = document.getElementById("chat-messages");
             const isMine = message.gonderen === state.myName;
-
             const wrapper = document.createElement("div");
             wrapper.className = `msg ${isMine ? "me-align" : ""}`;
             wrapper.id = `msg-${id}`;
             wrapper.oncontextmenu = event => showContextMenu(event, id, message, isMine);
-
             let replyHtml = "";
             if (message.yanitlananId && message.yanitlananMetin) {
                 const preview = message.yanitlananMetin.length > 48 ? `${message.yanitlananMetin.slice(0, 48)}...` : message.yanitlananMetin;
                 replyHtml = `<div class="reply-box" onclick="scrollToMsg('${message.yanitlananId}')">${escapeHtml(preview)}</div>`;
             }
-
             const content = message.metin
                 ? `<span id="text-${id}">${escapeHtml(message.metin)}${message.duzenlendi ? ' <small style="opacity:0.6;">(düzenlendi)</small>' : ""}</span>`
                 : `<audio controls src="${message.ses}"></audio>`;
-
             wrapper.innerHTML = `
                 ${replyHtml}
                 <div class="msg-text">${content}</div>
                 <div class="msg-meta">${formatTime(message.zaman)}</div>
             `;
-
             chatBox.appendChild(wrapper);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
-
         async function mesajGonder() {
             if (!state.activeChatId) {
                 showToast("Önce bir sohbet seç.", "warning");
                 return;
             }
-
             if (state.currentChatLocked) {
                 showToast("Bu DM şu anda kapalı.", "warning");
                 return;
             }
-
             const input = document.getElementById("msg-input");
             const text = input.value.trim();
             if (!text) return;
-
             const payload = {
                 gonderen: state.myName,
                 metin: text,
                 zaman: Date.now()
             };
-
             if (state.replyingToId) {
                 payload.yanitlananId = state.replyingToId;
                 payload.yanitlananMetin = document.getElementById("reply-text").innerText;
             }
-
             try {
                 await db.ref(`dm_mesajlari/${state.activeChatId}`).push(payload);
                 input.value = "";
@@ -2685,16 +2340,13 @@
                 showToast("Mesaj gönderilemedi.", "error");
             }
         }
-
         function showContextMenu(event, id, message, isMine) {
             event.preventDefault();
             event.stopPropagation();
-
             state.selectedMsgId = id;
             state.selectedMsgText = message.metin || "";
             state.selectedMsgIsText = Boolean(message.metin);
             state.selectedMsgIsMine = isMine;
-
             const menu = document.getElementById("context-menu");
             menu.style.display = "flex";
             menu.style.left = `${Math.min(event.pageX, window.innerWidth - 200)}px`;
@@ -2702,12 +2354,10 @@
             document.getElementById("menu-edit").style.display = isMine && message.metin ? "flex" : "none";
             document.getElementById("menu-delete").style.display = isMine ? "flex" : "none";
         }
-
         function hideMenu(event) {
             if (event && event.target.closest && event.target.closest("#context-menu")) return;
             document.getElementById("context-menu").style.display = "none";
         }
-
         function initReply() {
             document.getElementById("reply-preview").style.display = "flex";
             document.getElementById("reply-text").innerText = state.selectedMsgText || "Ses kaydı";
@@ -2715,13 +2365,11 @@
             document.getElementById("msg-input").focus();
             hideMenu();
         }
-
         function cancelReply() {
             state.replyingToId = null;
             document.getElementById("reply-preview").style.display = "none";
             document.getElementById("reply-text").innerText = "";
         }
-
         async function initDelete() {
             if (!state.activeChatId || !state.selectedMsgId) return;
             try {
@@ -2733,7 +2381,6 @@
             }
             hideMenu();
         }
-
         async function initEdit() {
             if (!state.activeChatId || !state.selectedMsgId || !state.selectedMsgIsText) return;
             const newText = prompt("Mesajı düzenle:", state.selectedMsgText);
@@ -2741,7 +2388,6 @@
                 hideMenu();
                 return;
             }
-
             try {
                 await db.ref(`dm_mesajlari/${state.activeChatId}/${state.selectedMsgId}`).update({
                     metin: newText.trim(),
@@ -2754,7 +2400,6 @@
             }
             hideMenu();
         }
-
         function scrollToMsg(id) {
             const el = document.getElementById(`msg-${id}`);
             if (!el) return;
@@ -2766,28 +2411,23 @@
                 el.style.filter = "";
             }, 900);
         }
-
         async function hideDM(friend) {
             if (!friend) return;
-
             try {
                 await db.ref(`gizli_sohbetler/${state.myName}/${friend}`).set({
                     chatId: normalizeChatId(state.myName, friend),
                     hiddenAt: Date.now()
                 });
-
                 if (state.activeChatUser === friend) {
                     resetActiveChat();
                     showPanel("home-panel");
                 }
-
                 showToast(`@${friend} DM'i gizlendi.`, "info");
             } catch (error) {
                 console.error(error);
                 showToast("DM gizlenemedi.", "error");
             }
         }
-
         async function restoreHiddenChat(friend, notify = true) {
             try {
                 await db.ref(`gizli_sohbetler/${state.myName}/${friend}`).remove();
@@ -2797,10 +2437,8 @@
                 showToast("DM geri getirilemedi.", "error");
             }
         }
-
         async function removeFriend(friend) {
             if (!friend) return;
-
             try {
                 await Promise.all([
                     db.ref(`arkadaslar/${state.myName}/${friend}`).remove(),
@@ -2808,19 +2446,16 @@
                     db.ref(`gizli_sohbetler/${state.myName}/${friend}`).remove(),
                     db.ref(`gizli_sohbetler/${friend}/${state.myName}`).remove()
                 ]);
-
                 if (state.activeChatUser === friend) {
                     resetActiveChat();
                     showPanel("home-panel");
                 }
-
                 showToast(`@${friend} arkadaş listesinden çıkarıldı.`, "info");
             } catch (error) {
                 console.error(error);
                 showToast("Arkadaş kaldırılamadı.", "error");
             }
         }
-
         function resetActiveChat() {
             clearListenerBucket("chat");
             state.activeChatId = null;
@@ -2835,7 +2470,6 @@
             document.getElementById("chat-lock-banner").style.display = "none";
             document.getElementById("chat-messages").innerHTML = "";
         }
-
         async function touchSession() {
             if (!state.myName) return;
             const deviceId = localStorage.getItem(STORAGE_KEYS.device);
@@ -2844,16 +2478,13 @@
                 lastSeen: Date.now()
             });
         }
-
         async function openProfileModal(user) {
             if (!user) return;
-
             try {
                 const [userSnap, userBanSnap] = await Promise.all([
                     db.ref(`kullanicilar/${user}`).once("value"),
                     db.ref(`moderasyon/bans/users/${user}`).once("value")
                 ]);
-
                 const data = userSnap.val() || {};
                 const modalBody = document.getElementById("profile-modal-body");
                 document.getElementById("profile-avatar").innerText = getInitial(user);
@@ -2863,12 +2494,10 @@
                     : data.durum === "online"
                         ? "● Çevrimiçi"
                         : "Çevrimdışı";
-
                 const hiddenCount = Object.keys(state.hiddenMap || {}).length;
                 const friendCount = Object.keys(state.friendMap || {}).length;
                 const sessionCount = Object.keys((state.adminData.sessions || {})[user] || {}).length;
                 const userChats = Object.values(state.adminData.chats || {}).filter(chat => chat.participants.includes(user)).length;
-
                 const actions = [];
                 if (user === state.myName) {
                     actions.push(`<button class="btn ghost-btn" onclick="showPanel('home-panel'); closeModal('profile-modal')">Ana panele dön</button>`);
@@ -2877,17 +2506,16 @@
                     }
                 } else {
                     if (isUserFriend(user) || isUserHidden(user)) {
-                        actions.push(`<button class="btn primary" onclick="closeModal('profile-modal'); sohbetBaslat(decodeURIComponent('${inlineToken(user)}'))">DM Aç</button>`);
+                        actions.push(`<button class="btn primary" onclick="closeModal('profile-modal'); sohbetBaslat('${escapeHtml(user)}')">DM Aç</button>`);
                     }
                     if (isUserFriend(user)) {
-                        actions.push(`<button class="btn ghost-btn" onclick="closeModal('profile-modal'); hideDM(decodeURIComponent('${inlineToken(user)}'))">DM Gizle</button>`);
-                        actions.push(`<button class="btn danger-btn" onclick="closeModal('profile-modal'); removeFriend(decodeURIComponent('${inlineToken(user)}'))">Arkadaşı Çıkar</button>`);
+                        actions.push(`<button class="btn ghost-btn" onclick="closeModal('profile-modal'); hideDM('${escapeHtml(user)}')">DM Gizle</button>`);
+                        actions.push(`<button class="btn danger-btn" onclick="closeModal('profile-modal'); removeFriend('${escapeHtml(user)}')">Arkadaşı Çıkar</button>`);
                     }
                     if (state.isAdmin) {
-                        actions.push(`<button class="btn ${userBanSnap.exists() ? "ghost-btn" : "danger-btn"}" onclick="closeModal('profile-modal'); adminToggleUserBan(decodeURIComponent('${inlineToken(user)}'))">${userBanSnap.exists() ? "Banı Kaldır" : "Banla"}</button>`);
+                        actions.push(`<button class="btn ${userBanSnap.exists() ? "ghost-btn" : "danger-btn"}" onclick="closeModal('profile-modal'); adminToggleUserBan('${escapeHtml(user)}')">${userBanSnap.exists() ? "Banı Kaldır" : "Banla"}</button>`);
                     }
                 }
-
                 modalBody.innerHTML = `
                     <div class="profile-stats">
                         <div class="stat-tile">
@@ -2917,53 +2545,44 @@
                     </div>
                     <div class="profile-actions">${actions.join("") || '<span style="color:var(--text-muted);">Bu profil için ekstra aksiyon yok.</span>'}</div>
                 `;
-
                 document.getElementById("profile-modal").style.display = "flex";
             } catch (error) {
                 console.error(error);
                 showToast("Profil bilgisi açılamadı.", "error");
             }
         }
-
         function startAdminRealtime() {
             clearListenerBucket("admin");
-
             listen(db.ref("dm_mesajlari"), "value", snap => {
                 state.adminData.chats = parseChatData(snap);
                 renderAdminSummary();
                 if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
             }, "admin");
-
             listen(db.ref("kullanicilar"), "value", snap => {
                 state.adminData.users = snap.val() || {};
                 if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
             }, "admin");
-
             listen(db.ref("moderasyon/bans/users"), "value", snap => {
                 state.adminData.userBans = snap.val() || {};
                 renderFriendsList();
                 renderAdminSummary();
                 if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
             }, "admin");
-
             listen(db.ref("moderasyon/bans/devices"), "value", snap => {
                 state.adminData.deviceBans = snap.val() || {};
                 renderAdminSummary();
                 if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
             }, "admin");
-
             listen(db.ref("moderasyon/closedChats"), "value", snap => {
                 state.adminData.closedChats = snap.val() || {};
                 renderAdminSummary();
                 if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
             }, "admin");
-
             listen(db.ref("oturumlar"), "value", snap => {
                 state.adminData.sessions = snap.val() || {};
                 if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
             }, "admin");
         }
-
         function parseChatData(snapshot) {
             const chats = {};
             snapshot.forEach(chatSnap => {
@@ -2971,7 +2590,6 @@
                 chatSnap.forEach(messageSnap => {
                     messages.push({ id: messageSnap.key, ...(messageSnap.val() || {}) });
                 });
-
                 chats[chatSnap.key] = {
                     chatId: chatSnap.key,
                     participants: chatSnap.key.split("_"),
@@ -2982,7 +2600,6 @@
             });
             return chats;
         }
-
         function getSortedChats() {
             return Object.values(state.adminData.chats || {}).sort((a, b) => {
                 const aTime = a.lastMessage?.zaman || 0;
@@ -2990,64 +2607,50 @@
                 return bTime - aTime;
             });
         }
-
         function openAdminPanel() {
             if (!state.isAdmin) {
                 showToast("Bu bölüm sadece yönetici hesaplarında açılır.", "warning");
                 return;
             }
-
             document.getElementById("admin-modal").style.display = "flex";
             renderAdminPanel();
         }
-
         function switchAdminTab(tab) {
             state.adminView.tab = tab;
             renderAdminPanel();
         }
-
         function renderAdminPanel() {
             if (!state.isAdmin) return;
-
             ["conversations", "users", "bans", "devices"].forEach(tab => {
                 document.getElementById(`admin-tab-${tab}`).classList.toggle("active", state.adminView.tab === tab);
             });
-
             if (state.adminView.tab === "conversations") {
                 renderAdminConversations();
                 return;
             }
-
             if (state.adminView.tab === "users") {
                 renderAdminUsers();
                 return;
             }
-
             if (state.adminView.tab === "bans") {
                 renderAdminBans();
                 return;
             }
-
             renderAdminDevices();
         }
-
         function renderAdminConversations() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
             const chats = getSortedChats();
-
             listPanel.innerHTML = `<div class="admin-section-title"><h4>Aktif DM kayıtları</h4><span class="badge subtle">${chats.length} sohbet</span></div>`;
-
             if (!chats.length) {
                 listPanel.innerHTML += `<div class="empty-state">Kayıtlı DM bulunamadı.</div>`;
                 detailPanel.innerHTML = `<div class="empty-state">Detay göstermek için önce bir konuşma olmalı.</div>`;
                 return;
             }
-
             if (!state.adminView.inspectChatId || !state.adminData.chats[state.adminView.inspectChatId]) {
                 state.adminView.inspectChatId = chats[0].chatId;
             }
-
             chats.forEach(chat => {
                 const card = document.createElement("div");
                 card.className = `admin-card ${state.adminView.inspectChatId === chat.chatId ? "active" : ""}`;
@@ -3055,10 +2658,8 @@
                     state.adminView.inspectChatId = chat.chatId;
                     renderAdminConversations();
                 };
-
                 const locked = Boolean(state.adminData.closedChats?.[chat.chatId]);
                 const lastText = chat.lastMessage?.metin || (chat.lastMessage?.ses ? "Ses kaydı" : "Henüz içerik yok");
-
                 card.innerHTML = `
                     <div class="admin-card-head">
                         <div>
@@ -3069,10 +2670,8 @@
                     </div>
                     <p>${escapeHtml(lastText)}</p>
                 `;
-
                 const actions = document.createElement("div");
                 actions.className = "admin-actions";
-
                 const inspect = document.createElement("button");
                 inspect.className = "mini-btn";
                 inspect.innerText = "İncele";
@@ -3081,7 +2680,6 @@
                     state.adminView.inspectChatId = chat.chatId;
                     renderAdminConversations();
                 };
-
                 const toggle = document.createElement("button");
                 toggle.className = `mini-btn ${locked ? "success" : "danger"}`;
                 toggle.innerText = locked ? "DM Aç" : "DM Kapat";
@@ -3089,19 +2687,16 @@
                     event.stopPropagation();
                     adminToggleChatLock(chat.chatId);
                 };
-
                 actions.appendChild(inspect);
                 actions.appendChild(toggle);
                 card.appendChild(actions);
                 listPanel.appendChild(card);
             });
-
             const selected = state.adminData.chats[state.adminView.inspectChatId];
             if (!selected) {
                 detailPanel.innerHTML = `<div class="empty-state">Detay bulunamadı.</div>`;
                 return;
             }
-
             const closedMeta = state.adminData.closedChats?.[selected.chatId];
             const transcript = selected.messages.length
                 ? selected.messages.map(message => `
@@ -3111,16 +2706,15 @@
                     </div>
                 `).join("")
                 : `<div class="empty-state">Bu DM içinde mesaj bulunmuyor.</div>`;
-
             detailPanel.innerHTML = `
                 <div class="detail-pane">
                     <div class="detail-box">
                         <h4>${escapeHtml(selected.participants.join(" ↔ "))}</h4>
                         <p>Toplam ${selected.count} mesaj. Son aktivite: ${selected.lastMessage?.zaman ? formatDateTime(selected.lastMessage.zaman) : "Yok"}.</p>
                         <div class="admin-actions" style="margin-top:14px;">
-                            <button class="mini-btn ${closedMeta ? "success" : "danger"}" onclick="adminToggleChatLock(decodeURIComponent('${inlineToken(selected.chatId)}'))">${closedMeta ? "DM Aç" : "DM Kapat"}</button>
-                            <button class="mini-btn" onclick="inspectAdminUser(decodeURIComponent('${inlineToken(selected.participants[0])}'))">İlk kullanıcıyı aç</button>
-                            <button class="mini-btn" onclick="inspectAdminUser(decodeURIComponent('${inlineToken(selected.participants[1])}'))">İkinci kullanıcıyı aç</button>
+                            <button class="mini-btn ${closedMeta ? "success" : "danger"}" onclick="adminToggleChatLock('${escapeHtml(selected.chatId)}')">${closedMeta ? "DM Aç" : "DM Kapat"}</button>
+                            <button class="mini-btn" onclick="inspectAdminUser('${escapeHtml(selected.participants[0])}')">İlk kullanıcıyı aç</button>
+                            <button class="mini-btn" onclick="inspectAdminUser('${escapeHtml(selected.participants[1])}')">İkinci kullanıcıyı aç</button>
                         </div>
                     </div>
                     <div class="detail-box">
@@ -3136,24 +2730,19 @@
                 </div>
             `;
         }
-
         function renderAdminUsers() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
             const users = Object.keys(state.adminData.users || {}).sort((a, b) => a.localeCompare(b, "tr"));
-
             listPanel.innerHTML = `<div class="admin-section-title"><h4>Kullanıcılar</h4><span class="badge subtle">${users.length} hesap</span></div>`;
-
             if (!users.length) {
                 listPanel.innerHTML += `<div class="empty-state">Kullanıcı kaydı bulunamadı.</div>`;
                 detailPanel.innerHTML = `<div class="empty-state">Detay görmek için kullanıcı olmalı.</div>`;
                 return;
             }
-
             if (!state.adminView.inspectUser || !state.adminData.users[state.adminView.inspectUser]) {
                 state.adminView.inspectUser = users[0];
             }
-
             users.forEach(user => {
                 const data = state.adminData.users[user] || {};
                 const banned = Boolean(state.adminData.userBans?.[user]);
@@ -3163,7 +2752,6 @@
                     state.adminView.inspectUser = user;
                     renderAdminUsers();
                 };
-
                 card.innerHTML = `
                     <div class="admin-card-head">
                         <div>
@@ -3176,10 +2764,8 @@
                         </div>
                     </div>
                 `;
-
                 const actions = document.createElement("div");
                 actions.className = "admin-actions";
-
                 const inspect = document.createElement("button");
                 inspect.className = "mini-btn";
                 inspect.innerText = "Detay";
@@ -3188,7 +2774,6 @@
                     state.adminView.inspectUser = user;
                     renderAdminUsers();
                 };
-
                 const toggle = document.createElement("button");
                 toggle.className = `mini-btn ${banned ? "success" : "danger"}`;
                 toggle.innerText = banned ? "Banı Kaldır" : "Banla";
@@ -3196,27 +2781,24 @@
                     event.stopPropagation();
                     adminToggleUserBan(user);
                 };
-
                 actions.appendChild(inspect);
                 actions.appendChild(toggle);
                 card.appendChild(actions);
                 listPanel.appendChild(card);
             });
-
             const selected = state.adminView.inspectUser;
             const data = state.adminData.users[selected] || {};
             const banned = Boolean(state.adminData.userBans?.[selected]);
             const sessions = Object.entries((state.adminData.sessions || {})[selected] || {});
             const chats = getSortedChats().filter(chat => chat.participants.includes(selected));
-
             detailPanel.innerHTML = `
                 <div class="detail-pane">
                     <div class="detail-box">
                         <h4>@${escapeHtml(selected)}</h4>
                         <p>Durum: ${banned ? "Kısıtlı" : (data.durum === "online" ? "Çevrimiçi" : "Çevrimdışı")} • Son giriş: ${formatDateTime(data.lastLoginAt)}</p>
                         <div class="admin-actions" style="margin-top:14px;">
-                            <button class="mini-btn ${banned ? "success" : "danger"}" onclick="adminToggleUserBan(decodeURIComponent('${inlineToken(selected)}'))">${banned ? "Banı Kaldır" : "Banla"}</button>
-                            <button class="mini-btn" onclick="openProfileModal(decodeURIComponent('${inlineToken(selected)}'))">Profili Aç</button>
+                            <button class="mini-btn ${banned ? "success" : "danger"}" onclick="adminToggleUserBan('${escapeHtml(selected)}')">${banned ? "Banı Kaldır" : "Banla"}</button>
+                            <button class="mini-btn" onclick="openProfileModal('${escapeHtml(selected)}')">Profili Aç</button>
                         </div>
                     </div>
                     <div class="detail-box">
@@ -3227,7 +2809,7 @@
                                     <strong>${escapeHtml(deviceId)}</strong>
                                     <div>${meta.active ? "Aktif cihaz" : "Pasif cihaz"} • ${formatDateTime(meta.lastSeen)}</div>
                                     <div class="admin-actions" style="margin-top:10px;">
-                                        <button class="mini-btn ${state.adminData.deviceBans?.[deviceId] ? "success" : "danger"}" onclick="adminToggleDeviceBan(decodeURIComponent('${inlineToken(deviceId)}'), decodeURIComponent('${inlineToken(selected)}'))">${state.adminData.deviceBans?.[deviceId] ? "Cihaz banını kaldır" : "Cihazı banla"}</button>
+                                        <button class="mini-btn ${state.adminData.deviceBans?.[deviceId] ? "success" : "danger"}" onclick="adminToggleDeviceBan('${escapeHtml(deviceId)}', '${escapeHtml(selected)}')">${state.adminData.deviceBans?.[deviceId] ? "Cihaz banını kaldır" : "Cihazı banla"}</button>
                                     </div>
                                 </div>
                             `).join("") : `<div class="empty-state">Kayıtlı cihaz yok.</div>`}
@@ -3241,7 +2823,7 @@
                                     <strong>${escapeHtml(chat.participants.join(" ↔ "))}</strong>
                                     <div>${chat.count} mesaj • ${chat.lastMessage?.zaman ? formatDateTime(chat.lastMessage.zaman) : "Henüz mesaj yok"}</div>
                                     <div class="admin-actions" style="margin-top:10px;">
-                                        <button class="mini-btn" onclick="inspectAdminChat(decodeURIComponent('${inlineToken(chat.chatId)}'))">DM'i incele</button>
+                                        <button class="mini-btn" onclick="inspectAdminChat('${escapeHtml(chat.chatId)}')">DM'i incele</button>
                                     </div>
                                 </div>
                             `).join("") : `<div class="empty-state">Bu kullanıcıyla ilişkili kayıtlı DM yok.</div>`}
@@ -3250,27 +2832,23 @@
                 </div>
             `;
         }
-
         function renderAdminBans() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
             const userBans = Object.entries(state.adminData.userBans || {});
             const deviceBans = Object.entries(state.adminData.deviceBans || {});
             const closedChats = Object.entries(state.adminData.closedChats || {});
-
             listPanel.innerHTML = `
                 <div class="admin-section-title">
                     <h4>Kısıtlamalar</h4>
                     <span class="badge subtle">${userBans.length + deviceBans.length + closedChats.length} kayıt</span>
                 </div>
             `;
-
             if (!userBans.length && !deviceBans.length && !closedChats.length) {
                 listPanel.innerHTML += `<div class="empty-state">Şu anda aktif kısıtlama bulunmuyor.</div>`;
                 detailPanel.innerHTML = `<div class="empty-state">Ban veya kilit bilgisi oluştuğunda burada listelenir.</div>`;
                 return;
             }
-
             userBans.forEach(([user, meta]) => {
                 const card = document.createElement("div");
                 card.className = "admin-card";
@@ -3285,11 +2863,10 @@
                 `;
                 const actions = document.createElement("div");
                 actions.className = "admin-actions";
-                actions.innerHTML = `<button class="mini-btn success" onclick="adminToggleUserBan(decodeURIComponent('${inlineToken(user)}'))">Banı Kaldır</button>`;
+                actions.innerHTML = `<button class="mini-btn success" onclick="adminToggleUserBan('${escapeHtml(user)}')">Banı Kaldır</button>`;
                 card.appendChild(actions);
                 listPanel.appendChild(card);
             });
-
             deviceBans.forEach(([deviceId, meta]) => {
                 const card = document.createElement("div");
                 card.className = "admin-card";
@@ -3304,11 +2881,10 @@
                 `;
                 const actions = document.createElement("div");
                 actions.className = "admin-actions";
-                actions.innerHTML = `<button class="mini-btn success" onclick="adminToggleDeviceBan(decodeURIComponent('${inlineToken(deviceId)}'), decodeURIComponent('${inlineToken(meta.user || "")}'))">Kısıtı Kaldır</button>`;
+                actions.innerHTML = `<button class="mini-btn success" onclick="adminToggleDeviceBan('${escapeHtml(deviceId)}', '${escapeHtml(meta.user || "")}')">Kısıtı Kaldır</button>`;
                 card.appendChild(actions);
                 listPanel.appendChild(card);
             });
-
             closedChats.forEach(([chatId, meta]) => {
                 const card = document.createElement("div");
                 card.className = "admin-card";
@@ -3324,13 +2900,12 @@
                 const actions = document.createElement("div");
                 actions.className = "admin-actions";
                 actions.innerHTML = `
-                    <button class="mini-btn success" onclick="adminToggleChatLock(decodeURIComponent('${inlineToken(chatId)}'))">DM Aç</button>
-                    <button class="mini-btn" onclick="inspectAdminChat(decodeURIComponent('${inlineToken(chatId)}'))">İncele</button>
+                    <button class="mini-btn success" onclick="adminToggleChatLock('${escapeHtml(chatId)}')">DM Aç</button>
+                    <button class="mini-btn" onclick="inspectAdminChat('${escapeHtml(chatId)}')">İncele</button>
                 `;
                 card.appendChild(actions);
                 listPanel.appendChild(card);
             });
-
             detailPanel.innerHTML = `
                 <div class="detail-pane">
                     <div class="detail-box">
@@ -3344,28 +2919,22 @@
                 </div>
             `;
         }
-
         function renderAdminDevices() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
             const sessions = [];
-
             Object.entries(state.adminData.sessions || {}).forEach(([user, devices]) => {
                 Object.entries(devices || {}).forEach(([deviceId, meta]) => {
                     sessions.push({ user, deviceId, ...meta });
                 });
             });
-
             sessions.sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0));
-
             listPanel.innerHTML = `<div class="admin-section-title"><h4>Cihaz Oturumları</h4><span class="badge subtle">${sessions.length} kayıt</span></div>`;
-
             if (!sessions.length) {
                 listPanel.innerHTML += `<div class="empty-state">Henüz cihaz kaydı oluşmadı.</div>`;
                 detailPanel.innerHTML = `<div class="empty-state">Kullanıcılar giriş yaptıkça cihazları burada görünür.</div>`;
                 return;
             }
-
             sessions.forEach(item => {
                 const banned = Boolean(state.adminData.deviceBans?.[item.deviceId]);
                 const card = document.createElement("div");
@@ -3379,14 +2948,12 @@
                         <span class="badge ${banned ? "danger" : "subtle"}">${banned ? "Engelli" : "Normal"}</span>
                     </div>
                 `;
-
                 const actions = document.createElement("div");
                 actions.className = "admin-actions";
-                actions.innerHTML = `<button class="mini-btn ${banned ? "success" : "danger"}" onclick="adminToggleDeviceBan(decodeURIComponent('${inlineToken(item.deviceId)}'), decodeURIComponent('${inlineToken(item.user)}'))">${banned ? "Kısıtı kaldır" : "Cihazı kısıtla"}</button>`;
+                actions.innerHTML = `<button class="mini-btn ${banned ? "success" : "danger"}" onclick="adminToggleDeviceBan('${escapeHtml(item.deviceId)}', '${escapeHtml(item.user)}')">${banned ? "Kısıtı kaldır" : "Cihazı kısıtla"}</button>`;
                 card.appendChild(actions);
                 listPanel.appendChild(card);
             });
-
             detailPanel.innerHTML = `
                 <div class="detail-pane">
                     <div class="detail-box">
@@ -3400,7 +2967,6 @@
                 </div>
             `;
         }
-
         async function adminToggleChatLock(chatId) {
             if (!state.isAdmin) return;
             try {
@@ -3424,14 +2990,12 @@
                 showToast("DM kısıtı değiştirilemedi.", "error");
             }
         }
-
         async function adminToggleUserBan(user) {
             if (!state.isAdmin) return;
             if (user === state.myName) {
                 showToast("Kendi hesabını bu panelden banlayamazsın.", "warning");
                 return;
             }
-
             try {
                 const ref = db.ref(`moderasyon/bans/users/${user}`);
                 const isBanned = Boolean(state.adminData.userBans?.[user]);
@@ -3452,10 +3016,8 @@
                 showToast("Kullanıcı kısıtı güncellenemedi.", "error");
             }
         }
-
         async function adminToggleDeviceBan(deviceId, user) {
             if (!state.isAdmin || !deviceId) return;
-
             try {
                 const ref = db.ref(`moderasyon/bans/devices/${deviceId}`);
                 const isBanned = Boolean(state.adminData.deviceBans?.[deviceId]);
@@ -3476,45 +3038,37 @@
                 showToast("Cihaz kısıtı değiştirilemedi.", "error");
             }
         }
-
         function inspectAdminChat(chatId) {
             state.adminView.tab = "conversations";
             state.adminView.inspectChatId = chatId;
             openAdminPanel();
         }
-
         function inspectAdminUser(user) {
             state.adminView.tab = "users";
             state.adminView.inspectUser = user;
             openAdminPanel();
         }
-
         function flattenDevicesForUser(user) {
             return Object.entries((state.adminData.sessions || {})[user] || {}).map(([deviceId, meta]) => ({
                 deviceId,
                 ...meta
             }));
         }
-
         async function forceLogout(message) {
             if (state.isLoggingOut) return;
             state.isLoggingOut = true;
             await cikisYap({ forced: true, message });
             state.isLoggingOut = false;
         }
-
         async function cikisYap(options = {}) {
             const { forced = false, message = forced ? "Oturum kapatıldı." : "Çıkış yapıldı. Bu cihazda otomatik giriş kapatıldı." } = options;
             const currentUser = state.myName;
             const deviceId = localStorage.getItem(STORAGE_KEYS.device);
-
             if (state.sessionHeartbeat) {
                 clearInterval(state.sessionHeartbeat);
                 state.sessionHeartbeat = null;
             }
-
             clearSession();
-
             if (currentUser) {
                 try {
                     await Promise.all([
@@ -3528,10 +3082,8 @@
                     console.error(error);
                 }
             }
-
             clearAllRealtime();
             document.body.classList.remove("is-admin", "sidebar-open");
-
             state.myName = "";
             state.isAdmin = false;
             state.activeChatId = null;
@@ -3555,7 +3107,6 @@
                 closedChats: {},
                 sessions: {}
             };
-
             document.getElementById("friend-search").value = "";
             document.getElementById("auth-user").value = "";
             document.getElementById("auth-pass").value = "";
@@ -3578,23 +3129,19 @@
             renderHomeStats();
             showToast(message, forced ? "error" : "info");
         }
-
         async function startRecording() {
             if (!state.activeChatId) {
                 showToast("Önce bir sohbet aç.", "warning");
                 return;
             }
-
             if (state.currentChatLocked) {
                 showToast("Kapalı bir DM'ye ses kaydı gönderemezsin.", "warning");
                 return;
             }
-
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 state.mediaRecorder = new MediaRecorder(stream);
                 state.audioChunks = [];
-
                 state.mediaRecorder.ondataavailable = event => state.audioChunks.push(event.data);
                 state.mediaRecorder.onstop = () => {
                     const blob = new Blob(state.audioChunks, { type: "audio/webm" });
@@ -3616,7 +3163,6 @@
                         stream.getTracks().forEach(track => track.stop());
                     };
                 };
-
                 state.mediaRecorder.start();
                 document.getElementById("voice-btn").style.color = "var(--danger)";
             } catch (error) {
@@ -3624,7 +3170,6 @@
                 showToast("Mikrofona erişilemedi.", "error");
             }
         }
-
         function stopRecording() {
             if (state.mediaRecorder && state.mediaRecorder.state !== "inactive") {
                 state.mediaRecorder.stop();
