@@ -3,169 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
+    <title>NivoChat Ultimate</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* MODERN SİBER/DISCORD TEMASI */
         :root {
-            --bg-main: #0f172a;
-            --bg-panel: #1e293b;
-            --bg-hover: #334155;
-            --primary: #6366f1;
-            --primary-hover: #4f46e5;
-            --success: #10b981;
-            --danger: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --bg-main: #0f172a; --bg-panel: #1e293b; --bg-hover: #334155;
+            --primary: #6366f1; --primary-hover: #4f46e5;
+            --success: #10b981; --danger: #ef4444;
+            --text-main: #f8fafc; --text-muted: #94a3b8;
         }
 
         body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
-        /* GİRİŞ EKRANI */
+        /* AUTH & APP */
         #auth-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-main); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .auth-box { background: var(--bg-panel); padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 320px; text-align: center; border: 1px solid #334155; }
-        .auth-box h2 { margin-top: 0; color: var(--primary); font-weight: 800; font-size: 24px; letter-spacing: 1px; }
-        .auth-input { width: 90%; background: #0f172a; border: 1px solid #334155; color: white; padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s; font-family: 'Inter'; }
-        .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 10px rgba(99, 102, 241, 0.3); }
-        .auth-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; margin-bottom: 10px; }
-        .auth-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
-        .auth-btn.register { background: transparent; border: 1px solid var(--primary); color: var(--primary); }
-        .auth-btn.register:hover { background: rgba(99, 102, 241, 0.1); }
-
-        /* ANA UYGULAMA (Giriş yapana kadar gizli) */
+        .auth-box { background: var(--bg-panel); padding: 40px; border-radius: 16px; width: 320px; text-align: center; border: 1px solid #334155; }
         #app-container { display: none; width: 100%; height: 100%; }
 
-        /* SOL MENÜ */
+        /* SIDEBAR */
         #sidebar { width: 280px; background: var(--bg-panel); display: flex; flex-direction: column; border-right: 1px solid #0f172a; }
-        .sidebar-header { padding: 20px; font-weight: 800; color: var(--primary); font-size: 1.2em; border-bottom: 1px solid #0f172a; letter-spacing: 1px;}
-        
-        .nav-btn { padding: 12px 20px; margin: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.2s; font-weight: 600; color: var(--text-muted); display: flex; align-items: center; gap: 10px;}
+        .sidebar-header { padding: 20px; font-weight: 800; color: var(--primary); font-size: 1.2em; border-bottom: 1px solid #0f172a; }
+        .nav-btn { padding: 12px 20px; margin: 8px 12px; border-radius: 8px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-weight: 600; }
         .nav-btn:hover, .nav-btn.active { background: var(--bg-hover); color: white; }
         
-        #friends-list { flex: 1; overflow-y: auto; padding-top: 10px; }
-        .friend-item { padding: 10px 15px; margin: 2px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; transition: 0.2s; font-weight: 600;}
-        .friend-item:hover { background: var(--bg-hover); color: white; }
-        .friend-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), #8b5cf6); border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,0.2);}
+        #friends-list { flex: 1; overflow-y: auto; }
+        .friend-item { padding: 10px 15px; margin: 2px 12px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 12px; font-weight: 600; position: relative; }
+        .friend-item:hover { background: var(--bg-hover); }
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: gray; border: 2px solid var(--bg-panel); position: absolute; left: 40px; bottom: 8px; }
+        .status-dot.online { background: var(--success); }
 
-        #my-profile { padding: 15px 20px; background: rgba(0,0,0,0.2); font-weight: 600; color: white; display: flex; align-items: center; gap: 12px; border-top: 1px solid #0f172a;}
-        .my-avatar { width: 40px; height: 40px; background: linear-gradient(135deg, var(--success), #34d399); border-radius: 50%; }
+        .friend-avatar, .my-avatar { width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; font-weight: 800; }
 
-        /* ANA EKRAN */
-        #main-area { flex: 1; display: flex; flex-direction: column; background: var(--bg-main); }
-        .top-bar { height: 60px; background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--bg-panel); display: flex; align-items: center; padding: 0 25px; font-weight: 600; font-size: 1.1em; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); z-index: 10;}
-        
+        #my-profile-card { padding: 15px 20px; background: rgba(0,0,0,0.2); border-top: 1px solid #0f172a; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+
+        /* MAIN AREA */
+        #main-area { flex: 1; display: flex; flex-direction: column; }
+        .top-bar { height: 60px; background: rgba(30, 41, 59, 0.8); border-bottom: 1px solid var(--bg-panel); display: flex; align-items: center; padding: 0 25px; font-weight: 600; justify-content: space-between; }
         .panel { display: none; flex: 1; flex-direction: column; padding: 30px; overflow-y: auto; }
         .panel.active { display: flex; }
 
-        /* ARKADAŞ EKLE */
-        .add-friend-box { background: var(--bg-panel); padding: 25px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #334155; }
-        .input-group { display: flex; gap: 15px; margin-top: 15px; }
-        .input-group input { flex: 1; background: var(--bg-main); border: 1px solid #334155; padding: 15px; border-radius: 8px; color: white; outline: none; font-size: 1em; }
-        .input-group input:focus { border-color: var(--primary); }
-        button.action-btn { background: var(--primary); color: white; border: none; padding: 0 25px; border-radius: 8px; cursor: pointer; font-weight: 600; transition: 0.2s; }
-        button.action-btn:hover { background: var(--primary-hover); }
-        button.bg-green { background: var(--success); border:none; padding: 8px 15px; border-radius: 6px; color:white; font-weight:600; cursor:pointer; }
-        button.bg-red { background: var(--danger); border:none; padding: 8px 15px; border-radius: 6px; color:white; font-weight:600; cursor:pointer; }
+        /* MESSAGES */
+        #chat-messages { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 15px; }
+        .msg { display: flex; flex-direction: column; max-width: 80%; position: relative; }
+        .msg.me-align { align-self: flex-end; align-items: flex-end; }
+        .msg-text { background: var(--bg-panel); padding: 10px 15px; border-radius: 4px 12px 12px 12px; border: 1px solid #334155; position: relative; }
+        .msg.me-align .msg-text { background: var(--primary); border: none; border-radius: 12px 4px 12px 12px; }
+        
+        .msg-ops { font-size: 0.7em; color: var(--text-muted); cursor: pointer; margin-top: 3px; display: none; }
+        .msg:hover .msg-ops { display: block; }
+        
+        /* INPUT AREA */
+        #chat-input-area { padding: 20px; background: var(--bg-main); border-top: 1px solid var(--bg-panel); }
+        .input-wrapper { display: flex; background: var(--bg-panel); border-radius: 12px; padding: 8px; gap: 10px; }
+        .input-wrapper input { flex: 1; background: transparent; border: none; color: white; outline: none; }
+        
+        /* MODALS */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
+        .modal-content { background: var(--bg-panel); padding: 30px; border-radius: 16px; width: 350px; border: 1px solid var(--bg-hover); }
 
-        /* İSTEKLER */
-        .request-item { background: var(--bg-panel); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-left: 4px solid var(--primary); box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-
-        /* SOHBET */
-        #chat-messages { flex: 1; overflow-y: auto; padding: 25px; display: flex; flex-direction: column; gap: 20px; }
-        .msg { display: flex; flex-direction: column; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .msg-header { display: flex; gap: 12px; align-items: center; margin-bottom: 5px; }
-        .msg-isim { font-weight: 600; color: var(--success); font-size: 1rem; }
-        .msg-isim.me { color: var(--primary); }
-        .msg-text { background: var(--bg-panel); padding: 12px 18px; border-radius: 4px 16px 16px 16px; width: fit-content; max-width: 75%; word-break: break-word; font-size: 0.95em; line-height: 1.5; border: 1px solid #334155; }
-        .msg.me-align { align-items: flex-end; }
-        .msg.me-align .msg-text { border-radius: 16px 4px 16px 16px; background: var(--primary); border: none; }
-        .msg.me-align .msg-header { flex-direction: row-reverse; }
-
-        #chat-input-area { padding: 20px 25px; background: var(--bg-main); border-top: 1px solid var(--bg-panel); }
-        .chat-input-wrapper { display: flex; background: var(--bg-panel); border-radius: 12px; padding: 8px; border: 1px solid #334155; transition: 0.3s; }
-        .chat-input-wrapper:focus-within { border-color: var(--primary); }
-        .chat-input-wrapper input { flex: 1; background: transparent; padding: 10px 15px; border: none; color: white; outline: none; font-size: 1em; font-family: 'Inter'; }
-
-        /* GİZLİ ADMİN TETİKLEYİCİ */
-        #secret-admin-trigger { position: fixed; top: 0; right: 0; width: 30px; height: 30px; z-index: 9999; cursor: default; }
+        .btn { border: none; padding: 10px 15px; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .primary { background: var(--primary); color: white; }
+        .danger { background: var(--danger); color: white; }
+        
+        .recording { background: var(--danger) !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <div id="auth-screen">
         <div class="auth-box">
-            <h2>NivoChat</h2>
-            <p style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 25px;">Kayıt Ol Veya Giriş Yap</p>
-            <input type="text" id="auth-user" class="auth-input" placeholder="Kullanıcı Adı">
-            <input type="password" id="auth-pass" class="auth-input" placeholder="Şifre">
-            <button class="auth-btn" onclick="girisYap()">Giriş Yap</button>
-            <button class="auth-btn register" onclick="kayitOl()">Yeni Kayıt Ol</button>
-            <div id="auth-error" style="color: var(--danger); font-size: 0.8em; margin-top: 10px; font-weight: bold;"></div>
+            <h2 style="color:var(--primary)">NivoChat</h2>
+            <input type="text" id="auth-user" class="btn" style="width:90%; background:#0f172a; color:white; margin-bottom:10px;" placeholder="Kullanıcı Adı">
+            <input type="password" id="auth-pass" class="btn" style="width:90%; background:#0f172a; color:white; margin-bottom:20px;" placeholder="Şifre">
+            <button class="btn primary" style="width:100%; margin-bottom:10px;" onclick="girisYap()">Giriş Yap</button>
+            <button class="btn" style="width:100%; background:transparent; border:1px solid var(--primary); color:var(--primary)" onclick="kayitOl()">Kayıt Ol</button>
+            <div id="auth-error" style="color:var(--danger); margin-top:10px; font-size:0.8em"></div>
         </div>
     </div>
 
     <div id="app-container">
         <div id="sidebar">
-            <div class="sidebar-header">NIVO<span style="color:white;">CHAT</span></div>
-            <div class="nav-btn active" onclick="showPanel('home-panel')" id="btn-home">
-                <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3L12 2z"/></svg> 
-                Arkadaşlar & İstekler
-            </div>
-            <div style="padding: 15px; font-size: 0.75em; font-weight: 800; color: var(--text-muted); margin-top: 10px; letter-spacing: 1px;">DİREKT MESAJLAR</div>
-            
+            <div class="sidebar-header">NIVOCHAT</div>
+            <div class="nav-btn active" id="btn-home" onclick="showPanel('home-panel')">🏠 Arkadaşlar</div>
+            <div style="padding:15px; font-size:0.7em; color:var(--text-muted)">MESAJLAR</div>
             <div id="friends-list"></div>
-
-            <div id="my-profile">
-                <div class="my-avatar"></div>
-                <div>
-                    <div id="my-name-display" style="line-height: 1.2;">...</div>
-                    <div style="font-size: 0.7em; color: var(--success);">Çevrimiçi</div>
+            
+            <div id="my-profile-card" onclick="openProfileModal(myName)">
+                <div class="my-avatar" id="my-avatar-display">?</div>
+                <div style="flex:1">
+                    <div id="my-name-display">...</div>
+                    <div style="font-size:0.7em; color:var(--success)">Çevrimiçi</div>
                 </div>
             </div>
         </div>
 
         <div id="main-area">
-            <div class="top-bar" id="top-bar-title">Ana Sayfa</div>
+            <div class="top-bar">
+                <span id="top-bar-title">Hoş Geldin</span>
+                <div id="online-status-header" style="font-size:0.8em; color:var(--text-muted)"></div>
+            </div>
 
             <div id="home-panel" class="panel active">
-                <div class="add-friend-box">
-                    <h3 style="margin-top: 0; color: white;">Arkadaş Ekle</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95em;">NivoChat kullanan birinin adını yazarak ona istek gönder.</p>
-                    <div class="input-group">
-                        <input type="text" id="add-friend-input" placeholder="Kullanıcı Adı Girin...">
-                        <button class="action-btn" onclick="istekGonder()">İstek Gönder</button>
+                <div style="background:var(--bg-panel); padding:20px; border-radius:12px; margin-bottom:20px;">
+                    <h3>Arkadaş Ekle</h3>
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" id="add-friend-input" class="btn" style="flex:1; background:var(--bg-main); color:white;" placeholder="Kullanıcı adı...">
+                        <button class="btn primary" onclick="istekGonder()">Ekle</button>
                     </div>
                 </div>
-
-                <h3 style="color: white; border-bottom: 1px solid var(--bg-panel); padding-bottom: 10px;">Gelen İstekler <span id="req-count" style="color: var(--primary);">0</span></h3>
+                <h3>Gelen İstekler (<span id="req-count">0</span>)</h3>
                 <div id="requests-list"></div>
             </div>
 
-            <div id="chat-panel" class="panel" style="padding: 0;">
-                <div style="background: rgba(0,0,0,0.1); padding: 10px 25px; text-align: right; border-bottom: 1px solid var(--bg-panel);">
-                    <button class="bg-red" onclick="showPanel('home-panel')">✖ Sohbeti Kapat</button>
-                </div>
-                
+            <div id="chat-panel" class="panel" style="padding:0; display:none;">
                 <div id="chat-messages"></div>
-
                 <div id="chat-input-area">
-                    <div class="chat-input-wrapper">
-                        <input type="text" id="msg-input" placeholder="Mesajınızı yazın..." onkeypress="if(event.key === 'Enter') mesajGonder()">
-                        <button class="action-btn" onclick="mesajGonder()" style="margin-left: 10px;">Gönder</button>
+                    <div class="input-wrapper">
+                        <button class="btn" id="voice-btn" onmousedown="startRecording()" onmouseup="stopRecording()" title="Basılı tut konuş">🎤</button>
+                        <input type="text" id="msg-input" placeholder="Mesaj yazın..." onkeypress="if(event.key==='Enter') mesajGonder()">
+                        <button class="btn primary" onclick="mesajGonder()">Gönder</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="secret-admin-trigger" onclick="checkAdmin()"></div>
+    <div id="profile-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="prof-name">Profil</h2>
+            <div id="prof-status" style="margin-bottom:20px; color:var(--text-muted)">Durum: -</div>
+            <div id="prof-edit-area" style="display:none;">
+                <input type="text" id="new-bio" class="btn" style="width:90%; background:var(--bg-main); color:white;" placeholder="Yeni biyografi...">
+                <button class="btn primary" style="margin-top:10px;" onclick="biyoGuncelle()">Kaydet</button>
+            </div>
+            <p id="prof-bio" style="font-style:italic"></p>
+            <button class="btn danger" onclick="document.getElementById('profile-modal').style.display='none'">Kapat</button>
+        </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
     <script>
-        // ======== FIREBASE BİLGİLERİN ========
+        // CONFIG - AYNI KALIYOR
         const firebaseConfig = {
             apiKey: "AIzaSyBG70J_njlRPdsd_eWS0zxgOVb4r7dNM8s",
             authDomain: "nivochat-6a15e.firebaseapp.com",
@@ -175,213 +156,219 @@
             messagingSenderId: "520948298454",
             appId: "1:520948298454:web:bfb57438d4fb79158a4f77"
         };
-        
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
         let myName = "";
-        let activeChatUser = null; 
         let activeChatId = null;
-        let mesajDinleyici = null;
+        let activeChatUser = null;
+        let mediaRecorder;
+        let audioChunks = [];
 
-        // ======== GİRİŞ VE KAYIT SİSTEMİ ========
-        function showError(msg) {
-            document.getElementById('auth-error').innerText = msg;
-            setTimeout(() => document.getElementById('auth-error').innerText = "", 3000);
+        // --- GİRİŞ & DURUM ---
+        function girisYap() {
+            const user = document.getElementById('auth-user').value.trim();
+            const pass = document.getElementById('auth-pass').value.trim();
+            db.ref(`kullanicilar/${user}`).once('value', snap => {
+                if(snap.exists() && snap.val().sifre === pass) basariliGiris(user);
+                else alert("Hatalı giriş!");
+            });
         }
 
         function kayitOl() {
             const user = document.getElementById('auth-user').value.trim();
             const pass = document.getElementById('auth-pass').value.trim();
-            
-            if(user.length < 3 || pass.length < 3) return showError("Kullanıcı adı ve şifre en az 3 karakter olmalı!");
-
-            db.ref(`kullanicilar/${user}`).once('value', snap => {
-                if(snap.exists()) {
-                    showError("Bu kullanıcı adı zaten alınmış!");
-                } else {
-                    db.ref(`kullanicilar/${user}`).set({ sifre: pass });
-                    basariliGiris(user);
-                }
-            });
+            if(user.length < 3) return alert("Kısa isim!");
+            db.ref(`kullanicilar/${user}`).set({ sifre: pass, biyo: "NivoChat kullanıcısı", durum: "online" });
+            basariliGiris(user);
         }
 
-        function girisYap() {
-            const user = document.getElementById('auth-user').value.trim();
-            const pass = document.getElementById('auth-pass').value.trim();
-            
-            if(!user || !pass) return showError("Lütfen boş alan bırakmayın.");
-
-            db.ref(`kullanicilar/${user}`).once('value', snap => {
-                if(snap.exists()) {
-                    if(snap.val().sifre === pass) {
-                        basariliGiris(user);
-                    } else {
-                        showError("Şifre hatalı!");
-                    }
-                } else {
-                    showError("Böyle bir kullanıcı bulunamadı!");
-                }
-            });
-        }
-
-        function basariliGiris(isim) {
-            myName = isim;
+        function basariliGiris(user) {
+            myName = user;
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('app-container').style.display = 'flex';
             document.getElementById('my-name-display').innerText = myName;
-            uygulamayiBaslat();
+            document.getElementById('my-avatar-display').innerText = myName[0].toUpperCase();
+            
+            // Çevrim içi yap
+            db.ref(`kullanicilar/${myName}/durum`).set("online");
+            db.ref(`kullanicilar/${myName}/durum`).onDisconnect().set("offline");
+            
+            baslat();
         }
 
-        // ======== GİZLİ ADMİN SİSTEMİ ========
-        function checkAdmin() {
-            const pw = prompt("Yönetici Şifresi:");
-            if (pw === "Nivoria1") {
-                const onay = confirm("DİKKAT: Bütün sunucu verilerini (mesajlar, istekler, arkadaşlar) silmek istediğinize emin misiniz? Bu işlem geri alınamaz!");
-                if(onay) {
-                    db.ref('dm_mesajlari').remove();
-                    db.ref('istekler').remove();
-                    db.ref('arkadaslar').remove();
-                    alert("Sistem tamamen temizlendi. Bütün DM'ler kapatıldı.");
-                    showPanel('home-panel'); // Herkesi ana sayfaya atar
-                }
-            }
-        }
-
-        // ======== UYGULAMA MANTIĞI ========
-        function uygulamayiBaslat() {
-            // Gelen İstekleri Dinle
-            db.ref(`istekler/${myName}`).on('value', snap => {
-                const list = document.getElementById('requests-list');
-                list.innerHTML = "";
-                let count = 0;
-                
-                snap.forEach(child => {
-                    const kimden = child.key;
-                    count++;
-                    list.innerHTML += `
-                        <div class="request-item">
-                            <div><strong style="color:white; font-size:1.1em;">${kimden}</strong> <span style="color:var(--text-muted);">sana arkadaşlık isteği gönderdi.</span></div>
-                            <div style="display:flex; gap:10px;">
-                                <button class="bg-green" onclick="istekCevapla('${kimden}', true)">Kabul Et</button>
-                                <button class="bg-red" onclick="istekCevapla('${kimden}', false)">Reddet</button>
-                            </div>
-                        </div>
-                    `;
-                });
-                document.getElementById('req-count').innerText = count;
-                if(count === 0) list.innerHTML = "<div style='color:var(--text-muted); padding:20px; text-align:center; background:var(--bg-panel); border-radius:12px;'>Bekleyen isteğin yok.</div>";
-            });
-
-            // Arkadaş Listesini Dinle
+        // --- ANA FONKSİYONLAR ---
+        function baslat() {
+            // Arkadaş listesi ve online durumu
             db.ref(`arkadaslar/${myName}`).on('value', snap => {
                 const list = document.getElementById('friends-list');
                 list.innerHTML = "";
                 snap.forEach(child => {
-                    const arkadas = child.key;
-                    list.innerHTML += `
-                        <div class="friend-item" onclick="sohbetBaslat('${arkadas}')" id="friend-${arkadas}">
-                            <div class="friend-avatar"></div>
-                            <div>${arkadas}</div>
-                        </div>
-                    `;
+                    const friend = child.key;
+                    db.ref(`kullanicilar/${friend}/durum`).on('value', st => {
+                        const isOnline = st.val() === "online";
+                        let el = document.getElementById(`friend-${friend}`);
+                        if(!el) {
+                            list.innerHTML += `
+                                <div class="friend-item" id="friend-${friend}" onclick="sohbetBaslat('${friend}')">
+                                    <div class="friend-avatar">${friend[0].toUpperCase()}</div>
+                                    <div class="status-dot ${isOnline?'online':''}"></div>
+                                    <span>${friend}</span>
+                                </div>`;
+                        } else {
+                            el.querySelector('.status-dot').className = `status-dot ${isOnline?'online':''}`;
+                        }
+                    });
                 });
+            });
+
+            // İstekler
+            db.ref(`istekler/${myName}`).on('value', snap => {
+                const list = document.getElementById('requests-list');
+                list.innerHTML = "";
+                let count = 0;
+                snap.forEach(c => {
+                    count++;
+                    list.innerHTML += `<div class="btn" style="background:var(--bg-panel); margin-bottom:5px; display:flex; justify-content:space-between">
+                        ${c.key} <button onclick="istekCevapla('${c.key}', true)" class="btn primary">Kabul</button>
+                    </div>`;
+                });
+                document.getElementById('req-count').innerText = count;
             });
         }
 
-        function showPanel(panelId) {
-            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-            document.getElementById(panelId).classList.add('active');
+        function sohbetBaslat(friend) {
+            activeChatUser = friend;
+            const users = [myName, friend].sort();
+            activeChatId = `${users[0]}_${users[1]}`;
             
-            // Menü buton vurguları
-            document.querySelectorAll('.nav-btn, .friend-item').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('top-bar-title').innerText = "@" + friend;
+            showPanel('chat-panel');
             
-            if(panelId === 'home-panel') {
-                document.getElementById('top-bar-title').innerHTML = "👋 Ana Sayfa & İstekler";
-                document.getElementById('btn-home').classList.add('active');
-                activeChatUser = null;
+            // Çevrim içi başlık kontrolü
+            db.ref(`kullanicilar/${friend}/durum`).on('value', s => {
+                document.getElementById('online-status-header').innerText = s.val() === "online" ? "● Çevrimiçi" : "Çevrimdışı";
+            });
+
+            const chatBox = document.getElementById('chat-messages');
+            chatBox.innerHTML = "";
+            db.ref(`dm_mesajlari/${activeChatId}`).off();
+            db.ref(`dm_mesajlari/${activeChatId}`).on('child_added', snap => {
+                ekranaMesajBas(snap.key, snap.val());
+            });
+            db.ref(`dm_mesajlari/${activeChatId}`).on('child_removed', snap => {
+                document.getElementById(`msg-${snap.key}`)?.remove();
+            });
+        }
+
+        function ekranaMesajBas(id, m) {
+            const chatBox = document.getElementById('chat-messages');
+            const isMe = m.gonderen === myName;
+            
+            let icerik = m.metin ? `<span>${m.metin}</span>` : `<audio controls src="${m.ses}"></audio>`;
+            if(m.duzenlendi) icerik += ` <small style="opacity:0.5">(düzenlendi)</small>`;
+
+            const html = `
+                <div class="msg ${isMe?'me-align':''}" id="msg-${id}">
+                    <div style="font-size:0.7em; color:var(--text-muted)">${m.gonderen}</div>
+                    <div class="msg-text">${icerik}</div>
+                    ${isMe ? `
+                        <div class="msg-ops">
+                            <span onclick="mesajSil('${id}')">Sil</span> | 
+                            <span onclick="mesajDuzenle('${id}', '${m.metin}')">Düzenle</span>
+                        </div>` : `<div class="msg-ops" onclick="openProfileModal('${m.gonderen}')">Profiline Bak</div>`}
+                </div>`;
+            chatBox.innerHTML += html;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // --- MESAJ İŞLEMLERİ ---
+        function mesajGonder() {
+            const inp = document.getElementById('msg-input');
+            if(!inp.value.trim()) return;
+            db.ref(`dm_mesajlari/${activeChatId}`).push({
+                gonderen: myName, metin: inp.value, zaman: Date.now()
+            });
+            inp.value = "";
+        }
+
+        function mesajSil(id) {
+            if(confirm("Mesaj silinsin mi?")) db.ref(`dm_mesajlari/${activeChatId}/${id}`).remove();
+        }
+
+        function mesajDuzenle(id, eski) {
+            const yeni = prompt("Mesajı düzenle:", eski);
+            if(yeni) db.ref(`dm_mesajlari/${activeChatId}/${id}`).update({ metin: yeni, duzenlendi: true });
+        }
+
+        // --- SESLİ MESAJ (BASE64 BYPASS) ---
+        async function startRecording() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = () => {
+                    db.ref(`dm_mesajlari/${activeChatId}`).push({
+                        gonderen: myName, ses: reader.result, zaman: Date.now()
+                    });
+                };
+            };
+            mediaRecorder.start();
+            document.getElementById('voice-btn').classList.add('recording');
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+            document.getElementById('voice-btn').classList.remove('recording');
+        }
+
+        // --- PROFİL SİSTEMİ ---
+        function openProfileModal(user) {
+            document.getElementById('profile-modal').style.display = 'flex';
+            document.getElementById('prof-name').innerText = "@" + user;
+            document.getElementById('prof-edit-area').style.display = (user === myName) ? "block" : "none";
+            
+            db.ref(`kullanicilar/${user}`).once('value', snap => {
+                const d = snap.val();
+                document.getElementById('prof-bio').innerText = d.biyo || "Biyografi yok.";
+                document.getElementById('prof-status').innerText = "Durum: " + (d.durum === "online" ? "Çevrimiçi" : "Çevrimdışı");
+            });
+        }
+
+        function biyoGuncelle() {
+            const yeni = document.getElementById('new-bio').value;
+            db.ref(`kullanicilar/${myName}/biyo`).set(yeni);
+            document.getElementById('prof-bio').innerText = yeni;
+            alert("Biyografi güncellendi!");
+        }
+
+        // --- YARDIMCI ---
+        function showPanel(id) {
+            document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+            document.getElementById(id).style.display = 'flex';
+            if(id === 'home-panel') {
+                document.getElementById('top-bar-title').innerText = "Ana Sayfa";
+                document.getElementById('online-status-header').innerText = "";
             }
         }
 
         function istekGonder() {
-            const hedef = document.getElementById('add-friend-input').value.trim();
-            if(!hedef || hedef === myName) return alert("Kendine istek atamazsın veya boş bırakamazsın!");
-            
-            // Önce kullanıcı var mı diye bak
-            db.ref(`kullanicilar/${hedef}`).once('value', snap => {
-                if(snap.exists()) {
-                    db.ref(`istekler/${hedef}/${myName}`).set("bekliyor");
-                    alert(`${hedef} kullanıcısına istek gönderildi!`);
-                    document.getElementById('add-friend-input').value = "";
-                } else {
-                    alert("Böyle bir kullanıcı bulunamadı!");
-                }
-            });
+            const h = document.getElementById('add-friend-input').value.trim();
+            if(h === myName) return;
+            db.ref(`istekler/${h}/${myName}`).set(true);
+            alert("İstek gitti!");
         }
 
-        function istekCevapla(kimden, kabulMu) {
-            if(kabulMu) {
-                db.ref(`arkadaslar/${myName}/${kimden}`).set(true);
-                db.ref(`arkadaslar/${kimden}/${myName}`).set(true);
+        function istekCevapla(kim, ok) {
+            if(ok) {
+                db.ref(`arkadaslar/${myName}/${kim}`).set(true);
+                db.ref(`arkadaslar/${kim}/${myName}`).set(true);
             }
-            db.ref(`istekler/${myName}/${kimden}`).remove();
-        }
-
-        function sohbetBaslat(arkadas) {
-            activeChatUser = arkadas;
-            document.getElementById('top-bar-title').innerText = `@${arkadas} ile sohbet ediyorsun`;
-            showPanel('chat-panel');
-            
-            // Sol menüde aktif arkadaşı vurgula
-            document.getElementById(`friend-${arkadas}`).classList.add('active');
-
-            document.getElementById('chat-messages').innerHTML = ""; 
-            const users = [myName, arkadas].sort();
-            activeChatId = `${users[0]}_${users[1]}`;
-
-            if(mesajDinleyici) db.ref(`dm_mesajlari/${activeChatId}`).off('child_added', mesajDinleyici);
-
-            mesajDinleyici = db.ref(`dm_mesajlari/${activeChatId}`).on('child_added', snap => {
-                const m = snap.val();
-                ekranaMesajBas(m.gonderen, m.metin);
-            });
-        }
-
-        function mesajGonder() {
-            if(!activeChatUser || !activeChatId) return;
-            const input = document.getElementById('msg-input');
-            const metin = input.value.trim();
-            
-            if(metin !== "") {
-                db.ref(`dm_mesajlari/${activeChatId}`).push({
-                    gonderen: myName,
-                    metin: metin,
-                    zaman: Date.now()
-                });
-                input.value = "";
-            }
-        }
-
-        function ekranaMesajBas(gonderen, metin) {
-            const box = document.getElementById('chat-messages');
-            const isMe = (gonderen === myName);
-            
-            // Eğer mesaj benimse sağa yasla ve farklı renk yap
-            const divClass = isMe ? "msg me-align" : "msg";
-            const isimClass = isMe ? "msg-isim me" : "msg-isim";
-            const avatarColor = isMe ? "linear-gradient(135deg, var(--primary), #8b5cf6)" : "linear-gradient(135deg, var(--success), #34d399)";
-            const displayName = isMe ? "Sen" : gonderen;
-
-            box.innerHTML += `
-                <div class="${divClass}">
-                    <div class="msg-header">
-                        <div class="friend-avatar" style="width:24px; height:24px; background: ${avatarColor}"></div>
-                        <span class="${isimClass}">${displayName}</span>
-                    </div>
-                    <div class="msg-text">${metin}</div>
-                </div>
-            `;
-            box.scrollTop = box.scrollHeight;
+            db.ref(`istekler/${myName}/${kim}`).remove();
         }
     </script>
 </body>
