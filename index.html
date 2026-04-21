@@ -1858,8 +1858,8 @@
         }
 
         async function basariliGiris(user) {
-        if (user === "Özkan" || user === "ozkan" || user === "Ozkan") {
-        state.isAdmin = true;
+        state.myName = user;
+            state.isAdmin = await determineAdmin(user);
             
             // --- TARAYICI SES KİLİDİNİ AÇMA ---
             notificationSound.play().then(() => {
