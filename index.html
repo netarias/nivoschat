@@ -1540,7 +1540,7 @@
             </div>
         </div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
         const firebaseConfig = {
@@ -1554,6 +1554,10 @@
         };
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        
+        // --- SES DOSYASI BURADA TANIMLANIYOR ---
+        const notificationSound = new Audio('ses.mp3');
+
         const STORAGE_KEYS = {
             remember: "nivo_remember_v3",
             device: "nivo_device_id"
@@ -1601,8 +1605,10 @@
                 sessions: {}
             }
         };
+
         window.onload = initApp;
         document.addEventListener("keydown", handleGlobalShortcuts);
+
         async function initApp() {
             ensureDeviceId();
             bindStaticFormShortcuts();
@@ -1618,6 +1624,7 @@
                 await girisYap(true);
             }
         }
+
         function bindStaticFormShortcuts() {
             document.getElementById("auth-pass").addEventListener("keydown", event => {
                 if (event.key === "Enter") girisYap();
@@ -1626,6 +1633,7 @@
                 if (event.key === "Enter") girisYap();
             });
         }
+
         function handleGlobalShortcuts(event) {
             if (event.key === "Escape") {
                 hideMenu();
@@ -1634,12 +1642,14 @@
                 document.body.classList.remove("sidebar-open");
             }
         }
+
         function ensureDeviceId() {
             if (!localStorage.getItem(STORAGE_KEYS.device)) {
                 const deviceId = `nivo-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
                 localStorage.setItem(STORAGE_KEYS.device, deviceId);
             }
         }
+
         function getSavedSession() {
             try {
                 return JSON.parse(localStorage.getItem(STORAGE_KEYS.remember) || "null");
@@ -1647,6 +1657,7 @@
                 return null;
             }
         }
+
         function saveSession(user, pass) {
             localStorage.setItem(STORAGE_KEYS.remember, JSON.stringify({
                 user,
@@ -1655,9 +1666,11 @@
                 savedAt: Date.now()
             }));
         }
+
         function clearSession() {
             localStorage.removeItem(STORAGE_KEYS.remember);
         }
+
         function showToast(message, type = "info") {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
@@ -1670,6 +1683,7 @@
                 setTimeout(() => toast.remove(), 180);
             }, 2800);
         }
+
         function escapeHtml(text = "") {
             return String(text)
                 .replace(/&/g, "&amp;")
@@ -1678,13 +1692,16 @@
                 .replace(/"/g, "&quot;")
                 .replace(/'/g, "&#39;");
         }
+
         function getInitial(name = "?") {
             return String(name).trim().charAt(0).toUpperCase() || "?";
         }
+
         function formatTime(value) {
             if (!value) return "--:--";
             return new Date(value).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
         }
+
         function formatDateTime(value) {
             if (!value) return "Bilinmiyor";
             return new Date(value).toLocaleString("tr-TR", {
@@ -1695,6 +1712,7 @@
                 minute: "2-digit"
             });
         }
+
         function relativeTime(value) {
             if (!value) return "Bilinmiyor";
             const seconds = Math.floor((Date.now() - value) / 1000);
@@ -1706,31 +1724,40 @@
             const days = Math.floor(hours / 24);
             return `${days} gün önce`;
         }
+
         function normalizeChatId(userA, userB) {
             return [userA, userB].sort().join("_");
         }
+
         function isUserFriend(user) {
             return Boolean(state.friendMap?.[user]);
         }
+
         function isUserHidden(user) {
             return Boolean(state.hiddenMap?.[user]);
         }
+
         function toggleSidebar(force) {
-            const shouldOpen = typeof force === "boolean" ? force : !document.body.classList.contains("sidebar-open");
+            const shouldOpen = typeof force === "boolean" ?
+                force : !document.body.classList.contains("sidebar-open");
             document.body.classList.toggle("sidebar-open", shouldOpen);
         }
+
         function closeModalOnBackdrop(event, id) {
             if (event.target.id === id) {
                 closeModal(id);
             }
         }
+
         function closeModal(id) {
             document.getElementById(id).style.display = "none";
         }
+
         function listen(ref, eventName, callback, bucket = "app") {
             ref.on(eventName, callback);
             state.listeners[bucket].push({ ref, eventName, callback });
         }
+
         function clearListenerBucket(bucket) {
             (state.listeners[bucket] || []).forEach(item => item.ref.off(item.eventName, item.callback));
             state.listeners[bucket] = [];
@@ -1738,9 +1765,11 @@
                 state.presenceBound = {};
             }
         }
+
         function clearAllRealtime() {
             Object.keys(state.listeners).forEach(clearListenerBucket);
         }
+
         function bindPresence(user) {
             if (!user || state.presenceBound[user]) return;
             state.presenceBound[user] = true;
@@ -1751,10 +1780,12 @@
                 if (state.activeChatUser === user) updateActiveHeader(user);
             }, "presence");
         }
+
         async function determineAdmin(user) {
             const snap = await db.ref(`yoneticiler/${user}`).once("value");
             return snap.exists() || DEFAULT_ADMIN_USERS.includes(String(user).toLowerCase());
         }
+
         async function girisYap(isAuto = false) {
             const user = document.getElementById("auth-user").value.trim();
             const pass = document.getElementById("auth-pass").value.trim();
@@ -1790,9 +1821,11 @@
                 if (!isAuto) showToast("Giriş sırasında beklenmedik bir hata oldu.", "error");
             }
         }
+
         function isValidUsername(name) {
             return /^[a-zA-Z0-9_]{3,20}$/.test(name);
         }
+
         async function kayitOl() {
             const user = document.getElementById("auth-user").value.trim();
             const pass = document.getElementById("auth-pass").value.trim();
@@ -1823,9 +1856,17 @@
                 showToast("Kayıt oluşturulamadı.", "error");
             }
         }
+
         async function basariliGiris(user) {
             state.myName = user;
             state.isAdmin = await determineAdmin(user);
+            
+            // --- TARAYICI SES KİLİDİNİ AÇMA ---
+            notificationSound.play().then(() => {
+                notificationSound.pause();
+                notificationSound.currentTime = 0;
+            }).catch(() => {});
+            
             document.body.classList.toggle("is-admin", state.isAdmin);
             document.getElementById("auth-screen").style.display = "none";
             document.getElementById("app-container").style.display = "flex";
@@ -1835,26 +1876,31 @@
             document.getElementById("my-role-badge").classList.toggle("hidden", !state.isAdmin);
             document.getElementById("metric-mode").innerText = state.isAdmin ? "Yönetici" : "Standart";
             document.getElementById("admin-summary-card").classList.toggle("hidden", !state.isAdmin);
+            
             await db.ref(`kullanicilar/${user}`).update({
                 durum: "online",
                 lastLoginAt: Date.now(),
                 lastDevice: localStorage.getItem(STORAGE_KEYS.device)
             });
             db.ref(`kullanicilar/${user}/durum`).onDisconnect().set("offline");
+            
             await registerDeviceSession();
             startSessionHeartbeat();
             startModerationGuards();
             baslat();
+            
             if (state.isAdmin) {
                 startAdminRealtime();
             } else {
                 clearListenerBucket("admin");
             }
+            
             renderHeaderActions();
             renderHomeStats();
             showPanel("home-panel");
             showToast(`Tekrar hoş geldin ${user}.`, "success");
         }
+
         async function registerDeviceSession() {
             if (!state.myName) return;
             const deviceId = localStorage.getItem(STORAGE_KEYS.device);
@@ -1866,6 +1912,7 @@
                 createdAt: Date.now()
             });
         }
+
         function startSessionHeartbeat() {
             if (state.sessionHeartbeat) clearInterval(state.sessionHeartbeat);
             state.sessionHeartbeat = setInterval(async () => {
@@ -1885,6 +1932,7 @@
                 }
             }, 60000);
         }
+
         function startModerationGuards() {
             clearListenerBucket("guards");
             if (!state.myName) return;
@@ -1900,6 +1948,7 @@
                 }
             }, "guards");
         }
+
         function baslat() {
             clearListenerBucket("app");
             clearListenerBucket("presence");
@@ -1921,6 +1970,7 @@
                 renderHomeStats();
             }, "app");
         }
+
         function renderHomeStats() {
             const visibleFriends = Object.keys(state.friendMap || {}).filter(friend => !isUserHidden(friend)).length;
             const requestCount = Object.keys(state.requestMap || {}).length;
@@ -1932,6 +1982,7 @@
             document.getElementById("req-count").innerText = String(requestCount);
             renderAdminSummary();
         }
+
         function renderFriendsList() {
             const list = document.getElementById("friends-list");
             list.innerHTML = "";
@@ -1972,6 +2023,7 @@
                 list.appendChild(button);
             });
         }
+
         function getStatusClass(user) {
             if (state.adminData.userBans?.[user]) return "banned";
             const status = state.userPresence[user];
@@ -1979,6 +2031,7 @@
             if (status === "away") return "away";
             return "";
         }
+
         function getStatusLabel(user) {
             if (state.adminData.userBans?.[user]) return "Kısıtlı kullanıcı";
             const status = state.userPresence[user];
@@ -1986,6 +2039,7 @@
             if (status === "away") return "Meşgul";
             return "Çevrimdışı";
         }
+
         function renderRequests() {
             const list = document.getElementById("requests-list");
             list.innerHTML = "";
@@ -2017,6 +2071,7 @@
                 list.appendChild(card);
             });
         }
+
         function renderHiddenChats() {
             const list = document.getElementById("hidden-dms-list");
             list.innerHTML = "";
@@ -2056,6 +2111,7 @@
                 list.appendChild(card);
             });
         }
+
         function renderAdminSummary() {
             const summary = document.getElementById("admin-summary");
             if (!state.isAdmin) {
@@ -2078,10 +2134,12 @@
                 </div>
             `;
         }
+
         function handleFriendSearch(value) {
             state.friendSearch = value.trim().toLowerCase();
             renderFriendsList();
         }
+
         async function istekGonder() {
             const target = document.getElementById("add-friend-input").value.trim();
             if (!target || target === state.myName) {
@@ -2116,6 +2174,7 @@
                 showToast("İstek gönderilemedi.", "error");
             }
         }
+
         async function istekCevapla(user, accepted) {
             try {
                 if (accepted) {
@@ -2136,6 +2195,7 @@
                 showToast("İstek işlenemedi.", "error");
             }
         }
+
         function updateActiveHeader(friend) {
             const status = getStatusLabel(friend);
             document.getElementById("top-bar-title").innerText = `@${friend}`;
@@ -2144,6 +2204,7 @@
             document.getElementById("active-avatar").style.display = "flex";
             document.getElementById("active-avatar").innerText = getInitial(friend);
         }
+
         function renderHeaderActions() {
             const container = document.getElementById("chat-header-actions");
             container.innerHTML = "";
@@ -2181,6 +2242,7 @@
                 container.appendChild(adminBtn);
             }
         }
+
         function showPanel(id) {
             document.querySelectorAll(".panel").forEach(panel => {
                 panel.classList.remove("active-panel");
@@ -2201,6 +2263,7 @@
             renderHeaderActions();
             toggleSidebar(false);
         }
+
         async function sohbetBaslat(friend) {
             state.activeChatUser = friend;
             state.activeChatId = normalizeChatId(state.myName, friend);
@@ -2228,11 +2291,21 @@
                 console.error(error);
                 chatBox.innerHTML = `<div class="empty-state">Mesajlar yüklenemedi.</div>`;
             }
+            
             listen(chatRef, "child_added", snap => {
                 if (document.getElementById(`msg-${snap.key}`)) return;
                 if (chatBox.querySelector(".empty-state")) chatBox.innerHTML = "";
-                ekranaMesajBas(snap.key, snap.val());
+                
+                const msgData = snap.val();
+                
+                // --- SES BİLDİRİMİ KONTROLÜ BURADA ---
+                if (msgData.gonderen !== state.myName && document.visibilityState === 'hidden') {
+                    notificationSound.play().catch(e => console.log("Ses engellendi:", e));
+                }
+
+                ekranaMesajBas(snap.key, msgData);
             }, "chat");
+            
             listen(chatRef, "child_changed", snap => {
                 const el = document.getElementById(`text-${snap.key}`);
                 if (el) {
@@ -2240,18 +2313,21 @@
                     el.innerHTML = `${escapeHtml(data.metin || "")}${data.duzenlendi ? ' <small style="opacity:0.6;">(düzenlendi)</small>' : ""}`;
                 }
             }, "chat");
+            
             listen(chatRef, "child_removed", snap => {
                 document.getElementById(`msg-${snap.key}`)?.remove();
                 if (!chatBox.children.length) {
                     chatBox.innerHTML = `<div class="empty-state">Bu sohbette mesaj kalmadı.</div>`;
                 }
             }, "chat");
+            
             listen(lockRef, "value", snap => {
                 state.currentChatLocked = snap.exists();
                 updateChatLockBanner(snap.val());
                 updateComposeAvailability();
             }, "chat");
         }
+
         function updateChatLockBanner(data) {
             const banner = document.getElementById("chat-lock-banner");
             if (!data) {
@@ -2268,6 +2344,7 @@
                 ${state.isAdmin ? '<span class="badge warning">Admin müdahalesi gerekli</span>' : ''}
             `;
         }
+
         function updateComposeAvailability() {
             const input = document.getElementById("msg-input");
             const sendBtn = document.getElementById("send-btn");
@@ -2284,6 +2361,7 @@
                 input.placeholder = "Mesajını yaz...";
             }
         }
+
         function ekranaMesajBas(id, message) {
             const chatBox = document.getElementById("chat-messages");
             const isMine = message.gonderen === state.myName;
@@ -2293,11 +2371,13 @@
             wrapper.oncontextmenu = event => showContextMenu(event, id, message, isMine);
             let replyHtml = "";
             if (message.yanitlananId && message.yanitlananMetin) {
-                const preview = message.yanitlananMetin.length > 48 ? `${message.yanitlananMetin.slice(0, 48)}...` : message.yanitlananMetin;
+                const preview = message.yanitlananMetin.length > 48 ?
+                    `${message.yanitlananMetin.slice(0, 48)}...` : message.yanitlananMetin;
                 replyHtml = `<div class="reply-box" onclick="scrollToMsg('${message.yanitlananId}')">${escapeHtml(preview)}</div>`;
             }
             const content = message.metin
-                ? `<span id="text-${id}">${escapeHtml(message.metin)}${message.duzenlendi ? ' <small style="opacity:0.6;">(düzenlendi)</small>' : ""}</span>`
+                ?
+                `<span id="text-${id}">${escapeHtml(message.metin)}${message.duzenlendi ? ' <small style="opacity:0.6;">(düzenlendi)</small>' : ""}</span>`
                 : `<audio controls src="${message.ses}"></audio>`;
             wrapper.innerHTML = `
                 ${replyHtml}
@@ -2307,6 +2387,7 @@
             chatBox.appendChild(wrapper);
             chatBox.scrollTop = chatBox.scrollHeight;
         }
+
         async function mesajGonder() {
             if (!state.activeChatId) {
                 showToast("Önce bir sohbet seç.", "warning");
@@ -2338,6 +2419,7 @@
                 showToast("Mesaj gönderilemedi.", "error");
             }
         }
+
         function showContextMenu(event, id, message, isMine) {
             event.preventDefault();
             event.stopPropagation();
@@ -2352,10 +2434,12 @@
             document.getElementById("menu-edit").style.display = isMine && message.metin ? "flex" : "none";
             document.getElementById("menu-delete").style.display = isMine ? "flex" : "none";
         }
+
         function hideMenu(event) {
             if (event && event.target.closest && event.target.closest("#context-menu")) return;
             document.getElementById("context-menu").style.display = "none";
         }
+
         function initReply() {
             document.getElementById("reply-preview").style.display = "flex";
             document.getElementById("reply-text").innerText = state.selectedMsgText || "Ses kaydı";
@@ -2363,11 +2447,13 @@
             document.getElementById("msg-input").focus();
             hideMenu();
         }
+
         function cancelReply() {
             state.replyingToId = null;
             document.getElementById("reply-preview").style.display = "none";
             document.getElementById("reply-text").innerText = "";
         }
+
         async function initDelete() {
             if (!state.activeChatId || !state.selectedMsgId) return;
             try {
@@ -2379,6 +2465,7 @@
             }
             hideMenu();
         }
+
         async function initEdit() {
             if (!state.activeChatId || !state.selectedMsgId || !state.selectedMsgIsText) return;
             const newText = prompt("Mesajı düzenle:", state.selectedMsgText);
@@ -2398,6 +2485,7 @@
             }
             hideMenu();
         }
+
         function scrollToMsg(id) {
             const el = document.getElementById(`msg-${id}`);
             if (!el) return;
@@ -2409,6 +2497,7 @@
                 el.style.filter = "";
             }, 900);
         }
+
         async function hideDM(friend) {
             if (!friend) return;
             try {
@@ -2426,6 +2515,7 @@
                 showToast("DM gizlenemedi.", "error");
             }
         }
+
         async function restoreHiddenChat(friend, notify = true) {
             try {
                 await db.ref(`gizli_sohbetler/${state.myName}/${friend}`).remove();
@@ -2435,6 +2525,7 @@
                 showToast("DM geri getirilemedi.", "error");
             }
         }
+
         async function removeFriend(friend) {
             if (!friend) return;
             try {
@@ -2454,6 +2545,7 @@
                 showToast("Arkadaş kaldırılamadı.", "error");
             }
         }
+
         function resetActiveChat() {
             clearListenerBucket("chat");
             state.activeChatId = null;
@@ -2468,6 +2560,7 @@
             document.getElementById("chat-lock-banner").style.display = "none";
             document.getElementById("chat-messages").innerHTML = "";
         }
+
         async function touchSession() {
             if (!state.myName) return;
             const deviceId = localStorage.getItem(STORAGE_KEYS.device);
@@ -2476,6 +2569,7 @@
                 lastSeen: Date.now()
             });
         }
+
         async function openProfileModal(user) {
             if (!user) return;
             try {
@@ -2492,11 +2586,13 @@
                     : data.durum === "online"
                         ? "● Çevrimiçi"
                         : "Çevrimdışı";
+                
                 const hiddenCount = Object.keys(state.hiddenMap || {}).length;
                 const friendCount = Object.keys(state.friendMap || {}).length;
                 const sessionCount = Object.keys((state.adminData.sessions || {})[user] || {}).length;
                 const userChats = Object.values(state.adminData.chats || {}).filter(chat => chat.participants.includes(user)).length;
                 const actions = [];
+                
                 if (user === state.myName) {
                     actions.push(`<button class="btn ghost-btn" onclick="showPanel('home-panel'); closeModal('profile-modal')">Ana panele dön</button>`);
                     if (state.isAdmin) {
@@ -2514,6 +2610,7 @@
                         actions.push(`<button class="btn ${userBanSnap.exists() ? "ghost-btn" : "danger-btn"}" onclick="closeModal('profile-modal'); adminToggleUserBan('${escapeHtml(user)}')">${userBanSnap.exists() ? "Banı Kaldır" : "Banla"}</button>`);
                     }
                 }
+                
                 modalBody.innerHTML = `
                     <div class="profile-stats">
                         <div class="stat-tile">
@@ -2549,6 +2646,7 @@
                 showToast("Profil bilgisi açılamadı.", "error");
             }
         }
+
         function startAdminRealtime() {
             clearListenerBucket("admin");
             listen(db.ref("dm_mesajlari"), "value", snap => {
@@ -2581,6 +2679,7 @@
                 if (document.getElementById("admin-modal").style.display === "flex") renderAdminPanel();
             }, "admin");
         }
+
         function parseChatData(snapshot) {
             const chats = {};
             snapshot.forEach(chatSnap => {
@@ -2598,6 +2697,7 @@
             });
             return chats;
         }
+
         function getSortedChats() {
             return Object.values(state.adminData.chats || {}).sort((a, b) => {
                 const aTime = a.lastMessage?.zaman || 0;
@@ -2605,6 +2705,7 @@
                 return bTime - aTime;
             });
         }
+
         function openAdminPanel() {
             if (!state.isAdmin) {
                 showToast("Bu bölüm sadece yönetici hesaplarında açılır.", "warning");
@@ -2613,10 +2714,12 @@
             document.getElementById("admin-modal").style.display = "flex";
             renderAdminPanel();
         }
+
         function switchAdminTab(tab) {
             state.adminView.tab = tab;
             renderAdminPanel();
         }
+
         function renderAdminPanel() {
             if (!state.isAdmin) return;
             ["conversations", "users", "bans", "devices"].forEach(tab => {
@@ -2636,6 +2739,7 @@
             }
             renderAdminDevices();
         }
+
         function renderAdminConversations() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
@@ -2728,6 +2832,7 @@
                 </div>
             `;
         }
+
         function renderAdminUsers() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
@@ -2830,6 +2935,7 @@
                 </div>
             `;
         }
+
         function renderAdminBans() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
@@ -2917,6 +3023,7 @@
                 </div>
             `;
         }
+
         function renderAdminDevices() {
             const listPanel = document.getElementById("admin-list-panel");
             const detailPanel = document.getElementById("admin-detail-panel");
@@ -2965,6 +3072,7 @@
                 </div>
             `;
         }
+
         async function adminToggleChatLock(chatId) {
             if (!state.isAdmin) return;
             try {
@@ -2988,6 +3096,7 @@
                 showToast("DM kısıtı değiştirilemedi.", "error");
             }
         }
+
         async function adminToggleUserBan(user) {
             if (!state.isAdmin) return;
             if (user === state.myName) {
@@ -3014,6 +3123,7 @@
                 showToast("Kullanıcı kısıtı güncellenemedi.", "error");
             }
         }
+
         async function adminToggleDeviceBan(deviceId, user) {
             if (!state.isAdmin || !deviceId) return;
             try {
@@ -3036,37 +3146,45 @@
                 showToast("Cihaz kısıtı değiştirilemedi.", "error");
             }
         }
+
         function inspectAdminChat(chatId) {
             state.adminView.tab = "conversations";
             state.adminView.inspectChatId = chatId;
             openAdminPanel();
         }
+
         function inspectAdminUser(user) {
             state.adminView.tab = "users";
             state.adminView.inspectUser = user;
             openAdminPanel();
         }
+
         function flattenDevicesForUser(user) {
             return Object.entries((state.adminData.sessions || {})[user] || {}).map(([deviceId, meta]) => ({
                 deviceId,
                 ...meta
             }));
         }
+
         async function forceLogout(message) {
             if (state.isLoggingOut) return;
             state.isLoggingOut = true;
             await cikisYap({ forced: true, message });
             state.isLoggingOut = false;
         }
+
         async function cikisYap(options = {}) {
             const { forced = false, message = forced ? "Oturum kapatıldı." : "Çıkış yapıldı. Bu cihazda otomatik giriş kapatıldı." } = options;
             const currentUser = state.myName;
             const deviceId = localStorage.getItem(STORAGE_KEYS.device);
+            
             if (state.sessionHeartbeat) {
                 clearInterval(state.sessionHeartbeat);
                 state.sessionHeartbeat = null;
             }
+            
             clearSession();
+            
             if (currentUser) {
                 try {
                     await Promise.all([
@@ -3080,6 +3198,7 @@
                     console.error(error);
                 }
             }
+            
             clearAllRealtime();
             document.body.classList.remove("is-admin", "sidebar-open");
             state.myName = "";
@@ -3105,6 +3224,7 @@
                 closedChats: {},
                 sessions: {}
             };
+            
             document.getElementById("friend-search").value = "";
             document.getElementById("auth-user").value = "";
             document.getElementById("auth-pass").value = "";
@@ -3119,6 +3239,7 @@
             document.getElementById("my-name-display").innerText = "...";
             document.getElementById("my-avatar-display").innerHTML = "?<span class='status-dot'></span>";
             document.getElementById("my-status-line").innerText = "Hazır";
+            
             closeModal("profile-modal");
             closeModal("admin-modal");
             cancelReply();
@@ -3127,6 +3248,7 @@
             renderHomeStats();
             showToast(message, forced ? "error" : "info");
         }
+
         async function startRecording() {
             if (!state.activeChatId) {
                 showToast("Önce bir sohbet aç.", "warning");
@@ -3168,6 +3290,7 @@
                 showToast("Mikrofona erişilemedi.", "error");
             }
         }
+
         function stopRecording() {
             if (state.mediaRecorder && state.mediaRecorder.state !== "inactive") {
                 state.mediaRecorder.stop();
