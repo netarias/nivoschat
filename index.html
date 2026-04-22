@@ -1286,6 +1286,30 @@
                 padding: 12px;
             }
         }
+        /* ... yukarıda dünya kadar CSS kodu var ... */
+
+    /* MOBİL DÜZELTME PAKETİ - TAM BURAYA */
+    @media (max-width: 768px) {
+        :root {
+            --radius-xl: 15px;
+        }
+        body {
+            backdrop-filter: none !important;
+        }
+        .app-container {
+            width: 100% !important;
+            height: 100dvh !important;
+            border-radius: 0 !important;
+            margin: 0 !important;
+        }
+        #auth-screen, .modal {
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+        }
+    }
+</style>  <-- Burası sınır çizgimiz, bunun üstünde kalmalı.
+<script>
+    /* ... JavaScript kodların başlıyor ... */
     </style>
 </head>
 <body onclick="hideMenu(event)">
