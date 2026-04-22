@@ -1648,6 +1648,36 @@
                 padding: 12px;
             }
         }
+        /* DM MESAJ KAYMASI DÜZELTME */
+.dm-messages-container {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important; /* Sağa kaymayı engeller */
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+}
+
+.dm-message {
+    max-width: 85% !important; /* Mesajın çok uzayıp ekranı delmesini engeller */
+    word-wrap: break-word !important;
+    word-break: break-word !important; /* Uzun kelimeleri (link vb.) böler */
+    margin-bottom: 8px !important;
+    display: block !important;
+    clear: both !important;
+}
+
+.dm-message.sent {
+    align-self: flex-end !important; /* Senin mesajların sağda kalsın */
+    margin-left: auto !important;
+}
+
+.dm-message.received {
+    align-self: flex-start !important; /* Karşıdakinin mesajları solda kalsın */
+    margin-right: auto !important;
+}
     </style>
 </head>
 <body onclick="hideMenu(event)">
