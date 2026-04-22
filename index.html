@@ -94,6 +94,17 @@
             cursor: pointer;
         }
 
+        button,
+        .friend-item,
+        .group-item,
+        .icon-btn,
+        .profile-chip,
+        .side-action-icon,
+        .btn {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
         a {
             color: inherit;
         }
@@ -296,8 +307,7 @@
             pointer-events: none;
         }
 
-        body.sidebar-open #sidebar-overlay,
-        body.members-open #sidebar-overlay {
+        body.sidebar-open #sidebar-overlay {
             opacity: 1;
             pointer-events: auto;
         }
@@ -651,6 +661,9 @@
             justify-content: flex-end;
             flex-wrap: wrap;
             gap: 10px;
+            overflow-x: auto;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         .chip {
@@ -944,6 +957,79 @@
             min-width: 240px;
         }
 
+        .msg-image {
+            display: block;
+            width: 100%;
+            max-width: 360px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .file-card {
+            display: grid;
+            gap: 10px;
+        }
+
+        .file-card-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(79, 156, 255, 0.14);
+            color: white;
+            font-weight: 800;
+            flex: 0 0 auto;
+        }
+
+        .file-meta {
+            min-width: 0;
+        }
+
+        .file-meta strong {
+            display: block;
+            font-size: 0.88rem;
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+
+        .file-meta span {
+            color: var(--text-muted);
+            font-size: 0.78rem;
+        }
+
+        .file-actions-inline {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .download-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .download-link:hover {
+            background: rgba(79, 156, 255, 0.14);
+        }
+
         #chat-input-area {
             padding: 0 24px 24px;
         }
@@ -983,9 +1069,20 @@
             box-shadow: none;
         }
 
+        #file-input {
+            display: none;
+        }
+
         #voice-btn,
         #send-btn {
             flex: 0 0 auto;
+        }
+
+        #attach-btn,
+        #voice-btn {
+            width: 48px;
+            height: 48px;
+            padding: 0;
         }
 
         #member-panel {
@@ -1440,10 +1537,10 @@
 
             #member-panel {
                 position: fixed;
-                top: 16px;
-                right: 16px;
-                bottom: 16px;
-                width: min(320px, calc(100vw - 32px));
+                top: 118px;
+                right: 12px;
+                bottom: 12px;
+                width: min(360px, calc(100vw - 24px));
                 border: 1px solid var(--border);
                 border-radius: 24px;
                 z-index: 1120;
@@ -1494,6 +1591,7 @@
             .header-actions {
                 width: 100%;
                 justify-content: flex-start;
+                flex-wrap: nowrap;
             }
 
             #home-panel {
@@ -1539,6 +1637,7 @@
                 width: 100%;
             }
 
+            #attach-btn,
             #voice-btn {
                 width: 48px;
                 height: 48px;
@@ -1769,7 +1868,9 @@
                         </div>
 
                         <div class="composer">
+                            <button class="btn ghost-btn" id="attach-btn" onclick="triggerFileInput()">+</button>
                             <button class="btn ghost-btn" id="voice-btn" onmousedown="startRecording()" onmouseup="stopRecording()" onmouseleave="stopRecording()">🎤</button>
+                            <input type="file" id="file-input" onchange="handleFilePick(event)" accept="image/*,.pdf,.txt,.zip,.rar,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp4,.webm,.json">
                             <input type="text" id="msg-input" placeholder="Mesajını yaz..." onkeypress="if(event.key==='Enter') mesajGonder()">
                             <button class="btn primary" id="send-btn" onclick="mesajGonder()">Gönder</button>
                         </div>
@@ -2138,6 +2239,28 @@
             if (hours < 24) return `${hours} sa önce`;
             const days = Math.floor(hours / 24);
             return `${days} gün önce`;
+        }
+
+        function formatBytes(value) {
+            if (!value) return "0 KB";
+            if (value < 1024) return `${value} B`;
+            if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
+            return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+        }
+
+        function isImageType(type = "") {
+            return /^image\//.test(type);
+        }
+
+        function getMessagePreviewLabel(message = {}) {
+            if (message.metin) return message.metin;
+            if (message.dosya) {
+                return isImageType(message.dosyaTipi)
+                    ? "Fotoğraf"
+                    : (message.dosyaAdi || "Dosya");
+            }
+            if (message.ses) return "Ses kaydı";
+            return "Mesaj";
         }
 
         function normalizeChatId(userA, userB) {
@@ -2572,10 +2695,17 @@
             }
 
             friends.forEach(friend => {
-                const button = document.createElement("button");
+                const button = document.createElement("div");
                 button.className = `friend-item ${state.activeThreadType === "dm" && state.activeChatUser === friend ? "active" : ""}`;
-                button.type = "button";
+                button.setAttribute("role", "button");
+                button.tabIndex = 0;
                 button.onclick = () => sohbetBaslat(friend);
+                button.onkeydown = event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        sohbetBaslat(friend);
+                    }
+                };
 
                 const avatar = document.createElement("div");
                 avatar.className = "avatar";
@@ -2616,10 +2746,17 @@
             }
 
             groups.forEach(group => {
-                const button = document.createElement("button");
+                const button = document.createElement("div");
                 button.className = `group-item ${state.activeThreadType === "group" && state.activeGroupId === group.groupId ? "active" : ""}`;
-                button.type = "button";
+                button.setAttribute("role", "button");
+                button.tabIndex = 0;
                 button.onclick = () => grupBaslat(group.groupId);
+                button.onkeydown = event => {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        grupBaslat(group.groupId);
+                    }
+                };
 
                 const avatar = document.createElement("div");
                 avatar.className = "avatar group-avatar";
@@ -2980,6 +3117,7 @@
         }
 
         async function sohbetBaslat(friend) {
+            closeFloatingPanels();
             state.activeThreadType = "dm";
             state.activeChatUser = friend;
             state.activeChatId = normalizeChatId(state.myName, friend);
@@ -3047,6 +3185,7 @@
                 return;
             }
 
+            closeFloatingPanels();
             state.activeThreadType = "group";
             state.activeGroupId = groupId;
             state.activeChatId = null;
@@ -3129,11 +3268,13 @@
             const input = document.getElementById("msg-input");
             const sendBtn = document.getElementById("send-btn");
             const voiceBtn = document.getElementById("voice-btn");
+            const attachBtn = document.getElementById("attach-btn");
 
             const disabled = !state.activeThreadType || (state.activeThreadType === "dm" && state.currentChatLocked);
             input.disabled = disabled;
             sendBtn.disabled = disabled;
             voiceBtn.disabled = disabled;
+            attachBtn.disabled = disabled;
 
             if (!state.activeThreadType) {
                 input.placeholder = "Önce sohbet aç...";
@@ -3178,7 +3319,9 @@
 
             const content = message.metin
                 ? `<span id="text-${id}">${escapeHtml(message.metin)}${message.duzenlendi ? " <small style='opacity:0.6;'>(düzenlendi)</small>" : ""}</span>`
-                : `<audio controls src="${message.ses}"></audio>`;
+                : message.dosya
+                    ? renderFileMessageContent(message)
+                    : `<audio controls src="${message.ses}"></audio>`;
 
             const senderHtml = isGroup
                 ? `<div class="msg-sender">${escapeHtml(message.gonderen || "")}</div>`
@@ -3193,6 +3336,38 @@
 
             chatBox.appendChild(wrapper);
             chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function renderFileMessageContent(message) {
+            const fileName = escapeHtml(message.dosyaAdi || "Dosya");
+            const fileSize = formatBytes(message.dosyaBoyutu || 0);
+            const fileType = escapeHtml(message.dosyaTipi || "Dosya");
+
+            if (isImageType(message.dosyaTipi)) {
+                return `
+                    <div class="file-card">
+                        <img class="msg-image" src="${message.dosya}" alt="${fileName}">
+                        <div class="file-actions-inline">
+                            <a class="download-link" href="${message.dosya}" download="${fileName}">İndir</a>
+                        </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="file-card">
+                    <div class="file-card-top">
+                        <div class="file-icon">F</div>
+                        <div class="file-meta">
+                            <strong>${fileName}</strong>
+                            <span>${fileSize} • ${fileType}</span>
+                        </div>
+                    </div>
+                    <div class="file-actions-inline">
+                        <a class="download-link" href="${message.dosya}" download="${fileName}">İndir</a>
+                    </div>
+                </div>
+            `;
         }
 
         function updateRenderedMessage(id, data) {
@@ -3212,6 +3387,82 @@
             }
 
             return null;
+        }
+
+        function triggerFileInput() {
+            if (!state.activeThreadType) {
+                showToast("Önce bir sohbet aç.", "warning");
+                return;
+            }
+
+            if (state.activeThreadType === "dm" && state.currentChatLocked) {
+                showToast("Bu DM şu anda kapalı.", "warning");
+                return;
+            }
+
+            const input = document.getElementById("file-input");
+            input.value = "";
+            input.click();
+        }
+
+        function readFileAsDataUrl(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function handleFilePick(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+
+            if (state.activeThreadType === "dm" && state.currentChatLocked) {
+                showToast("Bu DM şu anda kapalı.", "warning");
+                event.target.value = "";
+                return;
+            }
+
+            const ref = getActiveMessageRef();
+            if (!ref) {
+                showToast("Önce bir sohbet aç.", "warning");
+                event.target.value = "";
+                return;
+            }
+
+            const maxSize = 3 * 1024 * 1024;
+            if (file.size > maxSize) {
+                showToast("Dosya en fazla 3 MB olabilir.", "warning");
+                event.target.value = "";
+                return;
+            }
+
+            try {
+                const fileData = await readFileAsDataUrl(file);
+                await ref.push({
+                    gonderen: state.myName,
+                    dosya: fileData,
+                    dosyaAdi: file.name,
+                    dosyaTipi: file.type || "application/octet-stream",
+                    dosyaBoyutu: file.size,
+                    zaman: Date.now()
+                });
+
+                if (state.activeThreadType === "group" && state.activeGroupId) {
+                    await db.ref(`gruplar/${state.activeGroupId}`).update({
+                        updatedAt: Date.now()
+                    });
+                }
+
+                showToast(isImageType(file.type) ? "Fotoğraf gönderildi." : "Dosya gönderildi.", "success");
+                await touchSession();
+            } catch (error) {
+                console.error(error);
+                showToast("Dosya gönderilemedi.", "error");
+            } finally {
+                event.target.value = "";
+            }
         }
 
         async function mesajGonder() {
@@ -3267,7 +3518,7 @@
             event.stopPropagation();
 
             state.selectedMsgId = id;
-            state.selectedMsgText = message.metin || "";
+            state.selectedMsgText = getMessagePreviewLabel(message);
             state.selectedMsgIsText = Boolean(message.metin);
             state.selectedMsgIsMine = isMine;
 
