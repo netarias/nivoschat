@@ -851,9 +851,13 @@
 
         #chat-panel {
             display: none;
-            grid-template-columns: minmax(0, 1fr) 300px;
+            grid-template-columns: minmax(0, 1fr);
             min-height: 0;
             flex: 1;
+        }
+
+        #chat-panel.with-member-panel {
+            grid-template-columns: minmax(0, 1fr) 300px;
         }
 
         #chat-column {
@@ -1034,6 +1038,51 @@
             padding: 0 24px 24px;
         }
 
+        .recording-indicator {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            border-radius: 16px;
+            border: 1px solid rgba(251, 113, 133, 0.18);
+            background: rgba(251, 113, 133, 0.08);
+            color: #ffe3e9;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .recording-indicator.active {
+            display: flex;
+        }
+
+        .recording-indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--danger);
+            box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.5);
+            animation: recording-pulse 1.2s ease-out infinite;
+            flex: 0 0 auto;
+        }
+
+        @keyframes recording-pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.45);
+            }
+
+            70% {
+                transform: scale(1.08);
+                box-shadow: 0 0 0 10px rgba(251, 113, 133, 0);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(251, 113, 133, 0);
+            }
+        }
+
         .reply-preview {
             display: none;
             align-items: center;
@@ -1083,6 +1132,13 @@
             width: 48px;
             height: 48px;
             padding: 0;
+        }
+
+        #voice-btn.recording {
+            color: #fff1f4;
+            background: rgba(251, 113, 133, 0.16);
+            border-color: rgba(251, 113, 133, 0.26);
+            box-shadow: 0 0 0 4px rgba(251, 113, 133, 0.08);
         }
 
         #member-panel {
@@ -1502,7 +1558,8 @@
                 border-bottom: 1px solid var(--border);
             }
 
-            #chat-panel {
+            #chat-panel,
+            #chat-panel.with-member-panel {
                 grid-template-columns: 1fr;
             }
 
@@ -1648,7 +1705,6 @@
                 padding: 12px;
             }
         }
-        
     </style>
 </head>
 <body onclick="hideMenu(event)">
@@ -1868,9 +1924,14 @@
                             <button class="mini-btn" onclick="cancelReply()">Kapat</button>
                         </div>
 
+                        <div id="recording-indicator" class="recording-indicator" aria-live="polite">
+                            <span class="recording-indicator-dot"></span>
+                            <span id="recording-indicator-text">Kayıt yapılıyor, bırakınca gönderilir.</span>
+                        </div>
+
                         <div class="composer">
                             <button class="btn ghost-btn" id="attach-btn" onclick="triggerFileInput()">+</button>
-                            <button class="btn ghost-btn" id="voice-btn" onmousedown="startRecording()" onmouseup="stopRecording()" onmouseleave="stopRecording()">🎤</button>
+                            <button class="btn ghost-btn" id="voice-btn" aria-label="Ses kaydı" onpointerdown="handleVoiceHoldStart(event)" onpointerup="handleVoiceHoldEnd(event)" onpointerleave="handleVoiceHoldEnd(event)" onpointercancel="handleVoiceHoldEnd(event)">🎤</button>
                             <input type="file" id="file-input" onchange="handleFilePick(event)" accept="image/*,.pdf,.txt,.zip,.rar,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.mp4,.webm,.json">
                             <input type="text" id="msg-input" placeholder="Mesajını yaz..." onkeypress="if(event.key==='Enter') mesajGonder()">
                             <button class="btn primary" id="send-btn" onclick="mesajGonder()">Gönder</button>
@@ -2061,6 +2122,8 @@
             selectedMsgIsMine: false,
             mediaRecorder: null,
             audioChunks: [],
+            recordingPointerDown: false,
+            recordingStartPending: false,
             sessionHeartbeat: null,
             isLoggingOut: false,
             listeners: {
@@ -2329,6 +2392,20 @@
 
         function closeFloatingPanels() {
             document.body.classList.remove("sidebar-open", "members-open");
+        }
+
+        function setChatLayout(hasMemberPanel) {
+            document.getElementById("chat-panel").classList.toggle("with-member-panel", hasMemberPanel);
+        }
+
+        function setRecordingUi(active, text = "Kayıt yapılıyor, bırakınca gönderilir.") {
+            const indicator = document.getElementById("recording-indicator");
+            const label = document.getElementById("recording-indicator-text");
+            const voiceBtn = document.getElementById("voice-btn");
+
+            indicator.classList.toggle("active", active);
+            label.innerText = text;
+            voiceBtn.classList.toggle("recording", active);
         }
 
         function closeModalOnBackdrop(event, id) {
@@ -2991,6 +3068,7 @@
 
         function updateDmHeader(friend) {
             const status = getStatusLabel(friend);
+            setChatLayout(false);
             document.getElementById("top-bar-title").innerText = `@${friend}`;
             document.getElementById("online-status-header").innerText = status;
             document.getElementById("online-status-header").style.color = state.userPresence[friend] === "online"
@@ -3005,6 +3083,7 @@
 
         function updateGroupHeader(group) {
             const memberCount = Object.keys(group.members || {}).length;
+            setChatLayout(true);
             document.getElementById("top-bar-title").innerText = group.name || "Grup";
             document.getElementById("online-status-header").innerText = `${memberCount} üye`;
             document.getElementById("online-status-header").style.color = "var(--text-muted)";
@@ -3096,6 +3175,7 @@
             document.getElementById("btn-home").classList.toggle("active", id === "home-panel");
 
             if (id === "home-panel") {
+                setChatLayout(false);
                 document.getElementById("top-bar-title").innerText = "Ana Sayfa";
                 document.getElementById("online-status-header").innerText = ".";
                 document.getElementById("online-status-header").style.color = "var(--text-muted)";
@@ -3663,12 +3743,16 @@
             state.currentChatLocked = false;
             state.selectedMsgId = null;
             state.selectedMsgText = "";
+            state.recordingPointerDown = false;
+            state.recordingStartPending = false;
 
             cancelReply();
             renderFriendsList();
             renderGroupList();
             renderHeaderActions();
             updateComposeAvailability();
+            setChatLayout(false);
+            setRecordingUi(false);
 
             document.getElementById("chat-lock-banner").style.display = "none";
             document.getElementById("chat-messages").innerHTML = "";
@@ -4853,6 +4937,8 @@
             document.getElementById("my-status-line").innerText = "Hazır";
             document.getElementById("member-panel").classList.remove("visible");
             document.getElementById("mobile-member-toggle").classList.add("hidden");
+            setChatLayout(false);
+            setRecordingUi(false);
 
             closeModal("profile-modal");
             closeModal("admin-modal");
@@ -4878,14 +4964,37 @@
                 return;
             }
 
+            if (state.recordingStartPending || (state.mediaRecorder && state.mediaRecorder.state !== "inactive")) {
+                return;
+            }
+
+            state.recordingStartPending = true;
+            setRecordingUi(true, "Mikrofon hazırlanıyor...");
+
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                if (!state.recordingPointerDown) {
+                    stream.getTracks().forEach(track => track.stop());
+                    state.recordingStartPending = false;
+                    setRecordingUi(false);
+                    return;
+                }
+
                 state.mediaRecorder = new MediaRecorder(stream);
                 state.audioChunks = [];
 
                 state.mediaRecorder.ondataavailable = event => state.audioChunks.push(event.data);
                 state.mediaRecorder.onstop = () => {
                     const blob = new Blob(state.audioChunks, { type: "audio/webm" });
+                    state.mediaRecorder = null;
+                    state.audioChunks = [];
+                    setRecordingUi(false);
+
+                    if (!blob.size) {
+                        stream.getTracks().forEach(track => track.stop());
+                        return;
+                    }
+
                     const reader = new FileReader();
                     reader.readAsDataURL(blob);
                     reader.onloadend = async () => {
@@ -4916,19 +5025,45 @@
                     };
                 };
 
+                state.mediaRecorder.onerror = () => {
+                    state.mediaRecorder = null;
+                    state.audioChunks = [];
+                    state.recordingStartPending = false;
+                    setRecordingUi(false);
+                    stream.getTracks().forEach(track => track.stop());
+                };
+
                 state.mediaRecorder.start();
-                document.getElementById("voice-btn").style.color = "var(--danger)";
+                state.recordingStartPending = false;
+                setRecordingUi(true, "Kayıt yapılıyor, bırakınca gönderilir.");
             } catch (error) {
+                state.recordingStartPending = false;
+                state.mediaRecorder = null;
+                setRecordingUi(false);
                 console.error(error);
                 showToast("Mikrofona erişilemedi.", "error");
             }
         }
 
+        function handleVoiceHoldStart(event) {
+            if (event.pointerType === "mouse" && event.button !== 0) return;
+            event.preventDefault();
+            state.recordingPointerDown = true;
+            startRecording();
+        }
+
+        function handleVoiceHoldEnd(event) {
+            if (event) event.preventDefault();
+            state.recordingPointerDown = false;
+            stopRecording();
+        }
+
         function stopRecording() {
             if (state.mediaRecorder && state.mediaRecorder.state !== "inactive") {
                 state.mediaRecorder.stop();
-                document.getElementById("voice-btn").style.color = "white";
             }
+
+            setRecordingUi(false);
         }
     </script>
 </body>
