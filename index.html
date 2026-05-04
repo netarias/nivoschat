@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Rank Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #1e1e1e;
+            --panel-bg: #2d2d30;
+            --text-color: #ffffff;
+            --border-color: #3e3e42;
+            --button-bg: #404050;
+            --button-hover: #505060;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: var(--panel-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #rankText {
+            width: 80%;
+            padding: 10px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--text-color);
+            color: white;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .preview-box {
+            background-image: linear-gradient(45deg, #333 25%, transparent 25%), 
+                              linear-gradient(-45deg, #333 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #333 75%), 
+                              linear-gradient(-45deg, transparent 75%, #333 75%);
+            background-size: 20px 20px;
+            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+            margin-bottom: 20px;
+            border: 2px solid #555;
+            border-radius: 4px;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 60%;
+        }
+
+        .control-row label {
+            font-size: 14px;
+            flex-grow: 1;
+        }
+
+        select {
+            width: 60%;
+            padding: 8px;
+            background-color: var(--bg-color);
+            color: white;
+            border: 1px solid #555;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+        
+        input[type="color"] {
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-group">
+        <input type="text" id="rankText" value="RANK">
+    </div>
+
+    <div class="preview-box">
+        <canvas id="canvas" width="350" height="100"></canvas>
+    </div>
+
+    <div class="controls">
+        <div class="control-row">
+            <label>Metin Rengi:</label>
+            <input type="color" id="textColor" value="#ffffff">
+        </div>
+        <div class="control-row">
+            <label>Background:</label>
+            <input type="color" id="bgColor" value="#2d2d30">
+            <input type="checkbox" id="bgEnable" checked>
+        </div>
+        <div class="control-row">
+            <label>Border:</label>
+            <input type="color" id="borderColor" value="#aaaaaa">
+            <input type="checkbox" id="borderEnable" checked>
+        </div>
+        <div class="control-row">
+            <label>Shadow:</label>
+            <input type="color" id="shadowColor" value="#000000">
+            <input type="checkbox" id="shadowEnable" checked>
+        </div>
+
+        <select id="presetSelect" size="6">
+            <option value="classic" selected>Classic</option>
+            <option value="emerald">Emerald</option>
+            <option value="gold">Gold</option>
+            <option value="nether">Nether</option>
+            <option value="diamond">Diamond</option>
+            <option value="obsidian">Obsidian</option>
+        </select>
+
+        <button id="downloadBtn">Download</button>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Elementleri Seç
+    const elements = {
+        text: document.getElementById('rankText'),
+        textColor: document.getElementById('textColor'),
+        bgColor: document.getElementById('bgColor'),
+        bgEnable: document.getElementById('bgEnable'),
+        borderColor: document.getElementById('borderColor'),
+        borderEnable: document.getElementById('borderEnable'),
+        shadowColor: document.getElementById('shadowColor'),
+        shadowEnable: document.getElementById('shadowEnable'),
+        preset: document.getElementById('presetSelect')
+    };
+
+    // Hazır Ayarlar (Renk Paletleri)
+    const presets = {
+        classic: { text: '#ffffff', bg: '#2d2d30', border: '#aaaaaa', shadow: '#000000' },
+        emerald: { text: '#55ff55', bg: '#1a331a', border: '#00aa00', shadow: '#003300' },
+        gold:    { text: '#ffaa00', bg: '#332200', border: '#ff5555', shadow: '#330000' },
+        nether:  { text: '#ff5555', bg: '#330000', border: '#aa0000', shadow: '#000000' },
+        diamond: { text: '#55ffff', bg: '#003333', border: '#00aaaa', shadow: '#000000' },
+        obsidian:{ text: '#aa00aa', bg: '#110011', border: '#550055', shadow: '#000000' }
+    };
+
+    // Preset değiştiğinde renkleri güncelle
+    elements.preset.addEventListener('change', (e) => {
+        const val = e.target.value;
+        if(presets[val]) {
+            elements.textColor.value = presets[val].text;
+            elements.bgColor.value = presets[val].bg;
+            elements.borderColor.value = presets[val].border;
+            elements.shadowColor.value = presets[val].shadow;
+            drawCanvas();
+        }
+    });
+
+    // Herhangi bir input değiştiğinde Canvas'ı yenile
+    Object.values(elements).forEach(el => {
+        el.addEventListener('input', drawCanvas);
+        el.addEventListener('change', drawCanvas);
+    });
+
+    function drawCanvas() {
+        // Çizim alanını temizle
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Arkaplan
+        if (elements.bgEnable.checked) {
+            ctx.fillStyle = elements.bgColor.value;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        const text = elements.text.value || ' ';
+        const fontSize = 48;
+        
+        ctx.font = `${fontSize}px 'Press Start 2P', monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        const x = canvas.width / 2;
+        const y = canvas.height / 2 + 5; // Hafif aşağı kaydırma (fontun dikey ortalaması için)
+
+        // Gölge (Shadow)
+        if (elements.shadowEnable.checked) {
+            ctx.fillStyle = elements.shadowColor.value;
+            ctx.fillText(text, x + 6, y + 6);
+        }
+
+        // Çerçeve (Border) - kalınlık vermek için stroke kullanıyoruz
+        if (elements.borderEnable.checked) {
+            ctx.strokeStyle = elements.borderColor.value;
+            ctx.lineWidth = 6;
+            ctx.lineJoin = 'miter';
+            ctx.miterLimit = 2;
+            ctx.strokeText(text, x, y);
+        }
+
+        // Ana Metin
+        ctx.fillStyle = elements.textColor.value;
+        ctx.fillText(text, x, y);
+    }
+
+    // İndirme İşlemi
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        const link = document.createElement('a');
+        link.download = `${elements.text.value.trim() || 'rank'}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    });
+
+    // Font yüklendiğinde çizimi başlat (İlk açılışta boş gözükmemesi için)
+    document.fonts.ready.then(() => {
+        drawCanvas();
+    });
+
+</script>
+
+</body>
+</html>
