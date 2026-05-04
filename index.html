@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Rank Generator | Modern Edition</title>
+    <title>Netaria Rank Studio | Modern Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* CSS Değişkenleri & Tema Ayarları */
         :root {
-            --primary: #6c5ce7;
+            --primary: #00d2ff;
             --primary-hover: #a29bfe;
             --bg-gradient-1: #0f2027;
             --bg-gradient-2: #203a43;
@@ -19,11 +18,7 @@
             --text-muted: #b2bec3;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -35,7 +30,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow-x: hidden;
             padding: 20px;
         }
 
@@ -45,31 +39,30 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Glassmorphism Ana Konteyner */
         .app-container {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 40px;
+            padding: 30px;
             width: 100%;
-            max-width: 1000px;
+            max-width: 1100px;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 30px;
         }
 
-        /* Sol Taraf - Önizleme Alanı */
+        /* Önizleme */
         .preview-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 16px;
-            padding: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 40px;
             border: 1px dashed rgba(255, 255, 255, 0.2);
             position: relative;
         }
@@ -78,223 +71,108 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 800;
         }
 
-        /* Saydamlık efekti veren arka plan (Photoshop tarzı) */
         .canvas-wrapper {
-            background-image: 
-                linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
-                linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
-                linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
-            background-size: 20px 20px;
-            background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-            background-color: #222;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: auto;
-            max-width: 100%;
+            background-image: linear-gradient(45deg, #111 25%, transparent 25%), linear-gradient(-45deg, #111 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #111 75%), linear-gradient(-45deg, transparent 75%, #111 75%);
+            background-size: 15px 15px;
+            background-color: #000;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        canvas {
-            image-rendering: pixelated; /* Pikselleri keskin tutar */
-            max-width: 100%;
-            height: auto;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
-        }
-
-        /* Sağ Taraf - Kontrol Paneli */
+        /* Kontroller */
         .controls-section {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding-right: 10px;
         }
 
         .header h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
-            background: -webkit-linear-gradient(#fff, #a29bfe);
+            background: linear-gradient(to right, #fff, var(--primary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 5px;
         }
 
-        .header p {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        /* Modern Input Grupları */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .input-group label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        .input-group { display: flex; flex-direction: column; gap: 5px; }
+        .input-group label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
 
         input[type="text"] {
             width: 100%;
-            padding: 15px 20px;
-            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
-            border-radius: 12px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 15px rgba(108, 92, 231, 0.3);
-        }
-
-        /* Renk Kontrolleri */
-        .color-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .color-picker-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px 15px;
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .color-picker-wrap span {
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        input[type="color"] {
-            -webkit-appearance: none;
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            cursor: pointer;
-            background: transparent;
-        }
-
-        input[type="color"]::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        input[type="color"]::-webkit-color-swatch {
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 50%;
-        }
-
-        /* Range Slider (Kaydırıcılar) */
-        input[type="range"] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
             outline: none;
-            margin-top: 10px;
         }
 
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 0 10px rgba(108, 92, 231, 0.5);
-            transition: transform 0.1s;
+        .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .color-picker-wrap {
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(0, 0, 0, 0.3); padding: 8px 12px; border-radius: 8px;
         }
 
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        /* Hazır Preset Butonları */
+        /* Rank Butonları Izgarası */
         .preset-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 5px;
+            gap: 8px;
         }
 
         .preset-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 10px;
+            color: #ddd;
+            padding: 10px 5px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 600;
             transition: all 0.2s;
+            text-align: center;
         }
 
         .preset-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: var(--primary);
+            color: #000;
             transform: translateY(-2px);
         }
 
-        /* Download Butonu */
         .download-btn {
-            background: linear-gradient(135deg, var(--primary), #a29bfe);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), #00a8ff);
+            color: #000;
             border: none;
-            padding: 18px;
-            font-size: 16px;
+            padding: 15px;
+            font-size: 14px;
             font-weight: 800;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3);
             margin-top: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            text-transform: uppercase;
         }
 
-        .download-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px rgba(108, 92, 231, 0.5);
-        }
+        /* Kaydırıcılar */
+        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; background: var(--primary); border-radius: 50%; cursor: pointer; }
 
-        .download-btn:active {
-            transform: translateY(1px);
-        }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 
-        /* Mobil Uyumluluk */
-        @media (max-width: 900px) {
-            .app-container {
-                grid-template-columns: 1fr;
-            }
-        }
+        @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -302,7 +180,7 @@
 <div class="app-container">
     
     <div class="preview-section">
-        <div class="preview-title">Canlı Önizleme</div>
+        <div class="preview-title">Canlı Tasarım Ekranı</div>
         <div class="canvas-wrapper">
             <canvas id="rankCanvas"></canvas>
         </div>
@@ -310,82 +188,83 @@
 
     <div class="controls-section">
         <div class="header">
-            <h1>Rank Generator</h1>
-            <p>Profesyonel Minecraft sunucuları için.</p>
+            <h1>Netaria Studio</h1>
+            <p style="font-size: 12px; color: var(--text-muted);">Tüm rütbeler için profesyonel jeneratör.</p>
         </div>
 
         <div class="input-group">
-            <label>Rank İsmi</label>
-            <input type="text" id="rankText" value="PROFESYONEL">
+            <label>Metin</label>
+            <input type="text" id="rankText" value="KURUCU">
         </div>
 
         <div class="color-grid">
             <div class="input-group">
-                <label>Arkaplan (Sol)</label>
+                <label>Gradyan 1</label>
                 <div class="color-picker-wrap">
-                    <span>Renk 1</span>
-                    <input type="color" id="bgGrad1" value="#6b3fa0">
+                    <input type="color" id="bgGrad1" value="#ff0000">
                 </div>
             </div>
             <div class="input-group">
-                <label>Arkaplan (Sağ)</label>
+                <label>Gradyan 2</label>
                 <div class="color-picker-wrap">
-                    <span>Renk 2</span>
-                    <input type="color" id="bgGrad2" value="#a266cc">
+                    <input type="color" id="bgGrad2" value="#800000">
                 </div>
             </div>
             <div class="input-group">
-                <label>Yazı Rengi</label>
+                <label>Yazı</label>
                 <div class="color-picker-wrap">
-                    <span>Metin</span>
                     <input type="color" id="textColor" value="#ffffff">
                 </div>
             </div>
             <div class="input-group">
-                <label>Çerçeve Rengi</label>
+                <label>Kenarlık</label>
                 <div class="color-picker-wrap">
-                    <span>Border</span>
-                    <input type="color" id="borderColor" value="#3b1f5e">
+                    <input type="color" id="borderColor" value="#440000">
                 </div>
             </div>
         </div>
 
-        <div class="input-group">
-            <label>Yazı Boyutu: <span id="sizeValue">24</span>px</label>
-            <input type="range" id="fontSize" min="16" max="72" value="24">
-        </div>
-
-        <div class="input-group">
-            <label>İç Boşluk (Padding): <span id="padValue">10</span>px</label>
-            <input type="range" id="padding" min="4" max="40" value="10">
-        </div>
-
-        <div class="input-group">
-            <label>Hazır Tasarımlar</label>
-            <div class="preset-grid">
-                <button class="preset-btn" onclick="applyPreset('profesyonel')">Mor Pro</button>
-                <button class="preset-btn" onclick="applyPreset('padisah')">Mavi Padişah</button>
-                <button class="preset-btn" onclick="applyPreset('kurucu')">Kızıl Kurucu</button>
-                <button class="preset-btn" onclick="applyPreset('vip')">Altın VIP</button>
-                <button class="preset-btn" onclick="applyPreset('emerald')">Zümrüt</button>
-                <button class="preset-btn" onclick="applyPreset('dark')">Dark Obsidian</button>
+        <div class="color-grid">
+            <div class="input-group">
+                <label>Boyut: <span id="sizeValue">24</span>px</label>
+                <input type="range" id="fontSize" min="12" max="60" value="24">
+            </div>
+            <div class="input-group">
+                <label>Boşluk: <span id="padValue">10</span>px</label>
+                <input type="range" id="padding" min="4" max="30" value="10">
             </div>
         </div>
 
-        <button class="download-btn" id="downloadBtn">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            Tasarımı İndir
-        </button>
+        <div class="input-group">
+            <label>Hızlı Rank Seçimi</label>
+            <div class="preset-grid">
+                <button class="preset-btn" onclick="applyPreset('kurucu')">Kurucu</button>
+                <button class="preset-btn" onclick="applyPreset('admin')">Admin</button>
+                <button class="preset-btn" onclick="applyPreset('mod')">Moderatör</button>
+                <button class="preset-btn" onclick="applyPreset('yardimci')">Yardımcı</button>
+                <button class="preset-btn" onclick="applyPreset('rehber')">Rehber</button>
+                <button class="preset-btn" onclick="applyPreset('drehber')">D.Rehber</button>
+                <button class="preset-btn" onclick="applyPreset('vip')">VIP</button>
+                <button class="preset-btn" onclick="applyPreset('vipplus')">VIP+</button>
+                <button class="preset-btn" onclick="applyPreset('mvip')">MVIP</button>
+                <button class="preset-btn" onclick="applyPreset('mvipplus')">MVIP+</button>
+                <button class="preset-btn" onclick="applyPreset('oyuncu')">Oyuncu</button>
+                <button class="preset-btn" onclick="applyPreset('halk')">Halk</button>
+                <button class="preset-btn" onclick="applyPreset('netaria')">NetariaVip</button>
+                <button class="preset-btn" onclick="applyPreset('profesyonel')">Pro</button>
+                <button class="preset-btn" onclick="applyPreset('padisah')">Padişah</button>
+            </div>
+        </div>
+
+        <button class="download-btn" id="downloadBtn">PNG OLARAK KAYDET</button>
     </div>
 
 </div>
 
 <script>
-    // Tuval ve Context Kurulumu
     const canvas = document.getElementById('rankCanvas');
     const ctx = canvas.getContext('2d');
 
-    // Element Referansları
     const els = {
         text: document.getElementById('rankText'),
         bg1: document.getElementById('bgGrad1'),
@@ -398,111 +277,89 @@
         padVal: document.getElementById('padValue'),
     };
 
-    // Preset Veritabanı (Gönderdiğin resimlere göre tasarlandı)
     const presets = {
-        profesyonel: { bg1: '#5a34e0', bg2: '#a463d6', text: '#ffffff', border: '#2b1b54', size: 24, pad: 8 },
-        padisah: { bg1: '#3498db', bg2: '#85c1e9', text: '#ffffff', border: '#1b4f72', size: 24, pad: 8 },
-        kurucu: { bg1: '#c0392b', bg2: '#e74c3c', text: '#ffffff', border: '#641e16', size: 24, pad: 8 },
-        vip: { bg1: '#d4af37', bg2: '#f1c40f', text: '#ffffff', border: '#7e6615', size: 24, pad: 8 },
-        emerald: { bg1: '#2ecc71', bg2: '#58d68d', text: '#ffffff', border: '#145a32', size: 24, pad: 8 },
-        dark: { bg1: '#1c2833', bg2: '#2c3e50', text: '#f39c12', border: '#000000', size: 24, pad: 10 }
+        kurucu: { bg1: '#ff0000', bg2: '#800000', text: '#ffffff', border: '#440000', name: 'KURUCU' },
+        admin: { bg1: '#e67e22', bg2: '#d35400', text: '#ffffff', border: '#6e2c00', name: 'ADMIN' },
+        mod: { bg1: '#2ecc71', bg2: '#27ae60', text: '#ffffff', border: '#145a32', name: 'MODERATOR' },
+        yardimci: { bg1: '#3498db', bg2: '#2980b9', text: '#ffffff', border: '#1b4f72', name: 'YARDIMCI' },
+        rehber: { bg1: '#f1c40f', bg2: '#f39c12', text: '#ffffff', border: '#7e5109', name: 'REHBER' },
+        drehber: { bg1: '#1abc9c', bg2: '#16a085', text: '#ffffff', border: '#0e6251', name: 'D.REHBER' },
+        vip: { bg1: '#f1c40f', bg2: '#9a7d0a', text: '#ffffff', border: '#4d3d05', name: 'VIP' },
+        vipplus: { bg1: '#5dade2', bg2: '#2e86c1', text: '#ffffff', border: '#154360', name: 'VIP+' },
+        mvip: { bg1: '#a569bd', bg2: '#8e44ad', text: '#ffffff', border: '#4a235a', name: 'MVIP' },
+        mvipplus: { bg1: '#ec7063', bg2: '#cb4335', text: '#ffffff', border: '#641e16', name: 'MVIP+' },
+        oyuncu: { bg1: '#bdc3c7', bg2: '#7f8c8d', text: '#ffffff', border: '#2c3e50', name: 'OYUNCU' },
+        halk: { bg1: '#95a5a6', bg2: '#34495e', text: '#ffffff', border: '#17202a', name: 'HALK' },
+        netaria: { bg1: '#00d2ff', bg2: '#3a7bd5', text: '#ffffff', border: '#003366', name: 'NETARIAVIP' },
+        profesyonel: { bg1: '#5a34e0', bg2: '#a463d6', text: '#ffffff', border: '#2b1b54', name: 'PROFESYONEL' },
+        padisah: { bg1: '#3498db', bg2: '#85c1e9', text: '#ffffff', border: '#1b4f72', name: 'PADISAH' }
     };
 
-    // Preset Uygulama Fonksiyonu
-    window.applyPreset = function(name) {
-        const p = presets[name];
-        if(!p) return;
-        
+    window.applyPreset = function(id) {
+        const p = presets[id];
         els.bg1.value = p.bg1;
         els.bg2.value = p.bg2;
         els.textColor.value = p.text;
         els.borderColor.value = p.border;
-        els.fontSize.value = p.size;
-        els.padding.value = p.pad;
-        
-        els.sizeVal.innerText = p.size;
-        els.padVal.innerText = p.pad;
-        
-        if(name === 'profesyonel') els.text.value = 'PROFESYONEL';
-        if(name === 'padisah') els.text.value = 'PADISAH';
-        
+        els.text.value = p.name;
         drawCanvas();
     };
 
-    // Çizim Motoru (Otomatik Boyutlanan Canvas)
     function drawCanvas() {
         const text = els.text.value || ' ';
         const fontSize = parseInt(els.fontSize.value);
         const padding = parseInt(els.padding.value);
         
-        // Fontu ayarla ki ölçüm yapabilelim
-        ctx.font = `${fontSize}px 'Press Start 2P', monospace`;
+        ctx.font = `${fontSize}px 'Press Start 2P'`;
+        const tw = ctx.measureText(text).width;
         
-        // Metin genişliğini ölç
-        const textMetrics = ctx.measureText(text);
-        const textWidth = textMetrics.width;
-        
-        // Canvas boyutlarını dinamik olarak ayarla
-        canvas.width = textWidth + (padding * 2);
+        canvas.width = tw + (padding * 2);
         canvas.height = fontSize + (padding * 2);
 
-        // Canvas boyutu değiştiğinde font sıfırlanır, tekrar ayarlıyoruz
-        ctx.font = `${fontSize}px 'Press Start 2P', monospace`;
-        ctx.textBaseline = 'middle';
-        ctx.textAlign = 'center';
-
-        // 1. Arkaplan Gradient Çizimi
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+        // Gradyan Arkaplan
+        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
         gradient.addColorStop(0, els.bg1.value);
         gradient.addColorStop(1, els.bg2.value);
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // 2. Dış Çerçeve Çizimi
+        // Minecraft Tarzı İç Kenarlık
         ctx.strokeStyle = els.borderColor.value;
-        ctx.lineWidth = 4; // Çerçeve kalınlığı
+        ctx.lineWidth = 4;
         ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
 
-        const centerX = canvas.width / 2;
-        // Fontun dikey hizalamasını düzeltmek için ufak bir sapma ekliyoruz
-        const centerY = (canvas.height / 2) + (fontSize * 0.1); 
+        // Metin Ayarları
+        ctx.font = `${fontSize}px 'Press Start 2P'`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        const x = canvas.width / 2;
+        const y = (canvas.height / 2) + (fontSize * 0.1);
 
-        // 3. Metin Gölgelendirmesi (Minecraft tarzı sert gölge)
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-        // Gölge offsetini font boyutuna göre dinamik yapıyoruz
-        const shadowOffset = Math.max(2, fontSize * 0.08); 
-        ctx.fillText(text, centerX + shadowOffset, centerY + shadowOffset);
+        // Sert Gölge
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+        ctx.fillText(text, x + 3, y + 3);
 
-        // 4. Ana Metin
+        // Ana Metin
         ctx.fillStyle = els.textColor.value;
-        ctx.fillText(text, centerX, centerY);
+        ctx.fillText(text, x, y);
     }
 
-    // Event Dinleyicileri (Gerçek zamanlı tepki için)
     Object.values(els).forEach(el => {
-        el.addEventListener('input', (e) => {
-            // Slider metinlerini güncelle
-            if(e.target.id === 'fontSize') els.sizeVal.innerText = e.target.value;
-            if(e.target.id === 'padding') els.padVal.innerText = e.target.value;
+        el.addEventListener('input', () => {
+            els.sizeVal.innerText = els.fontSize.value;
+            els.padVal.innerText = els.padding.value;
             drawCanvas();
         });
     });
 
-    // İndirme İşlemi
     document.getElementById('downloadBtn').addEventListener('click', () => {
         const link = document.createElement('a');
-        const safeName = (els.text.value || 'rank').replace(/[^a-z0-9]/gi, '_').toLowerCase();
-        link.download = `rank_${safeName}.png`;
+        link.download = `rank_${els.text.value.toLowerCase()}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
     });
 
-    // Fontların yüklendiğinden emin ol ve ilk çizimi yap
-    document.fonts.ready.then(() => {
-        // Sayfa açıldığında varsayılan olarak Profesyonel presetini yükle
-        applyPreset('profesyonel');
-    });
-
+    document.fonts.ready.then(() => drawCanvas());
 </script>
 </body>
 </html>
