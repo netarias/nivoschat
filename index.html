@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netaria Rank Studio | Modern Edition</title>
+    <title>Netaria Rank Studio | Pro Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #00d2ff;
-            --primary-hover: #a29bfe;
             --bg-gradient-1: #0f2027;
             --bg-gradient-2: #203a43;
             --bg-gradient-3: #2c5364;
@@ -54,7 +53,6 @@
             gap: 30px;
         }
 
-        /* Önizleme */
         .preview-section {
             display: flex;
             flex-direction: column;
@@ -68,14 +66,8 @@
         }
 
         .preview-title {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            font-weight: 800;
+            position: absolute; top: 20px; left: 20px; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 2px; color: var(--text-muted); font-weight: 800;
         }
 
         .canvas-wrapper {
@@ -87,37 +79,24 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        /* Kontroller */
         .controls-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding-right: 10px;
+            display: flex; flex-direction: column; gap: 15px;
+            max-height: 85vh; overflow-y: auto; padding-right: 10px;
         }
 
         .header h1 {
-            font-size: 24px;
-            font-weight: 800;
+            font-size: 24px; font-weight: 800;
             background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
         .input-group { display: flex; flex-direction: column; gap: 5px; }
         .input-group label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
 
         input[type="text"] {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 10px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
-            outline: none;
+            width: 100%; padding: 12px 15px; background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1); color: white;
+            border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 14px; outline: none;
         }
 
         .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -126,46 +105,20 @@
             background: rgba(0, 0, 0, 0.3); padding: 8px 12px; border-radius: 8px;
         }
 
-        /* Rank Butonları Izgarası */
-        .preset-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-
+        .preset-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .preset-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ddd;
-            padding: 10px 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 10px;
-            font-weight: 600;
-            transition: all 0.2s;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ddd; padding: 10px 5px; border-radius: 8px; cursor: pointer;
+            font-size: 10px; font-weight: 600; transition: 0.2s; text-align: center;
         }
-
-        .preset-btn:hover {
-            background: var(--primary);
-            color: #000;
-            transform: translateY(-2px);
-        }
+        .preset-btn:hover { background: var(--primary); color: #000; transform: translateY(-2px); }
 
         .download-btn {
             background: linear-gradient(135deg, var(--primary), #00a8ff);
-            color: #000;
-            border: none;
-            padding: 15px;
-            font-size: 14px;
-            font-weight: 800;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: uppercase;
+            color: #000; border: none; padding: 15px; font-size: 14px;
+            font-weight: 800; border-radius: 12px; cursor: pointer; margin-top: 10px; text-transform: uppercase;
         }
 
-        /* Kaydırıcılar */
         input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; background: var(--primary); border-radius: 50%; cursor: pointer; }
 
@@ -178,9 +131,8 @@
 <body>
 
 <div class="app-container">
-    
     <div class="preview-section">
-        <div class="preview-title">Canlı Tasarım Ekranı</div>
+        <div class="preview-title">Canlı Önizleme</div>
         <div class="canvas-wrapper">
             <canvas id="rankCanvas"></canvas>
         </div>
@@ -189,50 +141,24 @@
     <div class="controls-section">
         <div class="header">
             <h1>Netaria Studio</h1>
-            <p style="font-size: 12px; color: var(--text-muted);">Tüm rütbeler için profesyonel jeneratör.</p>
+            <p style="font-size: 12px; color: var(--text-muted);">Sᴍᴀʟʟ Cᴀᴘs Desteğiyle Modern Görünüm.</p>
         </div>
 
         <div class="input-group">
-            <label>Metin</label>
-            <input type="text" id="rankText" value="KURUCU">
+            <label>Metin (Otomatik Sᴍᴀʟʟ Cᴀᴘs Olur)</label>
+            <input type="text" id="rankText" value="MODERATOR" placeholder="Örn: rehber">
         </div>
 
         <div class="color-grid">
-            <div class="input-group">
-                <label>Gradyan 1</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="bgGrad1" value="#ff0000">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Gradyan 2</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="bgGrad2" value="#800000">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Yazı</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="textColor" value="#ffffff">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Kenarlık</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="borderColor" value="#440000">
-                </div>
-            </div>
+            <div class="input-group"><label>Renk 1</label><div class="color-picker-wrap"><input type="color" id="bgGrad1" value="#2ecc71"></div></div>
+            <div class="input-group"><label>Renk 2</label><div class="color-picker-wrap"><input type="color" id="bgGrad2" value="#27ae60"></div></div>
+            <div class="input-group"><label>Yazı</label><div class="color-picker-wrap"><input type="color" id="textColor" value="#ffffff"></div></div>
+            <div class="input-group"><label>Kenarlık</label><div class="color-picker-wrap"><input type="color" id="borderColor" value="#145a32"></div></div>
         </div>
 
         <div class="color-grid">
-            <div class="input-group">
-                <label>Boyut: <span id="sizeValue">24</span>px</label>
-                <input type="range" id="fontSize" min="12" max="60" value="24">
-            </div>
-            <div class="input-group">
-                <label>Boşluk: <span id="padValue">10</span>px</label>
-                <input type="range" id="padding" min="4" max="30" value="10">
-            </div>
+            <div class="input-group"><label>Boyut: <span id="sizeValue">24</span>px</label><input type="range" id="fontSize" min="12" max="60" value="24"></div>
+            <div class="input-group"><label>Boşluk: <span id="padValue">10</span>px</label><input type="range" id="padding" min="4" max="30" value="10"></div>
         </div>
 
         <div class="input-group">
@@ -256,14 +182,24 @@
             </div>
         </div>
 
-        <button class="download-btn" id="downloadBtn">PNG OLARAK KAYDET</button>
+        <button class="download-btn" id="downloadBtn">TASARIMI PNG OLARAK İNDİR</button>
     </div>
-
 </div>
 
 <script>
     const canvas = document.getElementById('rankCanvas');
     const ctx = canvas.getContext('2d');
+
+    // Small Caps Dönüştürücü Fonksiyonu
+    function toSmallCaps(text) {
+        const capsMap = {
+            'a': 'ᴀ', 'b': 'ʙ', 'c': 'ᴄ', 'd': 'ᴅ', 'e': 'ᴇ', 'f': 'ꜰ', 'g': 'ɢ', 'h': 'ʜ', 
+            'i': 'ɪ', 'j': 'ᴊ', 'k': 'ᴋ', 'l': 'ʟ', 'm': 'ᴍ', 'n': 'ɴ', 'o': 'ᴏ', 'p': 'ᴘ', 
+            'q': 'ǫ', 'r': 'ʀ', 's': 's', 't': 'ᴛ', 'u': 'ᴜ', 'v': 'ᴠ', 'w': 'ᴡ', 'x': 'x', 
+            'y': 'ʏ', 'z': 'ᴢ'
+        };
+        return text.toLowerCase().split('').map(char => capsMap[char] || char).join('');
+    }
 
     const els = {
         text: document.getElementById('rankText'),
@@ -306,12 +242,14 @@
     };
 
     function drawCanvas() {
-        const text = els.text.value || ' ';
+        const rawText = els.text.value || ' ';
+        const scText = toSmallCaps(rawText); // Metni Small Caps'e çevir
         const fontSize = parseInt(els.fontSize.value);
         const padding = parseInt(els.padding.value);
         
-        ctx.font = `${fontSize}px 'Press Start 2P'`;
-        const tw = ctx.measureText(text).width;
+        // Font stack: Önce Minecraft fontu, Unicode karakterler için Inter (Sans-Serif)
+        ctx.font = `${fontSize}px 'Press Start 2P', 'Inter', sans-serif`;
+        const tw = ctx.measureText(scText).width;
         
         canvas.width = tw + (padding * 2);
         canvas.height = fontSize + (padding * 2);
@@ -323,34 +261,32 @@
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Minecraft Tarzı İç Kenarlık
+        // Kenarlık
         ctx.strokeStyle = els.borderColor.value;
         ctx.lineWidth = 4;
         ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
 
-        // Metin Ayarları
-        ctx.font = `${fontSize}px 'Press Start 2P'`;
+        // Metin Çizimi
+        ctx.font = `${fontSize}px 'Press Start 2P', 'Inter', sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         const x = canvas.width / 2;
         const y = (canvas.height / 2) + (fontSize * 0.1);
 
-        // Sert Gölge
+        // Gölge
         ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-        ctx.fillText(text, x + 3, y + 3);
+        ctx.fillText(scText, x + 2, y + 2);
 
         // Ana Metin
         ctx.fillStyle = els.textColor.value;
-        ctx.fillText(text, x, y);
+        ctx.fillText(scText, x, y);
     }
 
-    Object.values(els).forEach(el => {
-        el.addEventListener('input', () => {
-            els.sizeVal.innerText = els.fontSize.value;
-            els.padVal.innerText = els.padding.value;
-            drawCanvas();
-        });
-    });
+    Object.values(els).forEach(el => el.addEventListener('input', () => {
+        els.sizeVal.innerText = els.fontSize.value;
+        els.padVal.innerText = els.padding.value;
+        drawCanvas();
+    }));
 
     document.getElementById('downloadBtn').addEventListener('click', () => {
         const link = document.createElement('a');
