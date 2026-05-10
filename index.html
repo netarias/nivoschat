@@ -3,701 +3,517 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NovaSync - Modern iş akışınızı yönetin, dosyalarınızı senkronize edin ve ekibinizle mükemmel uyum içinde çalışın.">
-    <title>NovaSync | Geleceğin Çalışma Alanı</title>
+    <meta name="description" content="Aura Digital - Geleceğin dijital deneyimlerini bugünden tasarlayan kreatif ajans.">
+    <title>Aura Digital | Creative Experience Design</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
 
     <style>
-        /* ==========================================================================
-           1. CSS DEĞİŞKENLERİ VE TEMA AYARLARI
-           ========================================================================== */
+        /* =============================================================================
+        AURA DESIGN SYSTEM - CSS VARIABLES
+        =============================================================================
+        */
         :root {
-            --primary: #6366f1; /* Indigo 500 */
-            --primary-hover: #4f46e5; /* Indigo 600 */
-            --secondary: #ec4899; /* Pink 500 */
-            --bg-dark: #0f172a; /* Slate 900 */
-            --bg-card: #1e293b; /* Slate 800 */
-            --text-main: #f8fafc; /* Slate 50 */
-            --text-muted: #94a3b8; /* Slate 400 */
-            --border-color: #334155; /* Slate 700 */
-            --success: #10b981;
-            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            --transition: all 0.3s ease;
+            --bg-color: #0a0a0a;
+            --surface-color: #111111;
+            --accent-color: #d4af37; /* Gold */
+            --text-color: #ffffff;
+            --text-muted: #888888;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-fast: all 0.3s ease;
+            --font-main: 'Montserrat', sans-serif;
+            --font-heading: 'Playfair Display', serif;
         }
 
-        /* ==========================================================================
-           2. SIFIRLAMA (RESET) VE TEMEL STİLLER
-           ========================================================================== */
+        /* =============================================================================
+        BASE RESET & SCROLLBAR
+        =============================================================================
+        */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            cursor: none; /* Custom cursor için default imleci gizliyoruz */
         }
 
-        html {
-            scroll-behavior: smooth;
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent-color);
+            border-radius: 10px;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            line-height: 1.6;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
             overflow-x: hidden;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 40px;
         }
 
-        /* ==========================================================================
-           3. TİPOGRAFİ VE BAŞLIKLAR
-           ========================================================================== */
-        h1, h2, h3, h4 {
-            font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 1rem;
+        /* =============================================================================
+        CUSTOM CURSOR
+        =============================================================================
+        */
+        #cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
         }
 
-        h1 {
-            font-size: 3.5rem;
-            letter-spacing: -1px;
+        #cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent-color);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
         }
 
-        h2 {
-            font-size: 2.5rem;
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .text-gradient {
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: -2rem auto 4rem auto;
-        }
-
-        /* ==========================================================================
-           4. BUTONLAR VE FORMLAR
-           ========================================================================== */
-        .btn {
-            display: inline-flex;
-            align-items: center;
+        /* =============================================================================
+        PRELOADER
+        =============================================================================
+        */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
             justify-content: center;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            border: none;
-            gap: 10px;
+            align-items: center;
+            z-index: 10000;
         }
 
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        .loader-content {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--accent-color);
+            font-style: italic;
+            letter-spacing: 5px;
+            animation: pulse 2s infinite;
         }
 
-        .btn-primary:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        @keyframes pulse {
+            0% { opacity: 0.2; }
+            50% { opacity: 1; }
+            100% { opacity: 0.2; }
         }
 
-        .btn-outline {
-            background: transparent;
-            color: var(--text-main);
-            border: 2px solid var(--border-color);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--text-main);
-            transform: translateY(-2px);
-        }
-
-        /* ==========================================================================
-           5. NAVİGASYON (HEADER)
-           ========================================================================== */
+        /* =============================================================================
+        HEADER & NAVIGATION
+        =============================================================================
+        */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
+            padding: 40px 0;
             z-index: 1000;
-            transition: var(--transition);
-            padding: 20px 0;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition-slow);
         }
 
         header.scrolled {
-            padding: 15px 0;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            padding: 20px 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .nav-container {
+        .nav-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-decoration: none;
+            letter-spacing: -1px;
         }
 
-        .logo svg {
-            width: 32px;
-            height: 32px;
-            fill: url(#logo-grad);
+        .logo span {
+            color: var(--accent-color);
         }
 
         .nav-links {
             display: flex;
-            gap: 30px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            font-weight: 500;
-            color: var(--text-muted);
-        }
-
-        .nav-links a:hover {
-            color: var(--text-main);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-main);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* ==========================================================================
-           6. HERO BÖLÜMÜ (ANA EKRAN)
-           ========================================================================== */
-        .hero {
-            padding: 180px 0 100px;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -20%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(15,23,42,0) 70%);
-            border-radius: 50%;
-            z-index: -1;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: -20%;
-            right: -10%;
-            width: 40vw;
-            height: 40vw;
-            background: radial-gradient(circle, rgba(236,72,153,0.1) 0%, rgba(15,23,42,0) 70%);
-            border-radius: 50%;
-            z-index: -1;
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            color: var(--text-muted);
-            margin-bottom: 2.5rem;
-        }
-
-        .hero-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-bottom: 4rem;
-        }
-
-        .hero-image {
-            perspective: 1000px;
-        }
-
-        .hero-dashboard {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 10px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            transform: rotateX(10deg) translateY(20px);
-            transition: var(--transition);
-        }
-
-        .hero-dashboard:hover {
-            transform: rotateX(0deg) translateY(0);
-        }
-
-        .mockup-header {
-            display: flex;
-            gap: 8px;
-            padding: 10px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .mockup-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-        .dot-r { background-color: #ef4444; }
-        .dot-y { background-color: #eab308; }
-        .dot-g { background-color: #22c55e; }
-
-        .mockup-body {
-            height: 400px;
-            background: linear-gradient(180deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%);
-            border-radius: 0 0 15px 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            font-family: monospace;
-        }
-
-        /* ==========================================================================
-           7. ÖZELLİKLER BÖLÜMÜ
-           ========================================================================== */
-        .features {
-            padding: 100px 0;
-            background: var(--bg-dark);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            background: var(--bg-card);
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            transition: var(--transition);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-
-        .feature-icon svg {
-            width: 30px;
-            height: 30px;
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 15px;
-        }
-
-        .feature-card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-        }
-
-        /* ==========================================================================
-           8. İNDİRME BÖLÜMÜ (CTA)
-           ========================================================================== */
-        .download-section {
-            padding: 100px 0;
-            background: linear-gradient(to right, var(--bg-card), var(--bg-dark));
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .download-wrapper {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             gap: 50px;
         }
 
-        .download-content {
-            flex: 1;
-        }
-
-        .download-content h2 {
-            text-align: left;
-            margin-bottom: 1.5rem;
-        }
-
-        .store-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .store-btn {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: #000;
-            border: 1px solid var(--border-color);
-            padding: 10px 25px;
-            border-radius: 12px;
-            transition: var(--transition);
-            cursor: pointer;
-        }
-
-        .store-btn:hover {
-            background: #111;
-            border-color: var(--text-main);
-        }
-
-        .store-btn svg {
-            width: 30px;
-            height: 30px;
-            fill: white;
-        }
-
-        .store-text {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-        }
-
-        .store-text small {
-            font-size: 0.7rem;
-            color: #ccc;
-        }
-
-        .store-text span {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: white;
-        }
-
-        .download-image {
-            flex: 1;
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 300;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             position: relative;
+            padding-bottom: 5px;
         }
 
-        .phone-mockup {
-            width: 300px;
-            height: 600px;
-            border: 12px solid #334155;
-            border-radius: 40px;
-            margin: 0 auto;
-            position: relative;
-            background: var(--bg-dark);
-            overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-        }
-        
-        .phone-notch {
+        .nav-links a::after {
+            content: '';
             position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 25px;
-            background: #334155;
-            border-radius: 0 0 15px 15px;
-            z-index: 2;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent-color);
+            transition: var(--transition-fast);
         }
 
-        .phone-screen {
+        .nav-links a:hover::after {
             width: 100%;
-            height: 100%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
+        }
+
+        .menu-trigger {
+            display: none;
             font-size: 1.5rem;
-            text-align: center;
-            padding: 20px;
         }
 
-        /* ==========================================================================
-           9. FİYATLANDIRMA BÖLÜMÜ
-           ========================================================================== */
-        .pricing {
-            padding: 100px 0;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .price-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 40px;
-            transition: var(--transition);
+        /* =============================================================================
+        HERO SECTION
+        =============================================================================
+        */
+        .hero {
+            height: 100vh;
             display: flex;
             flex-direction: column;
-        }
-
-        .price-card.popular {
-            border-color: var(--primary);
-            transform: scale(1.05);
-            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+            justify-content: center;
             position: relative;
+            background: radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
         }
 
-        .badge {
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 10vw, 8rem);
+            line-height: 0.9;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            z-index: 1;
+        }
+
+        .hero-title .italic {
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent-color);
+        }
+
+        .hero-subtitle {
+            max-width: 600px;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            margin-left: 5px;
+        }
+
+        .scroll-down {
             position: absolute;
-            top: -15px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--gradient);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
 
-        .price-header {
-            text-align: center;
-            margin-bottom: 30px;
+        .scroll-down .line {
+            width: 1px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--accent-color), transparent);
+            animation: scrollLine 2s infinite;
+        }
+
+        @keyframes scrollLine {
+            0% { height: 0; opacity: 0; transform: translateY(0); }
+            50% { height: 60px; opacity: 1; transform: translateY(0); }
+            100% { height: 0; opacity: 0; transform: translateY(60px); }
+        }
+
+        /* =============================================================================
+        PORTFOLIO SECTION
+        =============================================================================
+        */
+        .section-padding {
+            padding: 150px 0;
+        }
+
+        .section-header {
+            margin-bottom: 80px;
+        }
+
+        .label {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 5px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 60px;
+        }
+
+        .work-item {
+            position: relative;
+            overflow: hidden;
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 30px;
         }
 
-        .price-amount {
-            font-size: 3rem;
-            font-weight: 800;
-            margin: 15px 0;
-        }
-
-        .price-amount span {
-            font-size: 1rem;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
-        .price-features {
-            flex-grow: 1;
-            margin-bottom: 30px;
-        }
-
-        .price-features li {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            color: var(--text-muted);
-        }
-
-        .price-features li svg {
-            width: 20px;
-            height: 20px;
-            fill: var(--success);
-            flex-shrink: 0;
-        }
-
-        /* ==========================================================================
-           10. SSS (AKORDİYON) BÖLÜMÜ
-           ========================================================================== */
-        .faq {
-            padding: 80px 0 120px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .accordion {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            overflow: hidden;
-            background: var(--bg-card);
-        }
-
-        .accordion-header {
+        .work-img-wrapper {
             width: 100%;
-            padding: 20px;
-            text-align: left;
-            background: transparent;
-            border: none;
-            color: var(--text-main);
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
+            height: 500px;
+            overflow: hidden;
+            background: var(--surface-color);
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .work-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1);
+            transition: var(--transition-slow);
+        }
+
+        .work-item:hover .work-img-wrapper img {
+            filter: grayscale(0);
+            transform: scale(1.05);
+        }
+
+        .work-info {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-end;
         }
 
-        .accordion-icon {
-            transition: var(--transition);
-        }
-
-        .accordion.active .accordion-icon {
-            transform: rotate(45deg);
-        }
-
-        .accordion-body {
-            padding: 0 20px;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease;
-            color: var(--text-muted);
-        }
-
-        .accordion.active .accordion-body {
-            padding: 0 20px 20px;
-            max-height: 200px; /* Yaklaşık yükseklik */
-        }
-
-        /* ==========================================================================
-           11. FOOTER
-           ========================================================================== */
-        footer {
-            background: #0b1120;
-            padding: 80px 0 30px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 50px;
-            margin-bottom: 50px;
-        }
-
-        .footer-about p {
-            color: var(--text-muted);
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-icons a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: var(--bg-card);
-            border-radius: 50%;
-            color: var(--text-main);
-            transition: var(--transition);
-        }
-
-        .social-icons a:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .footer-links h4 {
-            font-size: 1.2rem;
-            margin-bottom: 20px;
-        }
-
-        .footer-links ul li {
+        .work-info h3 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
             margin-bottom: 10px;
         }
 
-        .footer-links ul a {
+        .work-info p {
             color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .footer-links ul a:hover {
-            color: var(--primary);
-            padding-left: 5px;
+        .work-item:nth-child(even) {
+            margin-top: 100px;
+        }
+
+        /* =============================================================================
+        SERVICES SECTION
+        =============================================================================
+        */
+        .services {
+            background: var(--surface-color);
+        }
+
+        .service-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-item {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            align-items: center;
+            transition: var(--transition-fast);
+        }
+
+        .service-item:hover {
+            padding-left: 30px;
+            background: rgba(212, 175, 55, 0.02);
+        }
+
+        .service-num {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--accent-color);
+            opacity: 0.5;
+        }
+
+        .service-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+        }
+
+        .service-desc {
+            color: var(--text-muted);
+            font-size: 1rem;
+            max-width: 300px;
+            justify-self: end;
+            text-align: right;
+        }
+
+        /* =============================================================================
+        TESTIMONIALS (MARQUEE)
+        =============================================================================
+        */
+        .marquee {
+            padding: 100px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            background: var(--accent-color);
+            color: var(--bg-color);
+        }
+
+        .marquee-inner {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        .marquee h2 {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-size: 5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding-right: 50px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* =============================================================================
+        CONTACT FOOTER
+        =============================================================================
+        */
+        .footer {
+            padding: 150px 0 50px;
+            text-align: center;
+        }
+
+        .footer-cta h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 8vw, 6rem);
+            margin-bottom: 50px;
+        }
+
+        .footer-cta h2 a {
+            color: inherit;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .footer-cta h2 a::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-color);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .footer-cta h2 a:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
         .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
+            margin-top: 150px;
+            padding-top: 50px;
             border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        /* ==========================================================================
-           12. ANİMASYONLAR (SCROLL REVEAL)
-           ========================================================================== */
+        .footer-socials {
+            display: flex;
+            gap: 30px;
+        }
+
+        .footer-socials a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .footer-socials a:hover {
+            color: var(--accent-color);
+        }
+
+        /* =============================================================================
+        RESPONSIVE DESIGN
+        =============================================================================
+        */
+        @media (max-width: 992px) {
+            .nav-links { display: none; }
+            .menu-trigger { display: block; }
+            .work-grid { grid-template-columns: 1fr; gap: 40px; }
+            .work-item:nth-child(even) { margin-top: 0; }
+            .service-item { grid-template-columns: 0.5fr 2fr; gap: 20px; }
+            .service-desc { display: none; }
+            .section-title { font-size: 2.5rem; }
+            .container { padding: 0 20px; }
+        }
+
+        /* =============================================================================
+        REVEAL ANIMATION
+        =============================================================================
+        */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease-out;
+            transform: translateY(50px);
+            transition: var(--transition-slow);
         }
 
         .reveal.active {
@@ -705,428 +521,271 @@
             transform: translateY(0);
         }
 
-        /* ==========================================================================
-           13. RESPONSIVE TASARIM (MOBİL UYUM)
-           ========================================================================== */
-        @media (max-width: 992px) {
-            h1 { font-size: 2.8rem; }
-            .download-wrapper { flex-direction: column; text-align: center; }
-            .download-content h2 { text-align: center; }
-            .store-buttons { justify-content: center; }
-            .price-card.popular { transform: scale(1); }
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-btn { display: block; }
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background: var(--bg-dark);
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                transition: var(--transition);
-            }
-            .nav-links.active { left: 0; }
-            .hero-buttons { flex-direction: column; }
-            .footer-grid { grid-template-columns: 1fr; text-align: center; }
-            .social-icons { justify-content: center; }
-        }
     </style>
 </head>
 <body>
 
-    <header id="header">
-        <div class="container nav-container">
-            <a href="#" class="logo">
-                <svg viewBox="0 0 24 24">
-                    <defs>
-                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#6366f1" />
-                            <stop offset="100%" style="stop-color:#ec4899" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-                NovaSync
-            </a>
-            
-            <nav class="nav-links" id="nav-links">
-                <a href="#features">Özellikler</a>
-                <a href="#download">İndir</a>
-                <a href="#pricing">Fiyatlar</a>
-                <a href="#faq">SSS</a>
-                <a href="#contact" class="btn btn-primary" style="color:white">Hemen Başla</a>
-            </nav>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
 
-            <button class="mobile-menu-btn" id="mobile-menu-btn">
-                ☰
-            </button>
+    <div id="preloader">
+        <div class="loader-content">AURA</div>
+    </div>
+
+    <header id="main-header">
+        <div class="container nav-inner">
+            <a href="#" class="logo">AURA<span>.</span>STUDIO</a>
+            <nav class="nav-links">
+                <a href="#work" class="hover-link">Projeler</a>
+                <a href="#services" class="hover-link">Hizmetler</a>
+                <a href="#about" class="hover-link">Hakkımızda</a>
+                <a href="#contact" class="hover-link">İletişim</a>
+            </nav>
+            <div class="menu-trigger">MENU</div>
         </div>
     </header>
 
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content reveal">
-                <h1>İş Akışınızı <span class="text-gradient">Yapay Zeka</span> ile Şekillendirin</h1>
-                <p>NovaSync, dağınık dosyalarınızı, ekip iletişimini ve proje yönetimini tek bir akıllı bulut platformunda birleştirir. Sınırları kaldırın, üretkenliği artırın.</p>
-                <div class="hero-buttons">
-                    <a href="#download" class="btn btn-primary">
-                        Ücretsiz İndir
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    </a>
-                    <a href="#features" class="btn btn-outline">Nasıl Çalışır?</a>
-                </div>
+    <main>
+        <section class="hero container">
+            <h1 class="hero-title reveal">
+                Deneyim <br> 
+                <span class="italic">Dijitalleşiyor.</span>
+            </h1>
+            <p class="hero-subtitle reveal">
+                Biz, sınırları zorlayan tasarımlar ve stratejik zeka ile markaların dijital dünyada parlamasını sağlayan bağımsız bir kreatif stüdyoyuz.
+            </p>
+            <div class="scroll-down">
+                <span>Keşfet</span>
+                <div class="line"></div>
+            </div>
+        </section>
+
+        <section class="section-padding container" id="work">
+            <div class="section-header reveal">
+                <span class="label">Seçilmiş İşler</span>
+                <h2 class="section-title">Geleceği Şekillendiren <br> Projelerimiz</h2>
             </div>
 
-            <div class="hero-image reveal">
-                <div class="hero-dashboard">
-                    <div class="mockup-header">
-                        <div class="mockup-dot dot-r"></div>
-                        <div class="mockup-dot dot-y"></div>
-                        <div class="mockup-dot dot-g"></div>
+            <div class="work-grid">
+                <div class="work-item reveal">
+                    <div class="work-img-wrapper">
+                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT ALPHA</div>
                     </div>
-                    <div class="mockup-body">
-                        // NovaSync Dashboard Arayüzü<br>
-                        > Veriler senkronize ediliyor...<br>
-                        > Sistem durumu: %100 Çevrimiçi<br>
-                        > Şifreleme aktif.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="reveal">Neden NovaSync?</h2>
-            <p class="subtitle reveal">Sıradan depolama araçlarını unutun. Akıllı, güvenli ve ışık hızında bir deneyim için ihtiyacınız olan her şey burada.</p>
-            
-            <div class="features-grid">
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                    </div>
-                    <h3>Uçtan Uca Şifreleme</h3>
-                    <p>Dosyalarınız askeri düzeyde AES-256 algoritmasıyla şifrelenir. Sizin izniniz olmadan kimse verilerinize erişemez.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                    </div>
-                    <h3>Gerçek Zamanlı İşbirliği</h3>
-                    <p>Aynı dosya üzerinde ekibinizle eşzamanlı olarak çalışın. Değişiklikleri anında görün ve yorumlar ekleyin.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                    </div>
-                    <h3>Çapraz Platform</h3>
-                    <p>Windows, Mac, iOS, Android veya web tarayıcısı üzerinden tüm verilerinize eksiksiz erişin.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
-                    </div>
-                    <h3>Yapay Zeka Analitik</h3>
-                    <p>Dosya kullanım alışkanlıklarınızı analiz eden yapay zeka ile depolama alanınızı otomatik optimize edin.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-                    </div>
-                    <h3>Akıllı Versiyonlama</h3>
-                    <p>Dosyalarınızın geçmiş tüm sürümlerine tek tıkla geri dönün. Yanlışlıkla silinen verileri anında kurtarın.</p>
-                </div>
-
-                <div class="feature-card reveal">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                    </div>
-                    <h3>Otomatik Yedekleme</h3>
-                    <p>Arka planda sessizce çalışan senkronizasyon motorumuz ile veri kaybı riskini sonsuza dek ortadan kaldırın.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="download-section" id="download">
-        <div class="container download-wrapper">
-            <div class="download-content reveal">
-                <h2>Cebinizdeki Güç Merkezini Keşfedin</h2>
-                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 20px;">
-                    NovaSync mobil uygulaması ile nerede olursanız olun ofisiniz yanınızda. Çevrimdışı erişim, otomatik kamera yedekleme ve anlık bildirimlerle işiniz asla yarım kalmaz.
-                </p>
-                
-                <div class="store-buttons">
-                    <div class="store-btn">
-                        <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.19 2.31-.88 3.5-.88 1.5 0 2.8.62 3.61 1.6-3.01 1.76-2.53 5.76.62 6.94-1.02 2.1-2.01 3.8-2.81 4.51zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-                        <div class="store-text">
-                            <small>Şuradan İndirin</small>
-                            <span>App Store</span>
+                    <div class="work-info">
+                        <div>
+                            <h3>Lumina Brand Identity</h3>
+                            <p>Branding / 2024</p>
                         </div>
+                        <div class="arrow">↗</div>
                     </div>
-                    
-                    <div class="store-btn">
-                        <svg viewBox="0 0 24 24"><path d="M3.5 2.5v19c0 .5.3.8.7.5l14.8-9.5c.4-.3.4-.8 0-1L4.2 2c-.4-.3-.7 0-.7.5z" fill="#4CAF50"/><path d="M4.2 2l9.8 8.5L3.5 12V2.5c0-.4.3-.6.7-.5z" fill="#FFC107"/><path d="M3.5 12l10.5 1.5L4.2 22c-.4.3-.7.1-.7-.5V12z" fill="#F44336"/><path d="M14 10.5l4.8-3c.4-.3.4-.8 0-1L14 10.5z" fill="#2196F3"/></svg>
-                        <div class="store-text">
-                            <small>ŞİMDİ ALIN</small>
-                            <span>Google Play</span>
+                </div>
+
+                <div class="work-item reveal">
+                    <div class="work-img-wrapper">
+                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT BETA</div>
+                    </div>
+                    <div class="work-info">
+                        <div>
+                            <h3>Zenith Mobile App</h3>
+                            <p>UX UI Design / 2023</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="download-image reveal">
-                <div class="phone-mockup">
-                    <div class="phone-notch"></div>
-                    <div class="phone-screen">
-                        NovaSync<br>Mobile App
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <h2 class="reveal">Esnek Fiyatlandırma</h2>
-            <p class="subtitle reveal">Bireysel kullanıcılardan büyük kurumsal ekiplere kadar herkes için uygun bir planımız var. İptal etmek her zaman ücretsiz.</p>
-
-            <div class="pricing-grid">
-                <div class="price-card reveal">
-                    <div class="price-header">
-                        <h3>Başlangıç</h3>
-                        <p style="color:var(--text-muted)">Bireysel kullanım için</p>
-                        <div class="price-amount">₺0<span>/ay</span></div>
-                    </div>
-                    <ul class="price-features">
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 15 GB Bulut Depolama</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Temel Şifreleme</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> E-posta Desteği</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 1 Cihaz Senkronizasyonu</li>
-                    </ul>
-                    <button class="btn btn-outline" style="width: 100%">Ücretsiz Başla</button>
-                </div>
-
-                <div class="price-card popular reveal">
-                    <div class="badge">EN POPÜLER</div>
-                    <div class="price-header">
-                        <h3>Pro</h3>
-                        <p style="color:var(--text-muted)">Profesyoneller ve küçük ekipler</p>
-                        <div class="price-amount">₺149<span>/ay</span></div>
-                    </div>
-                    <ul class="price-features">
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 2 TB Bulut Depolama</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Gelişmiş AES-256 Şifreleme</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 7/24 Öncelikli Destek</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Sınırsız Cihaz</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 30 Gün Sürüm Geçmişi</li>
-                    </ul>
-                    <button class="btn btn-primary" style="width: 100%">14 Gün Ücretsiz Dene</button>
-                </div>
-
-                <div class="price-card reveal">
-                    <div class="price-header">
-                        <h3>Kurumsal</h3>
-                        <p style="color:var(--text-muted)">Büyük ölçekli şirketler için</p>
-                        <div class="price-amount">Özel<span>/ay</span></div>
-                    </div>
-                    <ul class="price-features">
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Sınırsız Depolama</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Özel Sunucu Kurulumu</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Özel Yönetici Paneli</li>
-                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Gelişmiş API Erişimi</li>
-                    </ul>
-                    <button class="btn btn-outline" style="width: 100%">Satış Ekibiyle İletişime Geç</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="faq" id="faq">
-        <h2 class="reveal">Sıkça Sorulan Sorular</h2>
-        
-        <div class="accordion reveal">
-            <button class="accordion-header">
-                Ücretsiz deneme süresi bittiğinde ne olur?
-                <span class="accordion-icon">+</span>
-            </button>
-            <div class="accordion-body">
-                <p>14 günlük Pro deneme süreniz sona erdiğinde, hesabınız otomatik olarak Başlangıç (Ücretsiz) planına düşürülür. 15 GB üzerindeki verileriniz silinmez, ancak alan açana kadar yeni dosya yükleyemezsiniz.</p>
-            </div>
-        </div>
-
-        <div class="accordion reveal">
-            <button class="accordion-header">
-                Verilerim nerede saklanıyor ve güvenli mi?
-                <span class="accordion-icon">+</span>
-            </button>
-            <div class="accordion-body">
-                <p>Verileriniz, küresel çapta dağıtılmış ve SOC 2 Tip II sertifikalı veri merkezlerinde saklanır. İstemci tarafında şifreleme (zero-knowledge) sunduğumuz için verilerinizin içeriğini biz bile göremeyiz.</p>
-            </div>
-        </div>
-
-        <div class="accordion reveal">
-            <button class="accordion-header">
-                Büyük boyutlu dosyaları paylaşabilir miyim?
-                <span class="accordion-icon">+</span>
-            </button>
-            <div class="accordion-body">
-                <p>Evet! Pro planında tek bir dosya için yükleme limiti 50 GB'dır. Dosyalarınızı zaman aşımı veya şifre korumalı özel bağlantılar oluşturarak güvenle paylaşabilirsiniz.</p>
-            </div>
-        </div>
-        
-        <div class="accordion reveal">
-            <button class="accordion-header">
-                İstediğim zaman aboneliğimi iptal edebilir miyim?
-                <span class="accordion-icon">+</span>
-            </button>
-            <div class="accordion-body">
-                <p>Kesinlikle. Aboneliğinizi hiçbir taahhüt olmadan, dilediğiniz zaman hesap ayarlarınızdan tek tıkla iptal edebilirsiniz. Herhangi bir gizli ücret yoktur.</p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-about">
-                    <a href="#" class="logo">
-                        <svg viewBox="0 0 24 24">
-                            <defs>
-                                <linearGradient id="logo-footer" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" style="stop-color:#6366f1" />
-                                    <stop offset="100%" style="stop-color:#ec4899" />
-                                </linearGradient>
-                            </defs>
-                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#logo-footer)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                        </svg>
-                        NovaSync
-                    </a>
-                    <p>Dünyanın dört bir yanındaki takımlar için yeni nesil, güvenli ve ışık hızında bulut depolama ve işbirliği platformu.</p>
-                    <div class="social-icons">
-                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
-                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
-                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+                        <div class="arrow">↗</div>
                     </div>
                 </div>
 
-                <div class="footer-links">
-                    <h4>Ürün</h4>
-                    <ul>
-                        <li><a href="#">İndir</a></li>
-                        <li><a href="#">Özellikler</a></li>
-                        <li><a href="#">Entegrasyonlar</a></li>
-                        <li><a href="#">Fiyatlandırma</a></li>
-                        <li><a href="#">Sürüm Notları</a></li>
-                    </ul>
+                <div class="work-item reveal">
+                    <div class="work-img-wrapper">
+                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT GAMMA</div>
+                    </div>
+                    <div class="work-info">
+                        <div>
+                            <h3>Chronos E-Commerce</h3>
+                            <p>Development / 2024</p>
+                        </div>
+                        <div class="arrow">↗</div>
+                    </div>
                 </div>
 
-                <div class="footer-links">
-                    <h4>Şirket</h4>
-                    <ul>
-                        <li><a href="#">Hakkımızda</a></li>
-                        <li><a href="#">Kariyer</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">İletişim</a></li>
-                        <li><a href="#">Ortaklıklar</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-links">
-                    <h4>Yasal</h4>
-                    <ul>
-                        <li><a href="#">Kullanım Koşulları</a></li>
-                        <li><a href="#">Gizlilik Politikası</a></li>
-                        <li><a href="#">Çerez Politikası</a></li>
-                        <li><a href="#">Güvenlik</a></li>
-                    </ul>
+                <div class="work-item reveal">
+                    <div class="work-img-wrapper">
+                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT DELTA</div>
+                    </div>
+                    <div class="work-info">
+                        <div>
+                            <h3>Nebula Art Direction</h3>
+                            <p>Strategy / 2023</p>
+                        </div>
+                        <div class="arrow">↗</div>
+                    </div>
                 </div>
             </div>
-            
+        </section>
+
+        <section class="section-padding services" id="services">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="label">Neler Yapıyoruz?</span>
+                    <h2 class="section-title">Dijital Varlığınızı <br> Güçlendiriyoruz</h2>
+                </div>
+
+                <div class="service-list">
+                    <div class="service-item reveal">
+                        <span class="service-num">01</span>
+                        <h3 class="service-title">Strateji & Planlama</h3>
+                        <p class="service-desc">Markanızın DNA'sını analiz ediyor, pazar hedeflerinize uygun yol haritaları çiziyoruz.</p>
+                    </div>
+                    <div class="service-item reveal">
+                        <span class="service-num">02</span>
+                        <h3 class="service-title">Görsel Kimlik</h3>
+                        <p class="service-desc">Logo tasarımından renk paletine, markanızı ikonik kılacak tüm görsel dili kurguluyoruz.</p>
+                    </div>
+                    <div class="service-item reveal">
+                        <span class="service-num">03</span>
+                        <h3 class="service-title">Deneyim Tasarımı (UX/UI)</h3>
+                        <p class="service-desc">Kullanıcıların dijital ürünlerinizde kaybolmadan, keyifle gezineceği arayüzler tasarlıyoruz.</p>
+                    </div>
+                    <div class="service-item reveal">
+                        <span class="service-num">04</span>
+                        <h3 class="service-title">Web & App Geliştirme</h3>
+                        <p class="service-desc">En güncel teknolojileri (React, Next.js, WebGL) kullanarak yüksek performanslı siteler kodluyoruz.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="marquee">
+            <div class="marquee-inner">
+                <h2>YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • </h2>
+                <h2>YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • </h2>
+            </div>
+        </div>
+
+        <footer class="footer container" id="contact">
+            <div class="footer-cta reveal">
+                <span class="label">Sıradaki projeniz için</span>
+                <h2><a href="mailto:hello@aura.studio">Bize Merhaba Deyin.</a></h2>
+                <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto 50px;">Birlikte harika bir şeyler inşa etmek için sabırsızlanıyoruz.</p>
+            </div>
+
             <div class="footer-bottom">
-                &copy; 2026 NovaSync Technologies. Tüm hakları saklıdır.
+                <div>&copy; 2026 AURA DIGITAL STUDIO.</div>
+                <div class="footer-socials">
+                    <a href="#">Instagram</a>
+                    <a href="#">Behance</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="#">Dribbble</a>
+                </div>
+                <div>EST. 2020</div>
             </div>
-        </div>
-    </footer>
+        </footer>
+    </main>
 
     <script>
-        // 1. Mobile Menu Toggle
-        const mobileBtn = document.getElementById('mobile-menu-btn');
-        const navLinks = document.getElementById('nav-links');
-
-        mobileBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            if(navLinks.classList.contains('active')) {
-                mobileBtn.innerHTML = '✕';
-            } else {
-                mobileBtn.innerHTML = '☰';
-            }
+        // 1. Preloader
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 600);
+            }, 1500);
         });
 
-        // Kapatma işlemi (Linke tıklayınca)
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileBtn.innerHTML = '☰';
+        // 2. Custom Cursor Tracking
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            // Follower lag effect
+            setTimeout(() => {
+                follower.style.left = e.clientX - 15 + 'px';
+                follower.style.top = e.clientY - 15 + 'px';
+            }, 50);
+        });
+
+        // 3. Hover Effects for Cursor
+        const hoverLinks = document.querySelectorAll('a, .work-item, .menu-trigger');
+        hoverLinks.forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                follower.style.width = '70px';
+                follower.style.height = '70px';
+                follower.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
+                cursor.style.transform = 'scale(2)';
+            });
+            link.addEventListener('mouseleave', () => {
+                follower.style.width = '40px';
+                follower.style.height = '40px';
+                follower.style.backgroundColor = 'transparent';
+                cursor.style.transform = 'scale(1)';
             });
         });
 
-        // 2. Sticky Header
-        const header = document.getElementById('header');
+        // 4. Sticky Header on Scroll
+        const header = document.getElementById('main-header');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
+            if (window.scrollY > 100) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
         });
 
-        // 3. Scroll Reveal Animation (Sayfa kaydırdıkça elemanların belirmesi)
+        // 5. Scroll Reveal Animation
         const revealElements = document.querySelectorAll('.reveal');
-
         const revealOnScroll = () => {
             const windowHeight = window.innerHeight;
             revealElements.forEach(el => {
                 const elementTop = el.getBoundingClientRect().top;
-                const revealPoint = 100; // Ekrana ne kadar girince tetiklenecek
-
-                if (elementTop < windowHeight - revealPoint) {
+                if (elementTop < windowHeight - 100) {
                     el.classList.add('active');
                 }
             });
-        }
+        };
 
         window.addEventListener('scroll', revealOnScroll);
-        // Sayfa yüklendiğinde bir kere çalıştır
-        revealOnScroll();
+        revealOnScroll(); // İlk yükleme için
 
-        // 4. FAQ Accordion Logic
-        const accordions = document.querySelectorAll('.accordion');
-
-        accordions.forEach(acc => {
-            const header = acc.querySelector('.accordion-header');
-            header.addEventListener('click', () => {
-                // Tıklananı aç/kapat
-                acc.classList.toggle('active');
-
-                // İsteğe bağlı: Birisi açılınca diğerlerini kapatmak için:
-                accordions.forEach(otherAcc => {
-                    if (otherAcc !== acc) {
-                        otherAcc.classList.remove('active');
-                    }
+        // 6. Smooth Scroll for Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
         });
+
+        // 7. Work Item Follow Effect (Kayırma)
+        const workItems = document.querySelectorAll('.work-item');
+        workItems.forEach(item => {
+            item.addEventListener('mousemove', (e) => {
+                const img = item.querySelector('img');
+                if(!img) return;
+                const rect = item.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const xPercent = (x / rect.width - 0.5) * 20;
+                const yPercent = (y / rect.height - 0.5) * 20;
+                
+                img.style.transform = `scale(1.1) translate(${xPercent}px, ${yPercent}px)`;
+            });
+            
+            item.addEventListener('mouseleave', (e) => {
+                const img = item.querySelector('img');
+                if(!img) return;
+                img.style.transform = `scale(1) translate(0, 0)`;
+            });
+        });
+
+        // 8. Log Console Easter Egg
+        console.log("%cAURA DIGITAL", "color: #d4af37; font-size: 40px; font-weight: bold;");
+        console.log("Kodu incelediğin için teşekkürler! Kreatif bir dünya için biz buradayız.");
+
     </script>
 </body>
 </html>
