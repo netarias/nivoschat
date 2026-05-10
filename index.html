@@ -3,789 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Aura Digital - Geleceğin dijital deneyimlerini bugünden tasarlayan kreatif ajans.">
-    <title>Aura Digital | Creative Experience Design</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600;800&display=swap" rel="stylesheet">
-
+    <meta name="description" content="NovaDesk Studio; ekipler, freelancerlar ve küçük işletmeler için profesyonel çalışma alanı ve masaüstü uygulaması indirme sitesi.">
+    <meta name="theme-color" content="#0f172a">
+    <meta property="og:title" content="NovaDesk Studio - Modern Çalışma Alanı">
+    <meta property="og:description" content="Projelerini, dosyalarını, faturalarını ve ekip akışını tek bir modern masaüstü uygulamasında yönet.">
+    <meta property="og:type" content="website">
+    <title>NovaDesk Studio | Profesyonel Modern Uygulama Sitesi</title>
     <style>
-        /* =============================================================================
-        AURA DESIGN SYSTEM - CSS VARIABLES
-        =============================================================================
-        */
         :root {
-            --bg-color: #0a0a0a;
-            --surface-color: #111111;
-            --accent-color: #d4af37; /* Gold */
-            --text-color: #ffffff;
-            --text-muted: #888888;
-            --border-color: rgba(212, 175, 55, 0.2);
-            --transition-slow: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-fast: all 0.3s ease;
-            --font-main: 'Montserrat', sans-serif;
-            --font-heading: 'Playfair Display', serif;
+            color-scheme: dark;
+            --bg: #08111f;
+            --bg-soft: #101b2d;
+            --bg-panel: #132033;
+            --ink: #f6f9fc;
+            --muted: #9fb0c5;
+            --line: rgba(255, 255, 255, 0.13);
+            --line-strong: rgba(255, 255, 255, 0.22);
+            --brand: #35d3b4;
+            --brand-strong: #13b99d;
+            --accent: #f7b955;
+            --danger: #ff6b6b;
+            --blue: #5ca8ff;
+            --violet: #b58cff;
+            --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+            --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.24);
+            --radius-xs: 6px;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --max: 1180px;
+            --nav-h: 74px;
+            --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         }
 
-        /* =============================================================================
-        BASE RESET & SCROLLBAR
-        =============================================================================
-        */
+        [data-theme="light"] {
+            color-scheme: light;
+            --bg: #f5f7fb;
+            --bg-soft: #ffffff;
+            --bg-panel: #eef3f8;
+            --ink: #101624;
+            --muted: #5e6d81;
+            --line: rgba(15, 23, 42, 0.12);
+            --line-strong: rgba(15, 23, 42, 0.2);
+            --shadow: 0 24px 70px rgba(15, 23, 42, 0.13);
+            --shadow-soft: 0 14px 34px rgba(15, 23, 42, 0.1);
+        }
+
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Custom cursor için default imleci gizliyoruz */
         }
 
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
-            border-radius: 10px;
+        html {
+            scroll-behavior: smooth;
+            background: var(--bg);
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: var(--font-main);
+            margin: 0;
+            min-height: 100vh;
+            font-family: var(--font);
+            color: var(--ink);
+            background: var(--bg);
+            line-height: 1.6;
             overflow-x: hidden;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 40px;
-        }
-
-        /* =============================================================================
-        CUSTOM CURSOR
-        =============================================================================
-        */
-        #cursor {
+        body::before {
+            content: "";
             position: fixed;
-            width: 10px;
-            height: 10px;
-            background-color: var(--accent-color);
-            border-radius: 50%;
+            inset: 0;
             pointer-events: none;
-            z-index: 9999;
-            transition: transform 0.1s ease;
+            z-index: -3;
+            background:
+                linear-gradient(130deg, rgba(53, 211, 180, 0.12), transparent 28%),
+                linear-gradient(315deg, rgba(92, 168, 255, 0.12), transparent 32%),
+                var(--bg);
         }
 
-        #cursor-follower {
+        body::after {
+            content: "";
             position: fixed;
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--accent-color);
-            border-radius: 50%;
+            inset: 0;
             pointer-events: none;
-            z-index: 9998;
-            transition: transform 0.2s ease, width 0.3s ease, height 0.3s ease;
+            z-index: -2;
+            opacity: 0.32;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+            background-size: 54px 54px;
+            mask-image: linear-gradient(to bottom, black, transparent 80%);
         }
 
-        /* =============================================================================
-        PRELOADER
-        =============================================================================
-        */
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-        }
-
-        .loader-content {
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            color: var(--accent-color);
-            font-style: italic;
-            letter-spacing: 5px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 0.2; }
-            50% { opacity: 1; }
-            100% { opacity: 0.2; }
-        }
-
-        /* =============================================================================
-        HEADER & NAVIGATION
-        =============================================================================
-        */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 40px 0;
-            z-index: 1000;
-            transition: var(--transition-slow);
-        }
-
-        header.scrolled {
-            padding: 20px 0;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .nav-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-color);
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
-
-        .logo span {
-            color: var(--accent-color);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 50px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 300;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            position: relative;
-            padding-bottom: 5px;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--accent-color);
-            transition: var(--transition-fast);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .menu-trigger {
-            display: none;
-            font-size: 1.5rem;
-        }
-
-        /* =============================================================================
-        HERO SECTION
-        =============================================================================
-        */
-        .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-            background: radial-gradient(circle at 70% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
-        }
-
-        .hero-title {
-            font-family: var(--font-heading);
-            font-size: clamp(3rem, 10vw, 8rem);
-            line-height: 0.9;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            z-index: 1;
-        }
-
-        .hero-title .italic {
-            font-style: italic;
-            font-weight: 400;
-            color: var(--accent-color);
-        }
-
-        .hero-subtitle {
-            max-width: 600px;
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            margin-bottom: 3rem;
-            margin-left: 5px;
-        }
-
-        .scroll-down {
-            position: absolute;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .scroll-down .line {
-            width: 1px;
-            height: 60px;
-            background: linear-gradient(to bottom, var(--accent-color), transparent);
-            animation: scrollLine 2s infinite;
-        }
-
-        @keyframes scrollLine {
-            0% { height: 0; opacity: 0; transform: translateY(0); }
-            50% { height: 60px; opacity: 1; transform: translateY(0); }
-            100% { height: 0; opacity: 0; transform: translateY(60px); }
-        }
-
-        /* =============================================================================
-        PORTFOLIO SECTION
-        =============================================================================
-        */
-        .section-padding {
-            padding: 150px 0;
-        }
-
-        .section-header {
-            margin-bottom: 80px;
-        }
-
-        .label {
-            color: var(--accent-color);
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 5px;
-            display: block;
-            margin-bottom: 20px;
-        }
-
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: 3.5rem;
-        }
-
-        .work-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 60px;
-        }
-
-        .work-item {
-            position: relative;
-            overflow: hidden;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 30px;
-        }
-
-        .work-img-wrapper {
-            width: 100%;
-            height: 500px;
-            overflow: hidden;
-            background: var(--surface-color);
-            margin-bottom: 25px;
-            position: relative;
-        }
-
-        .work-img-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: grayscale(1);
-            transition: var(--transition-slow);
-        }
-
-        .work-item:hover .work-img-wrapper img {
-            filter: grayscale(0);
-            transform: scale(1.05);
-        }
-
-        .work-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .work-info h3 {
-            font-family: var(--font-heading);
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .work-info p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .work-item:nth-child(even) {
-            margin-top: 100px;
-        }
-
-        /* =============================================================================
-        SERVICES SECTION
-        =============================================================================
-        */
-        .services {
-            background: var(--surface-color);
-        }
-
-        .service-list {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .service-item {
-            padding: 60px 0;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
-            align-items: center;
-            transition: var(--transition-fast);
-        }
-
-        .service-item:hover {
-            padding-left: 30px;
-            background: rgba(212, 175, 55, 0.02);
-        }
-
-        .service-num {
-            font-family: var(--font-heading);
-            font-size: 1.2rem;
-            color: var(--accent-color);
-            opacity: 0.5;
-        }
-
-        .service-title {
-            font-family: var(--font-heading);
-            font-size: 2.5rem;
-        }
-
-        .service-desc {
-            color: var(--text-muted);
-            font-size: 1rem;
-            max-width: 300px;
-            justify-self: end;
-            text-align: right;
-        }
-
-        /* =============================================================================
-        TESTIMONIALS (MARQUEE)
-        =============================================================================
-        */
-        .marquee {
-            padding: 100px 0;
-            overflow: hidden;
-            white-space: nowrap;
-            background: var(--accent-color);
-            color: var(--bg-color);
-        }
-
-        .marquee-inner {
-            display: inline-block;
-            animation: marquee 20s linear infinite;
-        }
-
-        .marquee h2 {
-            display: inline-block;
-            font-family: var(--font-heading);
-            font-size: 5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            padding-right: 50px;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
-        /* =============================================================================
-        CONTACT FOOTER
-        =============================================================================
-        */
-        .footer {
-            padding: 150px 0 50px;
-            text-align: center;
-        }
-
-        .footer-cta h2 {
-            font-family: var(--font-heading);
-            font-size: clamp(2rem, 8vw, 6rem);
-            margin-bottom: 50px;
-        }
-
-        .footer-cta h2 a {
+        a {
             color: inherit;
             text-decoration: none;
-            position: relative;
         }
-
-        .footer-cta h2 a::after {
-            content: '';
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--accent-color);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-        }
-
-        .footer-cta h2 a:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        .footer-bottom {
-            margin-top: 150px;
-            padding-top: 50px;
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            color: var(--text-muted);
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .footer-socials {
-            display: flex;
-            gap: 30px;
-        }
-
-        .footer-socials a {
-            color: var(--text-color);
-            text-decoration: none;
-            transition: var(--transition-fast);
-        }
-
-        .footer-socials a:hover {
-            color: var(--accent-color);
-        }
-
-        /* =============================================================================
-        RESPONSIVE DESIGN
-        =============================================================================
-        */
-        @media (max-width: 992px) {
-            .nav-links { display: none; }
-            .menu-trigger { display: block; }
-            .work-grid { grid-template-columns: 1fr; gap: 40px; }
-            .work-item:nth-child(even) { margin-top: 0; }
-            .service-item { grid-template-columns: 0.5fr 2fr; gap: 20px; }
-            .service-desc { display: none; }
-            .section-title { font-size: 2.5rem; }
-            .container { padding: 0 20px; }
-        }
-
-        /* =============================================================================
-        REVEAL ANIMATION
-        =============================================================================
-        */
-        .reveal {
-            opacity: 0;
-            transform: translateY(50px);
-            transition: var(--transition-slow);
-        }
-
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-    </style>
-</head>
-<body>
-
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
-
-    <div id="preloader">
-        <div class="loader-content">AURA</div>
-    </div>
-
-    <header id="main-header">
-        <div class="container nav-inner">
-            <a href="#" class="logo">AURA<span>.</span>STUDIO</a>
-            <nav class="nav-links">
-                <a href="#work" class="hover-link">Projeler</a>
-                <a href="#services" class="hover-link">Hizmetler</a>
-                <a href="#about" class="hover-link">Hakkımızda</a>
-                <a href="#contact" class="hover-link">İletişim</a>
-            </nav>
-            <div class="menu-trigger">MENU</div>
-        </div>
-    </header>
-
-    <main>
-        <section class="hero container">
-            <h1 class="hero-title reveal">
-                Deneyim <br> 
-                <span class="italic">Dijitalleşiyor.</span>
-            </h1>
-            <p class="hero-subtitle reveal">
-                Biz, sınırları zorlayan tasarımlar ve stratejik zeka ile markaların dijital dünyada parlamasını sağlayan bağımsız bir kreatif stüdyoyuz.
-            </p>
-            <div class="scroll-down">
-                <span>Keşfet</span>
-                <div class="line"></div>
-            </div>
-        </section>
-
-        <section class="section-padding container" id="work">
-            <div class="section-header reveal">
-                <span class="label">Seçilmiş İşler</span>
-                <h2 class="section-title">Geleceği Şekillendiren <br> Projelerimiz</h2>
-            </div>
-
-            <div class="work-grid">
-                <div class="work-item reveal">
-                    <div class="work-img-wrapper">
-                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT ALPHA</div>
-                    </div>
-                    <div class="work-info">
-                        <div>
-                            <h3>Lumina Brand Identity</h3>
-                            <p>Branding / 2024</p>
-                        </div>
-                        <div class="arrow">↗</div>
-                    </div>
-                </div>
-
-                <div class="work-item reveal">
-                    <div class="work-img-wrapper">
-                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT BETA</div>
-                    </div>
-                    <div class="work-info">
-                        <div>
-                            <h3>Zenith Mobile App</h3>
-                            <p>UX UI Design / 2023</p>
-                        </div>
-                        <div class="arrow">↗</div>
-                    </div>
-                </div>
-
-                <div class="work-item reveal">
-                    <div class="work-img-wrapper">
-                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT GAMMA</div>
-                    </div>
-                    <div class="work-info">
-                        <div>
-                            <h3>Chronos E-Commerce</h3>
-                            <p>Development / 2024</p>
-                        </div>
-                        <div class="arrow">↗</div>
-                    </div>
-                </div>
-
-                <div class="work-item reveal">
-                    <div class="work-img-wrapper">
-                        <div style="background: #1a1a1a; width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:#333; font-size:3rem;">PROJECT DELTA</div>
-                    </div>
-                    <div class="work-info">
-                        <div>
-                            <h3>Nebula Art Direction</h3>
-                            <p>Strategy / 2023</p>
-                        </div>
-                        <div class="arrow">↗</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section-padding services" id="services">
-            <div class="container">
-                <div class="section-header reveal">
-                    <span class="label">Neler Yapıyoruz?</span>
-                    <h2 class="section-title">Dijital Varlığınızı <br> Güçlendiriyoruz</h2>
-                </div>
-
-                <div class="service-list">
-                    <div class="service-item reveal">
-                        <span class="service-num">01</span>
-                        <h3 class="service-title">Strateji & Planlama</h3>
-                        <p class="service-desc">Markanızın DNA'sını analiz ediyor, pazar hedeflerinize uygun yol haritaları çiziyoruz.</p>
-                    </div>
-                    <div class="service-item reveal">
-                        <span class="service-num">02</span>
-                        <h3 class="service-title">Görsel Kimlik</h3>
-                        <p class="service-desc">Logo tasarımından renk paletine, markanızı ikonik kılacak tüm görsel dili kurguluyoruz.</p>
-                    </div>
-                    <div class="service-item reveal">
-                        <span class="service-num">03</span>
-                        <h3 class="service-title">Deneyim Tasarımı (UX/UI)</h3>
-                        <p class="service-desc">Kullanıcıların dijital ürünlerinizde kaybolmadan, keyifle gezineceği arayüzler tasarlıyoruz.</p>
-                    </div>
-                    <div class="service-item reveal">
-                        <span class="service-num">04</span>
-                        <h3 class="service-title">Web & App Geliştirme</h3>
-                        <p class="service-desc">En güncel teknolojileri (React, Next.js, WebGL) kullanarak yüksek performanslı siteler kodluyoruz.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="marquee">
-            <div class="marquee-inner">
-                <h2>YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • </h2>
-                <h2>YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • YARATICI • ETKİLEYİCİ • MODERN • DİJİTAL • </h2>
-            </div>
-        </div>
-
-        <footer class="footer container" id="contact">
-            <div class="footer-cta reveal">
-                <span class="label">Sıradaki projeniz için</span>
-                <h2><a href="mailto:hello@aura.studio">Bize Merhaba Deyin.</a></h2>
-                <p style="color: var(--text-muted); max-width: 400px; margin: 0 auto 50px;">Birlikte harika bir şeyler inşa etmek için sabırsızlanıyoruz.</p>
-            </div>
-
-            <div class="footer-bottom">
-                <div>&copy; 2026 AURA DIGITAL STUDIO.</div>
-                <div class="footer-socials">
-                    <a href="#">Instagram</a>
-                    <a href="#">Behance</a>
-                    <a href="#">LinkedIn</a>
-                    <a href="#">Dribbble</a>
-                </div>
-                <div>EST. 2020</div>
-            </div>
-        </footer>
-    </main>
-
-    <script>
-        // 1. Preloader
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            setTimeout(() => {
-                preloader.style.opacity = '0';
-                setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 600);
-            }, 1500);
-        });
-
-        // 2. Custom Cursor Tracking
-        const cursor = document.getElementById('cursor');
-        const follower = document.getElementById('cursor-follower');
-
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            // Follower lag effect
-            setTimeout(() => {
-                follower.style.left = e.clientX - 15 + 'px';
-                follower.style.top = e.clientY - 15 + 'px';
-            }, 50);
-        });
-
-        // 3. Hover Effects for Cursor
-        const hoverLinks = document.querySelectorAll('a, .work-item, .menu-trigger');
-        hoverLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => {
-                follower.style.width = '70px';
-                follower.style.height = '70px';
-                follower.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
-                cursor.style.transform = 'scale(2)';
-            });
-            link.addEventListener('mouseleave', () => {
-                follower.style.width = '40px';
-                follower.style.height = '40px';
-                follower.style.backgroundColor = 'transparent';
-                cursor.style.transform = 'scale(1)';
-            });
-        });
-
-        // 4. Sticky Header on Scroll
-        const header = document.getElementById('main-header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // 5. Scroll Reveal Animation
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealOnScroll = () => {
-            const windowHeight = window.innerHeight;
-            revealElements.forEach(el => {
-                const elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
-                    el.classList.add('active');
-                }
-            });
-        };
-
-        window.addEventListener('scroll', revealOnScroll);
-        revealOnScroll(); // İlk yükleme için
-
-        // 6. Smooth Scroll for Links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // 7. Work Item Follow Effect (Kayırma)
-        const workItems = document.querySelectorAll('.work-item');
-        workItems.forEach(item => {
-            item.addEventListener('mousemove', (e) => {
-                const img = item.querySelector('img');
-                if(!img) return;
-                const rect = item.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const xPercent = (x / rect.width - 0.5) * 20;
-                const yPercent = (y / rect.height - 0.5) * 20;
-                
-                img.style.transform = `scale(1.1) translate(${xPercent}px, ${yPercent}px)`;
-            });
-            
-            item.addEventListener('mouseleave', (e) => {
-                const img = item.querySelector('img');
-                if(!img) return;
-                img.style.transform = `scale(1) translate(0, 0)`;
-            });
-        });
-
-        // 8. Log Console Easter Egg
-        console.log("%cAURA DIGITAL", "color: #d4af37; font-size: 40px; font-weight: bold;");
-        console.log("Kodu incelediğin için teşekkürler! Kreatif bir dünya için biz buradayız.");
-
-    </script>
-</body>
-</html>
