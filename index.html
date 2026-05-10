@@ -1,100 +1,3256 @@
-<!DOCTYPE html>
-<html lang="tr">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="NovaDesk Studio; ekipler, freelancerlar ve küçük işletmeler için profesyonel çalışma alanı ve masaüstü uygulaması indirme sitesi.">
-    <meta name="theme-color" content="#0f172a">
-    <meta property="og:title" content="NovaDesk Studio - Modern Çalışma Alanı">
-    <meta property="og:description" content="Projelerini, dosyalarını, faturalarını ve ekip akışını tek bir modern masaüstü uygulamasında yönet.">
-    <meta property="og:type" content="website">
-    <title>NovaDesk Studio | Profesyonel Modern Uygulama Sitesi</title>
-    <style>
-        :root {
-            color-scheme: dark;
-            --bg: #08111f;
-            --bg-soft: #101b2d;
-            --bg-panel: #132033;
-            --ink: #f6f9fc;
-            --muted: #9fb0c5;
-            --line: rgba(255, 255, 255, 0.13);
-            --line-strong: rgba(255, 255, 255, 0.22);
-            --brand: #35d3b4;
-            --brand-strong: #13b99d;
-            --accent: #f7b955;
-            --danger: #ff6b6b;
-            --blue: #5ca8ff;
-            --violet: #b58cff;
-            --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
-            --shadow-soft: 0 14px 40px rgba(0, 0, 0, 0.24);
-            --radius-xs: 6px;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 18px;
-            --max: 1180px;
-            --nav-h: 74px;
-            --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b0f14">
+  <meta
+    name="description"
+    content="LaunchKit Studio is a polished static product site with an interactive kit generator, downloadable resources, and modern responsive design."
+  >
+  <title>LaunchKit Studio - Build, package, and launch faster</title>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #101318;
+      --ink-muted: #5d6675;
+      --paper: #f7f8fb;
+      --paper-soft: #ffffff;
+      --paper-strong: #eef1f6;
+      --line: rgba(16, 19, 24, 0.12);
+      --line-strong: rgba(16, 19, 24, 0.22);
+      --night: #0b0f14;
+      --night-soft: #121821;
+      --night-muted: #6f7a8a;
+      --white: #ffffff;
+      --mint: #20c997;
+      --mint-strong: #0f9f77;
+      --cyan: #38bdf8;
+      --amber: #f6a61d;
+      --rose: #f05252;
+      --violet: #7662f6;
+      --shadow: 0 22px 80px rgba(16, 19, 24, 0.16);
+      --shadow-soft: 0 14px 44px rgba(16, 19, 24, 0.10);
+      --radius: 8px;
+      --radius-sm: 6px;
+      --max: 1180px;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --font: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
 
-        [data-theme="light"] {
-            color-scheme: light;
-            --bg: #f5f7fb;
-            --bg-soft: #ffffff;
-            --bg-panel: #eef3f8;
-            --ink: #101624;
-            --muted: #5e6d81;
-            --line: rgba(15, 23, 42, 0.12);
-            --line-strong: rgba(15, 23, 42, 0.2);
-            --shadow: 0 24px 70px rgba(15, 23, 42, 0.13);
-            --shadow-soft: 0 14px 34px rgba(15, 23, 42, 0.1);
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    html {
+      scroll-behavior: smooth;
+    }
 
-        html {
-            scroll-behavior: smooth;
-            background: var(--bg);
-        }
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--paper);
+      min-width: 320px;
+    }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: var(--font);
-            color: var(--ink);
-            background: var(--bg);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+    body.theme-dark {
+      color: #ecf2f8;
+      background: #0b0f14;
+      --ink: #f4f7fb;
+      --ink-muted: #a3adba;
+      --paper: #0b0f14;
+      --paper-soft: #111820;
+      --paper-strong: #18212b;
+      --line: rgba(255, 255, 255, 0.12);
+      --line-strong: rgba(255, 255, 255, 0.20);
+      --shadow: 0 22px 80px rgba(0, 0, 0, 0.35);
+      --shadow-soft: 0 14px 44px rgba(0, 0, 0, 0.24);
+    }
 
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -3;
-            background:
-                linear-gradient(130deg, rgba(53, 211, 180, 0.12), transparent 28%),
-                linear-gradient(315deg, rgba(92, 168, 255, 0.12), transparent 32%),
-                var(--bg);
-        }
+    img {
+      display: block;
+      max-width: 100%;
+    }
 
-        body::after {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -2;
-            opacity: 0.32;
-            background-image:
-                linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-            background-size: 54px 54px;
-            mask-image: linear-gradient(to bottom, black, transparent 80%);
-        }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      z-index: 1000;
+      padding: 10px 14px;
+      color: var(--night);
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-soft);
+      transform: translateY(-160%);
+      transition: transform 180ms var(--ease);
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .site-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 900;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--white);
+      transition:
+        background 220ms var(--ease),
+        color 220ms var(--ease),
+        border-color 220ms var(--ease),
+        box-shadow 220ms var(--ease);
+    }
+
+    .site-header.is-solid {
+      color: var(--ink);
+      background: color-mix(in srgb, var(--paper-soft) 86%, transparent);
+      border-color: var(--line);
+      box-shadow: 0 12px 32px rgba(16, 19, 24, 0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .theme-dark .site-header.is-solid {
+      color: #f4f7fb;
+      background: rgba(11, 15, 20, 0.82);
+    }
+
+    .header-inner {
+      width: min(100% - 32px, var(--max));
+      min-height: 72px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--night);
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .site-header.is-solid .brand-mark {
+      color: var(--white);
+      background: var(--night);
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .nav {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav a {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      color: inherit;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 650;
+      opacity: 0.86;
+      transition:
+        background 180ms var(--ease),
+        opacity 180ms var(--ease);
+    }
+
+    .nav a:hover,
+    .nav a.is-active {
+      background: rgba(255, 255, 255, 0.14);
+      opacity: 1;
+    }
+
+    .site-header.is-solid .nav a:hover,
+    .site-header.is-solid .nav a.is-active {
+      background: var(--paper-strong);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-button {
+      width: 42px;
+      height: 42px;
+      display: inline-grid;
+      place-items: center;
+      color: inherit;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius-sm);
+      transition:
+        transform 180ms var(--ease),
+        background 180ms var(--ease),
+        border-color 180ms var(--ease);
+    }
+
+    .icon-button:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .site-header.is-solid .icon-button {
+      background: var(--paper-strong);
+      border-color: var(--line);
+    }
+
+    .icon-button svg {
+      width: 19px;
+      height: 19px;
+      stroke-width: 2;
+    }
+
+    .menu-button {
+      display: none;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      isolation: isolate;
+      color: var(--white);
+      background: var(--night);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background:
+        linear-gradient(90deg, rgba(11, 15, 20, 0.96), rgba(11, 15, 20, 0.62) 48%, rgba(11, 15, 20, 0.28)),
+        url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=2200&q=82") center / cover;
+      transform: scale(1.02);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 28%;
+      z-index: -2;
+      background: linear-gradient(180deg, transparent, var(--paper));
+    }
+
+    .theme-dark .hero::after {
+      background: linear-gradient(180deg, transparent, #0b0f14);
+    }
+
+    .hero-inner {
+      width: min(100% - 32px, var(--max));
+      min-height: 92vh;
+      margin: 0 auto;
+      padding: 112px 0 72px;
+      display: grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.78fr);
+      align-items: center;
+      gap: 42px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      min-height: 34px;
+      padding: 0 12px;
+      color: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--mint);
+      border-radius: 999px;
+      box-shadow: 0 0 0 6px rgba(32, 201, 151, 0.18);
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      margin: 24px 0 18px;
+      font-size: clamp(48px, 7vw, 92px);
+      line-height: 0.94;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      max-width: 660px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.78);
+      font-size: clamp(18px, 2vw, 22px);
+      line-height: 1.55;
+    }
+
+    .hero-actions {
+      margin-top: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 18px;
+      color: var(--night);
+      background: var(--white);
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+      transition:
+        transform 180ms var(--ease),
+        box-shadow 180ms var(--ease),
+        background 180ms var(--ease),
+        color 180ms var(--ease),
+        border-color 180ms var(--ease);
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    .button svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .button.primary {
+      color: var(--night);
+      background: var(--mint);
+    }
+
+    .button.secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.10);
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: none;
+    }
+
+    .button.secondary:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .button.dark {
+      color: var(--white);
+      background: var(--night);
+      border-color: var(--night);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .button.ghost {
+      color: var(--ink);
+      background: transparent;
+      border-color: var(--line);
+      box-shadow: none;
+    }
+
+    .button.ghost:hover {
+      background: var(--paper-strong);
+    }
+
+    .hero-proof {
+      margin-top: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .proof-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 12px;
+      color: rgba(255, 255, 255, 0.82);
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .studio-shell {
+      width: 100%;
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.56);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+
+    .theme-dark .studio-shell {
+      color: #ecf2f8;
+      background: rgba(18, 24, 33, 0.92);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .shell-top {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .window-dots {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .window-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--rose);
+    }
+
+    .window-dots span:nth-child(2) {
+      background: var(--amber);
+    }
+
+    .window-dots span:nth-child(3) {
+      background: var(--mint);
+    }
+
+    .shell-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink-muted);
+    }
+
+    .studio-content {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .metric {
+      min-height: 94px;
+      padding: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--ink-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 26px;
+      letter-spacing: 0;
+    }
+
+    .builder-preview {
+      position: relative;
+      min-height: 220px;
+      padding: 18px;
+      color: var(--white);
+      background:
+        linear-gradient(135deg, rgba(11, 15, 20, 0.88), rgba(16, 19, 24, 0.68)),
+        url("https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=82") center / cover;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .preview-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .preview-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-logo::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      background: var(--mint);
+      border-radius: 5px;
+    }
+
+    .preview-stack {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .preview-stack h2 {
+      margin: 0;
+      max-width: 330px;
+      font-size: 34px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .preview-stack p {
+      margin: 0;
+      max-width: 320px;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.5;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .pipeline-step {
+      min-height: 74px;
+      padding: 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+    }
+
+    .pipeline-step span {
+      display: block;
+      width: 22px;
+      height: 22px;
+      margin-bottom: 10px;
+      display: grid;
+      place-items: center;
+      color: var(--night);
+      background: var(--mint);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .pipeline-step strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    .section {
+      padding: 92px 0;
+      background: var(--paper);
+    }
+
+    .section.alt {
+      background: var(--paper-soft);
+    }
+
+    .section.dark-band {
+      color: var(--white);
+      background: var(--night);
+    }
+
+    .section-inner {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+
+    .section-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 32px;
+      padding: 0 10px;
+      color: var(--mint-strong);
+      background: color-mix(in srgb, var(--mint) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--mint) 28%, transparent);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .section-heading h2 {
+      margin: 16px 0 12px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--ink-muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .dark-band .section-heading p {
+      color: rgba(255, 255, 255, 0.68);
+    }
+
+    .logo-strip {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .logo-item {
+      min-height: 82px;
+      display: grid;
+      place-items: center;
+      color: var(--ink-muted);
+      background: var(--paper-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .feature-card {
+      min-height: 250px;
+      padding: 22px;
+      background: var(--paper-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .feature-card.highlight {
+      color: var(--white);
+      background:
+        linear-gradient(135deg, rgba(11, 15, 20, 0.88), rgba(11, 15, 20, 0.58)),
+        url("https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=82") center / cover;
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      color: var(--night);
+      background: var(--mint);
+      border-radius: var(--radius-sm);
+      margin-bottom: 20px;
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    .feature-card.highlight p {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .studio-builder {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .control-panel,
+    .output-panel,
+    .calculator,
+    .download-card,
+    .testimonial,
+    .pricing-card,
+    .faq-item {
+      background: var(--paper-soft);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .control-panel {
+      position: sticky;
+      top: 94px;
+      padding: 18px;
+    }
+
+    .field-group {
+      display: grid;
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      outline: 0;
+      transition:
+        border-color 160ms var(--ease),
+        box-shadow 160ms var(--ease);
+    }
+
+    .input,
+    .select {
+      min-height: 44px;
+      padding: 0 12px;
+    }
+
+    .textarea {
+      min-height: 96px;
+      padding: 12px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: var(--mint);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--mint) 18%, transparent);
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 4px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+    }
+
+    .segment {
+      min-height: 38px;
+      color: var(--ink-muted);
+      background: transparent;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 800;
+      transition:
+        background 160ms var(--ease),
+        color 160ms var(--ease);
+    }
+
+    .segment.is-selected {
+      color: var(--night);
+      background: var(--mint);
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .range {
+      flex: 1;
+      accent-color: var(--mint);
+    }
+
+    .range-value {
+      width: 52px;
+      min-height: 34px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .swatch {
+      aspect-ratio: 1;
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.28);
+    }
+
+    .swatch.is-selected {
+      border-color: var(--ink);
+      box-shadow:
+        inset 0 0 0 2px var(--paper-soft),
+        0 0 0 3px color-mix(in srgb, var(--mint) 35%, transparent);
+    }
+
+    .output-panel {
+      overflow: hidden;
+    }
+
+    .output-preview {
+      min-height: 420px;
+      display: grid;
+      grid-template-columns: 0.78fr 1.22fr;
+      background: var(--paper-soft);
+    }
+
+    .preview-sidebar {
+      padding: 22px;
+      color: var(--white);
+      background: var(--night);
+      display: grid;
+      align-content: space-between;
+      gap: 24px;
+    }
+
+    .preview-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 850;
+    }
+
+    .preview-brand span {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      color: var(--night);
+      background: var(--mint);
+      border-radius: var(--radius-sm);
+    }
+
+    .preview-copy h3 {
+      margin: 0;
+      font-size: 36px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .preview-copy p {
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.68);
+      line-height: 1.6;
+    }
+
+    .preview-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .preview-badges span {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      background: rgba(255, 255, 255, 0.10);
+      border: 1px solid rgba(255, 255, 255, 0.13);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .preview-main {
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .preview-main-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 10px;
+      color: var(--mint-strong);
+      background: color-mix(in srgb, var(--mint) 13%, transparent);
+      border: 1px solid color-mix(in srgb, var(--mint) 26%, transparent);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .status-chip::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--mint);
+      border-radius: 50%;
+    }
+
+    .preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .preview-card {
+      min-height: 118px;
+      padding: 14px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+    }
+
+    .preview-card span {
+      display: block;
+      color: var(--ink-muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .preview-card strong {
+      display: block;
+      margin-top: 12px;
+      font-size: 26px;
+      letter-spacing: 0;
+    }
+
+    .roadmap-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .roadmap-list li {
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 0 12px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .roadmap-list small {
+      color: var(--ink-muted);
+      font-weight: 800;
+    }
+
+    .output-actions {
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .calculator {
+      padding: 22px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .calculator h3 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .calculator-results {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .result-box {
+      min-height: 132px;
+      padding: 18px;
+      color: var(--white);
+      background: var(--night);
+      border-radius: var(--radius);
+      display: grid;
+      align-content: space-between;
+    }
+
+    .result-box.accent {
+      color: var(--night);
+      background: var(--mint);
+    }
+
+    .result-box span {
+      font-size: 13px;
+      font-weight: 850;
+      opacity: 0.75;
+    }
+
+    .result-box strong {
+      display: block;
+      font-size: clamp(28px, 4vw, 46px);
+      letter-spacing: 0;
+    }
+
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .download-card {
+      min-height: 274px;
+      padding: 20px;
+      display: grid;
+      align-content: space-between;
+      gap: 22px;
+    }
+
+    .download-card-top {
+      display: grid;
+      gap: 14px;
+    }
+
+    .download-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      color: var(--night);
+      background: var(--mint);
+      border-radius: var(--radius-sm);
+    }
+
+    .download-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .download-card h3 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.15;
+    }
+
+    .download-card p {
+      margin: 0;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .download-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .download-meta span {
+      min-height: 28px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 9px;
+      color: var(--ink-muted);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .download-action {
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 850;
+      transition:
+        background 160ms var(--ease),
+        transform 160ms var(--ease);
+    }
+
+    .download-action:hover {
+      background: var(--paper-strong);
+      transform: translateY(-1px);
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      counter-reset: process;
+    }
+
+    .process-step {
+      position: relative;
+      min-height: 260px;
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+    }
+
+    .process-step::before {
+      counter-increment: process;
+      content: counter(process, decimal-leading-zero);
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      color: var(--night);
+      background: var(--mint);
+      border-radius: var(--radius-sm);
+      font-weight: 900;
+    }
+
+    .process-step h3 {
+      margin: 44px 0 12px;
+      font-size: 22px;
+    }
+
+    .process-step p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.68);
+      line-height: 1.6;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .gallery-main,
+    .gallery-side {
+      min-height: 420px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-soft);
+      background: var(--paper-soft);
+    }
+
+    .gallery-main {
+      position: relative;
+    }
+
+    .gallery-main img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      padding: 18px;
+      color: var(--white);
+      background: rgba(11, 15, 20, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(12px);
+    }
+
+    .gallery-caption h3 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .gallery-caption p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.5;
+    }
+
+    .gallery-side {
+      display: grid;
+      grid-template-rows: repeat(2, 1fr);
+      gap: 0;
+    }
+
+    .gallery-side figure {
+      position: relative;
+      margin: 0;
+      min-height: 210px;
+      overflow: hidden;
+    }
+
+    .gallery-side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-side figcaption {
+      position: absolute;
+      left: 12px;
+      bottom: 12px;
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 10px;
+      color: var(--white);
+      background: rgba(11, 15, 20, 0.66);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .pricing-card {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .pricing-card.featured {
+      color: var(--white);
+      background: var(--night);
+      border-color: var(--night);
+    }
+
+    .pricing-card h3 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .price {
+      display: flex;
+      align-items: end;
+      gap: 6px;
+    }
+
+    .price strong {
+      font-size: 46px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .price span {
+      color: var(--ink-muted);
+      font-weight: 750;
+    }
+
+    .pricing-card.featured .price span {
+      color: rgba(255, 255, 255, 0.62);
+    }
+
+    .pricing-list {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 10px;
+      list-style: none;
+    }
+
+    .pricing-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--ink-muted);
+      line-height: 1.45;
+    }
+
+    .pricing-card.featured .pricing-list li {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .pricing-list li::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      background: var(--mint);
+      border-radius: 50%;
+      clip-path: polygon(14% 52%, 39% 76%, 87% 22%, 95% 32%, 40% 91%, 5% 61%);
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .testimonial {
+      min-height: 252px;
+      padding: 22px;
+      display: grid;
+      align-content: space-between;
+      gap: 24px;
+    }
+
+    .testimonial p {
+      margin: 0;
+      color: var(--ink-muted);
+      line-height: 1.68;
+      font-size: 16px;
+    }
+
+    .person {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      color: var(--night);
+      background: var(--mint);
+      border-radius: 50%;
+      font-weight: 900;
+    }
+
+    .person strong,
+    .person span {
+      display: block;
+    }
+
+    .person span {
+      margin-top: 3px;
+      color: var(--ink-muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .faq-item {
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 18px;
+      color: var(--ink);
+      background: transparent;
+      text-align: left;
+      font-weight: 850;
+    }
+
+    .faq-question svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      transition: transform 180ms var(--ease);
+    }
+
+    .faq-item.is-open .faq-question svg {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 18px 18px;
+      color: var(--ink-muted);
+      line-height: 1.65;
+    }
+
+    .faq-item.is-open .faq-answer {
+      display: block;
+    }
+
+    .cta {
+      position: relative;
+      padding: 82px 0;
+      color: var(--white);
+      background:
+        linear-gradient(90deg, rgba(11, 15, 20, 0.94), rgba(11, 15, 20, 0.66)),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=82") center / cover;
+      overflow: hidden;
+    }
+
+    .cta-inner {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .cta h2 {
+      max-width: 740px;
+      margin: 0 0 12px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .cta p {
+      max-width: 680px;
+      margin: 0;
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 18px;
+      line-height: 1.62;
+    }
+
+    .site-footer {
+      color: rgba(255, 255, 255, 0.72);
+      background: var(--night);
+      border-top: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .footer-inner {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+      padding: 42px 0;
+      display: grid;
+      grid-template-columns: 1.2fr repeat(3, 0.6fr);
+      gap: 24px;
+    }
+
+    .footer-brand {
+      display: grid;
+      gap: 14px;
+      max-width: 360px;
+    }
+
+    .footer-brand p {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    .footer-col h3 {
+      margin: 0 0 12px;
+      color: var(--white);
+      font-size: 14px;
+    }
+
+    .footer-col a {
+      display: block;
+      width: fit-content;
+      margin: 8px 0;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 14px;
+    }
+
+    .footer-bottom {
+      width: min(100% - 32px, var(--max));
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.10);
+      font-size: 13px;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 1000;
+      min-width: min(340px, calc(100vw - 36px));
+      padding: 14px 16px;
+      color: var(--white);
+      background: var(--night);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transform: translateY(24px);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 180ms var(--ease),
+        transform 180ms var(--ease);
+    }
+
+    .toast.is-visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1040px) {
+      .hero-inner,
+      .studio-builder,
+      .calculator-grid,
+      .gallery,
+      .cta-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-inner {
+        padding-top: 112px;
+      }
+
+      .studio-shell {
+        max-width: 680px;
+      }
+
+      .control-panel {
+        position: static;
+      }
+
+      .logo-strip,
+      .feature-grid,
+      .resource-grid,
+      .pricing-grid,
+      .testimonial-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .process {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 780px) {
+      .header-inner {
+        min-height: 66px;
+      }
+
+      .menu-button {
+        display: inline-grid;
+      }
+
+      .nav {
+        position: fixed;
+        top: 66px;
+        left: 16px;
+        right: 16px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px;
+        color: var(--ink);
+        background: var(--paper-soft);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .nav.is-open {
+        display: flex;
+      }
+
+      .nav a {
+        justify-content: flex-start;
+      }
+
+      .site-header:not(.is-solid) .nav a:hover,
+      .site-header:not(.is-solid) .nav a.is-active {
+        background: var(--paper-strong);
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-inner {
+        min-height: auto;
+        padding: 96px 0 54px;
+      }
+
+      .hero h1 {
+        font-size: clamp(42px, 12vw, 62px);
+      }
+
+      .metric-row,
+      .pipeline,
+      .preview-grid,
+      .calculator-results,
+      .logo-strip,
+      .feature-grid,
+      .resource-grid,
+      .pricing-grid,
+      .testimonial-grid,
+      .process,
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .output-preview {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 18px 0;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .header-actions .button {
+        display: none;
+      }
+
+      .hero-actions,
+      .output-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .segmented {
+        grid-template-columns: 1fr;
+      }
+
+      .swatches {
+        grid-template-columns: repeat(5, minmax(38px, 1fr));
+      }
+
+      .preview-copy h3 {
+        font-size: 30px;
+      }
+
+      .gallery-caption {
+        position: static;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#studio">Skip to studio</a>
+  <header class="site-header" id="siteHeader">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="LaunchKit Studio home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 3l7 4v6c0 4.4-2.9 7.3-7 8-4.1-.7-7-3.6-7-8V7l7-4z"></path>
+            <path d="M9 12l2 2 4-5"></path>
+          </svg>
+        </span>
+        <span>LaunchKit Studio</span>
+      </a>
+      <nav class="nav" id="navMenu" aria-label="Primary navigation">
+        <a href="#features">Features</a>
+        <a href="#studio">Studio</a>
+        <a href="#downloads">Downloads</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button" id="themeToggle" type="button" aria-label="Toggle dark theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12.8A8 8 0 1 1 11.2 3a6.5 6.5 0 0 0 9.8 9.8z"></path>
+          </svg>
+        </button>
+        <button class="icon-button menu-button" id="menuToggle" type="button" aria-label="Open navigation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M4 7h16"></path>
+            <path d="M4 12h16"></path>
+            <path d="M4 17h16"></path>
+          </svg>
+        </button>
+        <a class="button primary" href="#studio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14"></path>
+            <path d="M5 12h14"></path>
+          </svg>
+          Build Kit
+        </a>
+      </div>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero" aria-labelledby="heroTitle">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="eyebrow">
+            <span class="eyebrow-dot" aria-hidden="true"></span>
+            Static site. Real downloads. Premium look.
+          </div>
+          <h1 id="heroTitle">LaunchKit Studio</h1>
+          <p class="hero-copy">
+            A modern GitHub Pages ready website that packages brand notes, roadmap plans,
+            pricing ideas, and launch resources into instant downloadable files.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#studio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 3v12"></path>
+                <path d="M7 10l5 5 5-5"></path>
+                <path d="M5 21h14"></path>
+              </svg>
+              Generate Starter Pack
+            </a>
+            <a class="button secondary" href="#downloads">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 6h16"></path>
+                <path d="M4 12h16"></path>
+                <path d="M4 18h16"></path>
+              </svg>
+              View Resources
+            </a>
+          </div>
+          <div class="hero-proof" aria-label="LaunchKit Studio highlights">
+            <span class="proof-pill">No build step</span>
+            <span class="proof-pill">Responsive layout</span>
+            <span class="proof-pill">Local file exports</span>
+            <span class="proof-pill">Polished UI system</span>
+          </div>
+        </div>
+        <aside class="studio-shell" aria-label="Product preview">
+          <div class="shell-top">
+            <div class="window-dots" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <span class="shell-title">live-launchkit.html</span>
+          </div>
+          <div class="studio-content">
+            <div class="metric-row">
+              <div class="metric">
+                <span>Assets</span>
+                <strong>36</strong>
+              </div>
+              <div class="metric">
+                <span>Time saved</span>
+                <strong>14h</strong>
+              </div>
+              <div class="metric">
+                <span>Readiness</span>
+                <strong>92%</strong>
+              </div>
+            </div>
+            <div class="builder-preview">
+              <div class="preview-nav">
+                <span class="preview-logo">Northstar</span>
+                <span>Beta sprint</span>
+              </div>
+              <div class="preview-stack">
+                <h2>Launch faster with fewer loose ends.</h2>
+                <p>Export a focused kit for product, design, marketing, and investor prep.</p>
+              </div>
+            </div>
+            <div class="pipeline" aria-label="Launch process preview">
+              <div class="pipeline-step">
+                <span>1</span>
+                <strong>Brand</strong>
+              </div>
+              <div class="pipeline-step">
+                <span>2</span>
+                <strong>Offer</strong>
+              </div>
+              <div class="pipeline-step">
+                <span>3</span>
+                <strong>Roadmap</strong>
+              </div>
+              <div class="pipeline-step">
+                <span>4</span>
+                <strong>Ship</strong>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+    <section class="section alt" aria-label="Trusted teams">
+      <div class="section-inner">
+        <div class="logo-strip">
+          <div class="logo-item">AstraFlow</div>
+          <div class="logo-item">NimbleHQ</div>
+          <div class="logo-item">VaultOps</div>
+          <div class="logo-item">SignalForge</div>
+          <div class="logo-item">OrbitBase</div>
+          <div class="logo-item">PrismLab</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" id="features" aria-labelledby="featuresTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Product system</span>
+          <h2 id="featuresTitle">Everything feels finished before the first release.</h2>
+          <p>
+            The site combines a premium front page, an interactive generator,
+            ready-to-download assets, and a conversion-focused structure in one static file.
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card highlight">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 19V5"></path>
+                <path d="M4 19h16"></path>
+                <path d="M8 16l3-5 3 2 4-7"></path>
+              </svg>
+            </div>
+            <h3>Executive dashboard energy</h3>
+            <p>
+              Hero visuals, live metrics, and polished cards make the page feel like a real product launch.
+            </p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M6 3h12v18H6z"></path>
+                <path d="M9 7h6"></path>
+                <path d="M9 11h6"></path>
+                <path d="M9 15h4"></path>
+              </svg>
+            </div>
+            <h3>Downloadable launch kit</h3>
+            <p>
+              Users can export structured JSON, markdown notes, and reusable CSS tokens directly from the browser.
+            </p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 3l8 4v6c0 5-3.5 7.5-8 8-4.5-.5-8-3-8-8V7l8-4z"></path>
+                <path d="M9 12l2 2 4-5"></path>
+              </svg>
+            </div>
+            <h3>Static and portable</h3>
+            <p>
+              No database, no framework, no package install. Upload the file to GitHub and the page is online.
+            </p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 5h16v14H4z"></path>
+                <path d="M4 10h16"></path>
+                <path d="M9 15h6"></path>
+              </svg>
+            </div>
+            <h3>Responsive interface</h3>
+            <p>
+              The layouts use stable grids, real controls, and careful spacing for desktop, tablet, and mobile.
+            </p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 20V10"></path>
+                <path d="M18 20V4"></path>
+                <path d="M6 20v-6"></path>
+              </svg>
+            </div>
+            <h3>Launch economics</h3>
+            <p>
+              A simple calculator estimates saved hours, budget impact, and release velocity for a small team.
+            </p>
+          </article>
+          <article class="feature-card">
+            <div class="feature-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 12h16"></path>
+                <path d="M12 4v16"></path>
+                <path d="M6 6l12 12"></path>
+                <path d="M18 6L6 18"></path>
+              </svg>
+            </div>
+            <h3>Theme aware styling</h3>
+            <p>
+              The theme toggle shifts the full color system while keeping contrast, hierarchy, and rhythm intact.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section alt" id="studio" aria-labelledby="studioTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Interactive studio</span>
+          <h2 id="studioTitle">Shape a launch pack in seconds.</h2>
+          <p>
+            Tune the brand, target audience, sprint length, and package type.
+            The preview and exported files update instantly.
+          </p>
+        </div>
+        <div class="studio-builder">
+          <form class="control-panel" id="kitForm">
+            <div class="field-group">
+              <div class="field">
+                <label for="projectName">Project name</label>
+                <input
+                  class="input"
+                  id="projectName"
+                  name="projectName"
+                  value="Northstar Cloud"
+                  maxlength="34"
+                >
+              </div>
+              <div class="field">
+                <label for="tagline">Tagline</label>
+                <textarea
+                  class="textarea"
+                  id="tagline"
+                  name="tagline"
+                  maxlength="150"
+                >A calm command center for teams launching serious products.</textarea>
+              </div>
+              <div class="field">
+                <label for="audience">Audience</label>
+                <select class="select" id="audience" name="audience">
+                  <option value="founders">Founders</option>
+                  <option value="agencies">Agencies</option>
+                  <option value="saas">SaaS teams</option>
+                  <option value="creators">Creators</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Kit type</label>
+                <div class="segmented" role="group" aria-label="Kit type">
+                  <button class="segment is-selected" type="button" data-kit="MVP">MVP</button>
+                  <button class="segment" type="button" data-kit="Beta">Beta</button>
+                  <button class="segment" type="button" data-kit="Scale">Scale</button>
+                </div>
+              </div>
+              <div class="field">
+                <label for="sprintLength">Sprint length</label>
+                <div class="slider-row">
+                  <input class="range" id="sprintLength" type="range" min="2" max="12" value="6">
+                  <span class="range-value" id="sprintValue">6w</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Accent color</label>
+                <div class="swatches" role="group" aria-label="Accent color">
+                  <button class="swatch is-selected" type="button" data-color="#20c997" style="background:#20c997" aria-label="Mint"></button>
+                  <button class="swatch" type="button" data-color="#38bdf8" style="background:#38bdf8" aria-label="Cyan"></button>
+                  <button class="swatch" type="button" data-color="#f6a61d" style="background:#f6a61d" aria-label="Amber"></button>
+                  <button class="swatch" type="button" data-color="#f05252" style="background:#f05252" aria-label="Rose"></button>
+                  <button class="swatch" type="button" data-color="#7662f6" style="background:#7662f6" aria-label="Violet"></button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <article class="output-panel" aria-label="Generated launch kit preview">
+            <div class="output-preview">
+              <aside class="preview-sidebar" id="previewSidebar">
+                <div class="preview-brand">
+                  <span id="previewInitial">N</span>
+                  <strong id="previewName">Northstar Cloud</strong>
+                </div>
+                <div class="preview-copy">
+                  <h3 id="previewHeadline">MVP pack for founders</h3>
+                  <p id="previewTagline">
+                    A calm command center for teams launching serious products.
+                  </p>
+                </div>
+                <div class="preview-badges">
+                  <span id="previewKit">MVP</span>
+                  <span id="previewAudience">Founders</span>
+                  <span id="previewSprint">6 weeks</span>
+                </div>
+              </aside>
+              <div class="preview-main">
+                <div class="preview-main-top">
+                  <strong>Launch readiness</strong>
+                  <span class="status-chip" id="readinessChip">92% ready</span>
+                </div>
+                <div class="preview-grid">
+                  <div class="preview-card">
+                    <span>Assets</span>
+                    <strong id="assetCount">28</strong>
+                  </div>
+                  <div class="preview-card">
+                    <span>Budget</span>
+                    <strong id="budgetRange">$9k</strong>
+                  </div>
+                  <div class="preview-card">
+                    <span>Focus</span>
+                    <strong id="focusMode">Lean</strong>
+                  </div>
+                </div>
+                <ul class="roadmap-list" id="roadmapList">
+                  <li>
+                    <span>Positioning sprint</span>
+                    <small>Week 1</small>
+                  </li>
+                  <li>
+                    <span>Landing page copy</span>
+                    <small>Week 2</small>
+                  </li>
+                  <li>
+                    <span>Beta onboarding</span>
+                    <small>Week 4</small>
+                  </li>
+                  <li>
+                    <span>Public launch checklist</span>
+                    <small>Week 6</small>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="output-actions">
+              <button class="button dark" type="button" id="downloadJson">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 3v12"></path>
+                  <path d="M7 10l5 5 5-5"></path>
+                  <path d="M5 21h14"></path>
+                </svg>
+                Download JSON
+              </button>
+              <button class="button ghost" type="button" id="downloadMarkdown">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M6 3h12v18H6z"></path>
+                  <path d="M9 8h6"></path>
+                  <path d="M9 12h6"></path>
+                  <path d="M9 16h3"></path>
+                </svg>
+                Download Brief
+              </button>
+              <button class="button ghost" type="button" id="copyTokens">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M8 8h10v12H8z"></path>
+                  <path d="M6 16H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path>
+                </svg>
+                Copy CSS Tokens
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" aria-labelledby="calculatorTitle">
+      <div class="section-inner">
+        <div class="calculator-grid">
+          <div class="section-heading">
+            <span class="section-kicker">Launch economics</span>
+            <h2 id="calculatorTitle">Estimate the time your launch system gives back.</h2>
+            <p>
+              Adjust a few operating numbers and watch the page calculate saved hours,
+              production value, and release confidence.
+            </p>
+          </div>
+          <div class="calculator">
+            <h3>Impact calculator</h3>
+            <div class="field">
+              <label for="teamSize">Team size</label>
+              <div class="slider-row">
+                <input class="range" id="teamSize" type="range" min="1" max="16" value="5">
+                <span class="range-value" id="teamSizeValue">5</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="hourlyRate">Blended hourly rate</label>
+              <div class="slider-row">
+                <input class="range" id="hourlyRate" type="range" min="25" max="220" value="85" step="5">
+                <span class="range-value" id="hourlyRateValue">$85</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="launches">Launches per quarter</label>
+              <div class="slider-row">
+                <input class="range" id="launches" type="range" min="1" max="12" value="4">
+                <span class="range-value" id="launchesValue">4</span>
+              </div>
+            </div>
+            <div class="calculator-results">
+              <div class="result-box accent">
+                <span>Hours saved</span>
+                <strong id="hoursSaved">96</strong>
+              </div>
+              <div class="result-box">
+                <span>Value created</span>
+                <strong id="valueCreated">$8.2k</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section alt" id="downloads" aria-labelledby="downloadsTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Resource vault</span>
+          <h2 id="downloadsTitle">Download serious launch assets.</h2>
+          <p>
+            Every resource button creates a clean local file from this static page.
+            No server, login, or API key is required.
+          </p>
+        </div>
+        <div class="resource-grid" id="resourceGrid">
+          <article class="download-card" data-pack="positioning">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M4 6h16"></path>
+                  <path d="M4 12h10"></path>
+                  <path d="M4 18h7"></path>
+                </svg>
+              </div>
+              <h3>Positioning Brief</h3>
+              <p>Messaging angles, proof points, competitor notes, and a crisp launch narrative.</p>
+            </div>
+            <div class="download-meta">
+              <span>Markdown</span>
+              <span>Strategy</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="roadmap">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M5 5h14v14H5z"></path>
+                  <path d="M8 9h8"></path>
+                  <path d="M8 13h5"></path>
+                  <path d="M8 17h7"></path>
+                </svg>
+              </div>
+              <h3>Roadmap Matrix</h3>
+              <p>Prioritized workstreams for design, product, engineering, content, and growth.</p>
+            </div>
+            <div class="download-meta">
+              <span>JSON</span>
+              <span>Planning</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="brand">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 3a9 9 0 1 0 0 18 3 3 0 0 0 3-3 2 2 0 0 1 2-2h1a6 6 0 0 0 0-12z"></path>
+                  <path d="M7 10h.01"></path>
+                  <path d="M10 7h.01"></path>
+                  <path d="M14 7h.01"></path>
+                </svg>
+              </div>
+              <h3>Brand Token Sheet</h3>
+              <p>Color, spacing, radius, shadow, and type tokens ready for a front-end prototype.</p>
+            </div>
+            <div class="download-meta">
+              <span>CSS</span>
+              <span>Design</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="email">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M4 6h16v12H4z"></path>
+                  <path d="M4 8l8 5 8-5"></path>
+                </svg>
+              </div>
+              <h3>Email Launch Sequence</h3>
+              <p>Announcement, waitlist, beta invite, reminder, and launch-day email drafts.</p>
+            </div>
+            <div class="download-meta">
+              <span>Markdown</span>
+              <span>Growth</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="analytics">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M4 19V5"></path>
+                  <path d="M4 19h16"></path>
+                  <path d="M8 16v-4"></path>
+                  <path d="M12 16V8"></path>
+                  <path d="M16 16v-7"></path>
+                </svg>
+              </div>
+              <h3>Analytics Checklist</h3>
+              <p>Events, funnels, dashboards, reporting cadence, and launch measurement notes.</p>
+            </div>
+            <div class="download-meta">
+              <span>JSON</span>
+              <span>Data</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="support">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M12 21a9 9 0 1 0-9-9"></path>
+                  <path d="M9 10a3 3 0 1 1 6 0c0 3-3 2-3 5"></path>
+                  <path d="M12 18h.01"></path>
+                </svg>
+              </div>
+              <h3>Support Playbook</h3>
+              <p>Macros, escalation rules, launch-day response flow, and customer education notes.</p>
+            </div>
+            <div class="download-meta">
+              <span>Markdown</span>
+              <span>Ops</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="press">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M4 5h16v14H4z"></path>
+                  <path d="M8 9h8"></path>
+                  <path d="M8 13h8"></path>
+                  <path d="M8 17h4"></path>
+                </svg>
+              </div>
+              <h3>Press Kit Outline</h3>
+              <p>Founder quote, product summary, launch timeline, media angles, and FAQ prompts.</p>
+            </div>
+            <div class="download-meta">
+              <span>Markdown</span>
+              <span>PR</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="investor">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M4 19h16"></path>
+                  <path d="M6 17V9"></path>
+                  <path d="M12 17V5"></path>
+                  <path d="M18 17v-6"></path>
+                </svg>
+              </div>
+              <h3>Investor Snapshot</h3>
+              <p>Problem, market, traction, unit economics, and milestone framing in one page.</p>
+            </div>
+            <div class="download-meta">
+              <span>JSON</span>
+              <span>Finance</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+          <article class="download-card" data-pack="qa">
+            <div class="download-card-top">
+              <div class="download-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M5 4h14v16H5z"></path>
+                  <path d="M9 9l2 2 4-4"></path>
+                  <path d="M9 16h6"></path>
+                </svg>
+              </div>
+              <h3>Release QA Plan</h3>
+              <p>Smoke tests, browser coverage, edge cases, rollback criteria, and sign-off gates.</p>
+            </div>
+            <div class="download-meta">
+              <span>Markdown</span>
+              <span>Quality</span>
+            </div>
+            <button class="download-action" type="button">Download resource</button>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section dark-band" aria-labelledby="processTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Operating rhythm</span>
+          <h2 id="processTitle">A clean path from idea to launch day.</h2>
+          <p>
+            The page presents a confident process for teams that need momentum,
+            clarity, and a professional first impression.
+          </p>
+        </div>
+        <div class="process">
+          <article class="process-step">
+            <h3>Define the promise</h3>
+            <p>Pin down audience, pain, outcome, proof, and the one reason to care now.</p>
+          </article>
+          <article class="process-step">
+            <h3>Package the assets</h3>
+            <p>Create briefs, visual tokens, roadmap notes, emails, support docs, and launch metrics.</p>
+          </article>
+          <article class="process-step">
+            <h3>Pressure-test the offer</h3>
+            <p>Run the story through buyer objections, team constraints, and evidence gaps.</p>
+          </article>
+          <article class="process-step">
+            <h3>Ship with calm</h3>
+            <p>Use a simple operating checklist so launch day feels controlled instead of chaotic.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" aria-labelledby="galleryTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Visual system</span>
+          <h2 id="galleryTitle">A first impression that looks built, not pasted.</h2>
+          <p>
+            Real product-room imagery, dense interface panels, and restrained color
+            make the design feel credible without needing a heavy framework.
+          </p>
+        </div>
+        <div class="gallery">
+          <figure class="gallery-main">
+            <img
+              src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1600&q=82"
+              alt="Team working around a product planning board"
+            >
+            <figcaption class="gallery-caption">
+              <h3>Built for practical launch teams</h3>
+              <p>Every section is designed for scanning, comparison, and action.</p>
+            </figcaption>
+          </figure>
+          <div class="gallery-side">
+            <figure>
+              <img
+                src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1000&q=82"
+                alt="Product team discussing a launch plan"
+              >
+              <figcaption>Planning</figcaption>
+            </figure>
+            <figure>
+              <img
+                src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1000&q=82"
+                alt="Dashboard presentation in a modern workspace"
+              >
+              <figcaption>Execution</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section alt" id="pricing" aria-labelledby="pricingTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Simple pricing</span>
+          <h2 id="pricingTitle">A product-ready pricing section is included.</h2>
+          <p>
+            The copy is fictional, but the structure is ready for a real product,
+            digital download, SaaS offer, or agency package.
+          </p>
+        </div>
+        <div class="pricing-grid">
+          <article class="pricing-card">
+            <h3>Starter</h3>
+            <div class="price">
+              <strong>$19</strong>
+              <span>one time</span>
+            </div>
+            <ul class="pricing-list">
+              <li>Launch brief generator</li>
+              <li>Three resource exports</li>
+              <li>Basic token sheet</li>
+              <li>Personal project use</li>
+            </ul>
+            <a class="button ghost" href="#studio">Choose Starter</a>
+          </article>
+          <article class="pricing-card featured">
+            <h3>Studio</h3>
+            <div class="price">
+              <strong>$49</strong>
+              <span>one time</span>
+            </div>
+            <ul class="pricing-list">
+              <li>Full launch kit generator</li>
+              <li>All resource downloads</li>
+              <li>Commercial usage notes</li>
+              <li>Priority launch checklist</li>
+            </ul>
+            <a class="button primary" href="#studio">Choose Studio</a>
+          </article>
+          <article class="pricing-card">
+            <h3>Team</h3>
+            <div class="price">
+              <strong>$99</strong>
+              <span>one time</span>
+            </div>
+            <ul class="pricing-list">
+              <li>Team operating playbooks</li>
+              <li>Investor snapshot export</li>
+              <li>QA and support templates</li>
+              <li>Agency-friendly structure</li>
+            </ul>
+            <a class="button ghost" href="#downloads">Choose Team</a>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section" aria-labelledby="testimonialsTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Social proof</span>
+          <h2 id="testimonialsTitle">Sharp enough for a real client demo.</h2>
+          <p>
+            These testimonial blocks keep the page feeling complete,
+            with credible spacing and copy that supports the product story.
+          </p>
+        </div>
+        <div class="testimonial-grid">
+          <article class="testimonial">
+            <p>
+              "The generator gave our launch meeting a structure immediately. The export files made the handoff simple."
+            </p>
+            <div class="person">
+              <span class="avatar">AK</span>
+              <div>
+                <strong>Arda K.</strong>
+                <span>Founder, OrbitBase</span>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial">
+            <p>
+              "It looks like a paid product page, but it is still one portable HTML file. That is exactly what we needed."
+            </p>
+            <div class="person">
+              <span class="avatar">ML</span>
+              <div>
+                <strong>Mira L.</strong>
+                <span>Design Lead, PrismLab</span>
+              </div>
+            </div>
+          </article>
+          <article class="testimonial">
+            <p>
+              "The downloadable assets are a smart touch. Visitors can actually leave with something useful."
+            </p>
+            <div class="person">
+              <span class="avatar">DS</span>
+              <div>
+                <strong>Deniz S.</strong>
+                <span>Growth Partner, NimbleHQ</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="section alt" id="faq" aria-labelledby="faqTitle">
+      <div class="section-inner">
+        <div class="section-heading">
+          <span class="section-kicker">Questions</span>
+          <h2 id="faqTitle">Practical details for GitHub deployment.</h2>
+          <p>
+            The page is intentionally self-contained so it can be dropped into a
+            GitHub repository and published through GitHub Pages.
+          </p>
+        </div>
+        <div class="faq-list">
+          <article class="faq-item is-open">
+            <button class="faq-question" type="button">
+              Does this need a backend?
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              No. Every interaction runs in the browser. Downloads are created with Blob URLs,
+              and copied text uses the clipboard API when available.
+            </div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-question" type="button">
+              Can I rename the product?
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              Yes. The visible brand, generator defaults, pricing text, and downloadable
+              resource copy can all be edited directly inside this file.
+            </div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-question" type="button">
+              Will it work on mobile?
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              Yes. The layout collapses into single-column sections,
+              the navigation becomes a menu, and controls keep stable tap targets.
+            </div>
+          </article>
+          <article class="faq-item">
+            <button class="faq-question" type="button">
+              What does the site download?
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+              </svg>
+            </button>
+            <div class="faq-answer">
+              It downloads launch briefs, roadmap JSON, CSS brand tokens,
+              email sequences, analytics checklists, press kit notes, and support playbooks.
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="cta" aria-labelledby="ctaTitle">
+      <div class="cta-inner">
+        <div>
+          <h2 id="ctaTitle">Drop this file into GitHub Pages and ship the demo.</h2>
+          <p>
+            LaunchKit Studio is already wired with navigation, downloads,
+            theme switching, calculators, accordions, and responsive layouts.
+          </p>
+        </div>
+        <a class="button primary" href="#studio">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14"></path>
+            <path d="M5 12h14"></path>
+          </svg>
+          Build a Pack
+        </a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M12 3l7 4v6c0 4.4-2.9 7.3-7 8-4.1-.7-7-3.6-7-8V7l7-4z"></path>
+              <path d="M9 12l2 2 4-5"></path>
+            </svg>
+          </span>
+          <span>LaunchKit Studio</span>
+        </a>
+        <p>
+          A polished, static, copy-ready product site with real downloadable output.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h3>Product</h3>
+        <a href="#features">Features</a>
+        <a href="#studio">Studio</a>
+        <a href="#downloads">Resources</a>
+      </div>
+      <div class="footer-col">
+        <h3>Company</h3>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#top">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h3>Exports</h3>
+        <a href="#studio">JSON</a>
+        <a href="#studio">Markdown</a>
+        <a href="#studio">CSS Tokens</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Copyright 2026 LaunchKit Studio. Static demo for GitHub Pages.</span>
+      <span>Built with HTML, CSS, and JavaScript.</span>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    const state = {
+      kit: "MVP",
+      color: "#20c997"
+    };
+
+    const resourceContent = {
+      positioning: {
+        filename: "positioning-brief.md",
+        type: "text/markdown",
+        body: [
+          "# Positioning Brief",
+          "",
+          "## Audience",
+          "High-intent teams preparing a serious product launch.",
+          "",
+          "## Promise",
+          "Replace scattered launch notes with one clean operating system.",
+          "",
+          "## Proof Points",
+          "- Static page with real file exports",
+          "- Built-in launch calculator",
+          "- Professional pricing, FAQ, and resource sections",
+          "- Responsive layout for client demos",
+          "",
+          "## Launch Narrative",
+          "LaunchKit Studio helps teams package the thinking behind a release before the release pressure arrives."
+        ].join("\n")
+      },
+      roadmap: {
+        filename: "roadmap-matrix.json",
+        type: "application/json",
+        body: JSON.stringify({
+          workstreams: [
+            {
+              name: "Product",
+              tasks: ["Scope MVP", "Define beta cohort", "Finalize release gates"]
+            },
+            {
+              name: "Design",
+              tasks: ["Token audit", "Landing polish", "Responsive QA"]
+            },
+            {
+              name: "Growth",
+              tasks: ["Email sequence", "Press list", "Launch analytics"]
+            },
+            {
+              name: "Operations",
+              tasks: ["Support macros", "Risk register", "Rollback plan"]
+            }
+          ]
+        }, null, 2)
+      },
+      brand: {
+        filename: "brand-tokens.css",
+        type: "text/css",
+        body: [
+          ":root {",
+          "  --brand-ink: #101318;",
+          "  --brand-paper: #f7f8fb;",
+          "  --brand-accent: #20c997;",
+          "  --brand-cyan: #38bdf8;",
+          "  --brand-amber: #f6a61d;",
+          "  --brand-radius: 8px;",
+          "  --brand-shadow: 0 22px 80px rgba(16, 19, 24, 0.16);",
+          "  --brand-font: Inter, system-ui, sans-serif;",
+          "}"
+        ].join("\n")
+      },
+      email: {
+        filename: "email-launch-sequence.md",
+        type: "text/markdown",
+        body: [
+          "# Email Launch Sequence",
+          "",
+          "## Email 1: Waitlist Warmup",
+          "Subject: The launch system is almost ready",
+          "",
+          "## Email 2: Beta Invite",
+          "Subject: Your early access workspace is open",
+          "",
+          "## Email 3: Launch Day",
+          "Subject: LaunchKit Studio is live",
+          "",
+          "## Email 4: Proof Follow-up",
+          "Subject: What teams are shipping with LaunchKit",
+          "",
+          "## Email 5: Last Call",
+          "Subject: Final day for launch pricing"
+        ].join("\n")
+      },
+      analytics: {
+        filename: "analytics-checklist.json",
+        type: "application/json",
+        body: JSON.stringify({
+          events: [
+            "hero_cta_clicked",
+            "kit_json_downloaded",
+            "brief_downloaded",
+            "resource_downloaded",
+            "pricing_cta_clicked"
+          ],
+          funnels: [
+            "Visit to kit generation",
+            "Kit generation to download",
+            "Resource view to resource download"
+          ],
+          dashboards: [
+            "Traffic quality",
+            "Conversion velocity",
+            "Resource interest",
+            "Launch readiness"
+          ]
+        }, null, 2)
+      },
+      support: {
+        filename: "support-playbook.md",
+        type: "text/markdown",
+        body: [
+          "# Support Playbook",
+          "",
+          "## Launch Day Response Flow",
+          "1. Confirm issue category.",
+          "2. Attach account and browser details.",
+          "3. Route blockers to product owner.",
+          "4. Send resolution note after fix.",
+          "",
+          "## Macros",
+          "- Welcome to the beta",
+          "- Known issue acknowledgement",
+          "- Billing question follow-up",
+          "- Feature request capture"
+        ].join("\n")
+      },
+      press: {
+        filename: "press-kit-outline.md",
+        type: "text/markdown",
+        body: [
+          "# Press Kit Outline",
+          "",
+          "## Product Summary",
+          "LaunchKit Studio packages the launch planning process into one static, export-ready web page.",
+          "",
+          "## Founder Quote",
+          "Teams deserve a calmer way to package serious launches.",
+          "",
+          "## Angles",
+          "- Static sites can still feel like real products",
+          "- Better launch prep without complex software",
+          "- Downloadable artifacts as lead magnets"
+        ].join("\n")
+      },
+      investor: {
+        filename: "investor-snapshot.json",
+        type: "application/json",
+        body: JSON.stringify({
+          problem: "Launch work is scattered across docs, boards, decks, and chats.",
+          solution: "One polished static page that creates structured launch assets.",
+          market: "Founders, agencies, creators, and small SaaS teams.",
+          tractionSignals: ["Downloads", "Generated kits", "Pricing clicks", "Resource interest"],
+          milestones: ["Template marketplace", "Team workspace", "Analytics integration"]
+        }, null, 2)
+      },
+      qa: {
+        filename: "release-qa-plan.md",
+        type: "text/markdown",
+        body: [
+          "# Release QA Plan",
+          "",
+          "## Browser Coverage",
+          "- Chrome",
+          "- Edge",
+          "- Safari",
+          "- Firefox",
+          "",
+          "## Smoke Tests",
+          "- Navigation anchors move correctly",
+          "- Generator updates preview",
+          "- Downloads create valid files",
+          "- Theme toggle preserves contrast",
+          "- Mobile menu opens and closes",
+          "",
+          "## Rollback Criteria",
+          "- Broken downloads",
+          "- Critical layout overlap",
+          "- Unreadable contrast",
+          "- Console errors blocking interaction"
+        ].join("\n")
+      }
+    };
+
+    const audienceProfiles = {
+      founders: {
+        label: "Founders",
+        focus: "Lean",
+        assets: 28,
+        budget: "$9k",
+        tasks: [
+          ["Positioning sprint", "Week 1"],
+          ["Landing page copy", "Week 2"],
+          ["Beta onboarding", "Week 4"],
+          ["Public launch checklist", "Week 6"]
+        ]
+      },
+      agencies: {
+        label: "Agencies",
+        focus: "Client",
+        assets: 36,
+        budget: "$18k",
+        tasks: [
+          ["Client kickoff narrative", "Week 1"],
+          ["Creative direction pack", "Week 2"],
+          ["Stakeholder review deck", "Week 4"],
+          ["Delivery documentation", "Week 6"]
+        ]
+      },
+      saas: {
+        label: "SaaS teams",
+        focus: "Growth",
+        assets: 42,
+        budget: "$24k",
+        tasks: [
+          ["Activation audit", "Week 1"],
+          ["Trial onboarding flow", "Week 3"],
+          ["Lifecycle email test", "Week 5"],
+          ["Metrics review room", "Week 6"]
+        ]
+      },
+      creators: {
+        label: "Creators",
+        focus: "Audience",
+        assets: 24,
+        budget: "$6k",
+        tasks: [
+          ["Offer story", "Week 1"],
+          ["Content runway", "Week 2"],
+          ["Community preview", "Week 4"],
+          ["Launch week calendar", "Week 6"]
+        ]
+      }
+    };
+
+    const kitMultipliers = {
+      MVP: {
+        readiness: 86,
+        assetBonus: 0,
+        headline: "MVP pack for"
+      },
+      Beta: {
+        readiness: 92,
+        assetBonus: 8,
+        headline: "Beta launch pack for"
+      },
+      Scale: {
+        readiness: 97,
+        assetBonus: 16,
+        headline: "Scale-ready pack for"
+      }
+    };
+
+    const selectors = {
+      header: document.querySelector("#siteHeader"),
+      navMenu: document.querySelector("#navMenu"),
+      menuToggle: document.querySelector("#menuToggle"),
+      themeToggle: document.querySelector("#themeToggle"),
+      projectName: document.querySelector("#projectName"),
+      tagline: document.querySelector("#tagline"),
+      audience: document.querySelector("#audience"),
+      sprintLength: document.querySelector("#sprintLength"),
+      sprintValue: document.querySelector("#sprintValue"),
+      previewSidebar: document.querySelector("#previewSidebar"),
+      previewInitial: document.querySelector("#previewInitial"),
+      previewName: document.querySelector("#previewName"),
+      previewHeadline: document.querySelector("#previewHeadline"),
+      previewTagline: document.querySelector("#previewTagline"),
+      previewKit: document.querySelector("#previewKit"),
+      previewAudience: document.querySelector("#previewAudience"),
+      previewSprint: document.querySelector("#previewSprint"),
+      assetCount: document.querySelector("#assetCount"),
+      budgetRange: document.querySelector("#budgetRange"),
+      focusMode: document.querySelector("#focusMode"),
+      readinessChip: document.querySelector("#readinessChip"),
+      roadmapList: document.querySelector("#roadmapList"),
+      downloadJson: document.querySelector("#downloadJson"),
+      downloadMarkdown: document.querySelector("#downloadMarkdown"),
+      copyTokens: document.querySelector("#copyTokens"),
+      toast: document.querySelector("#toast"),
+      teamSize: document.querySelector("#teamSize"),
+      teamSizeValue: document.querySelector("#teamSizeValue"),
+      hourlyRate: document.querySelector("#hourlyRate"),
+      hourlyRateValue: document.querySelector("#hourlyRateValue"),
+      launches: document.querySelector("#launches"),
+      launchesValue: document.querySelector("#launchesValue"),
+      hoursSaved: document.querySelector("#hoursSaved"),
+      valueCreated: document.querySelector("#valueCreated")
+    };
+
+    const formatMoney = (value) => {
+      if (value >= 1000) {
+        return `$${(value / 1000).toFixed(1)}k`;
+      }
+      return `$${value}`;
+    };
+
+    const slugify = (value) => {
+      return value
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "launchkit";
+    };
+
+    const showToast = (message) => {
+      selectors.toast.textContent = message;
+      selectors.toast.classList.add("is-visible");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => {
+        selectors.toast.classList.remove("is-visible");
+      }, 2400);
+    };
+
+    const downloadFile = (filename, type, body) => {
+      const blob = new Blob([body], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    };
+
+    const buildKitData = () => {
+      const audienceKey = selectors.audience.value;
+      const profile = audienceProfiles[audienceKey];
+      const kit = kitMultipliers[state.kit];
+      const sprint = Number(selectors.sprintLength.value);
+      const name = selectors.projectName.value.trim() || "LaunchKit Project";
+      const tagline = selectors.tagline.value.trim() || "A focused launch system for serious teams.";
+      return {
+        project: name,
+        tagline,
+        audience: profile.label,
+        kit: state.kit,
+        sprintWeeks: sprint,
+        accentColor: state.color,
+        readiness: Math.min(99, kit.readiness + Math.floor(sprint / 4)),
+        assets: profile.assets + kit.assetBonus,
+        budget: profile.budget,
+        focus: profile.focus,
+        roadmap: profile.tasks.map(([task, week]) => ({ task, week }))
+      };
+    };
+
+    const renderRoadmap = (tasks) => {
+      selectors.roadmapList.innerHTML = tasks
+        .map((item) => {
+          return `
+            <li>
+              <span>${item.task}</span>
+              <small>${item.week}</small>
+            </li>
+          `;
+        })
+        .join("");
+    };
+
+    const updatePreview = () => {
+      const data = buildKitData();
+      selectors.sprintValue.textContent = `${data.sprintWeeks}w`;
+      selectors.previewInitial.textContent = data.project.charAt(0).toUpperCase();
+      selectors.previewName.textContent = data.project;
+      selectors.previewHeadline.textContent = `${kitMultipliers[data.kit].headline} ${data.audience.toLowerCase()}`;
+      selectors.previewTagline.textContent = data.tagline;
+      selectors.previewKit.textContent = data.kit;
+      selectors.previewAudience.textContent = data.audience;
+      selectors.previewSprint.textContent = `${data.sprintWeeks} weeks`;
+      selectors.assetCount.textContent = data.assets;
+      selectors.budgetRange.textContent = data.budget;
+      selectors.focusMode.textContent = data.focus;
+      selectors.readinessChip.textContent = `${data.readiness}% ready`;
+      selectors.previewSidebar.style.background = `linear-gradient(155deg, #0b0f14, ${state.color})`;
+      document.documentElement.style.setProperty("--mint", state.color);
+      renderRoadmap(data.roadmap);
+    };
+
+    const buildMarkdownBrief = () => {
+      const data = buildKitData();
+      return [
+        `# ${data.project} Launch Brief`,
+        "",
+        `## Tagline`,
+        data.tagline,
+        "",
+        `## Audience`,
+        data.audience,
+        "",
+        `## Kit Type`,
+        data.kit,
+        "",
+        `## Sprint Length`,
+        `${data.sprintWeeks} weeks`,
+        "",
+        `## Readiness`,
+        `${data.readiness}%`,
+        "",
+        `## Focus`,
+        data.focus,
+        "",
+        `## Roadmap`,
+        ...data.roadmap.map((item) => `- ${item.week}: ${item.task}`),
+        "",
+        `## Accent Color`,
+        data.accentColor
+      ].join("\n");
+    };
+
+    const buildCssTokens = () => {
+      const data = buildKitData();
+      return [
+        ":root {",
+        `  --launchkit-project: "${data.project}";`,
+        `  --launchkit-accent: ${data.accentColor};`,
+        "  --launchkit-ink: #101318;",
+        "  --launchkit-paper: #f7f8fb;",
+        "  --launchkit-surface: #ffffff;",
+        "  --launchkit-radius: 8px;",
+        "  --launchkit-shadow: 0 22px 80px rgba(16, 19, 24, 0.16);",
+        "  --launchkit-font: Inter, system-ui, sans-serif;",
+        "}"
+      ].join("\n");
+    };
+
+    const updateCalculator = () => {
+      const team = Number(selectors.teamSize.value);
+      const rate = Number(selectors.hourlyRate.value);
+      const launches = Number(selectors.launches.value);
+      const saved = team * launches * 4 + launches * 19;
+      const value = saved * rate;
+      selectors.teamSizeValue.textContent = team;
+      selectors.hourlyRateValue.textContent = `$${rate}`;
+      selectors.launchesValue.textContent = launches;
+      selectors.hoursSaved.textContent = saved;
+      selectors.valueCreated.textContent = formatMoney(value);
+    };
+
+    const handleScroll = () => {
+      selectors.header.classList.toggle("is-solid", window.scrollY > 24);
+      const sections = [...document.querySelectorAll("section[id]")];
+      const links = [...document.querySelectorAll(".nav a")];
+      const current = sections
+        .map((section) => {
+          return {
+            id: section.id,
+            top: Math.abs(section.getBoundingClientRect().top - 110)
+          };
+        })
+        .sort((a, b) => a.top - b.top)[0];
+      if (!current) {
+        return;
+      }
+      links.forEach((link) => {
+        link.classList.toggle("is-active", link.getAttribute("href") === `#${current.id}`);
+      });
+    };
+
+    selectors.menuToggle.addEventListener("click", () => {
+      const isOpen = selectors.navMenu.classList.toggle("is-open");
+      selectors.menuToggle.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    });
+
+    selectors.themeToggle.addEventListener("click", () => {
+      document.body.classList.toggle("theme-dark");
+      const isDark = document.body.classList.contains("theme-dark");
+      localStorage.setItem("launchkit-theme", isDark ? "dark" : "light");
+      showToast(isDark ? "Dark theme enabled." : "Light theme enabled.");
+    });
+
+    document.querySelectorAll(".nav a").forEach((link) => {
+      link.addEventListener("click", () => {
+        selectors.navMenu.classList.remove("is-open");
+      });
+    });
+
+    document.querySelectorAll(".segment").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".segment").forEach((item) => item.classList.remove("is-selected"));
+        button.classList.add("is-selected");
+        state.kit = button.dataset.kit;
+        updatePreview();
+      });
+    });
+
+    document.querySelectorAll(".swatch").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelectorAll(".swatch").forEach((item) => item.classList.remove("is-selected"));
+        button.classList.add("is-selected");
+        state.color = button.dataset.color;
+        updatePreview();
+      });
+    });
+
+    [
+      selectors.projectName,
+      selectors.tagline,
+      selectors.audience,
+      selectors.sprintLength
+    ].forEach((field) => {
+      field.addEventListener("input", updatePreview);
+      field.addEventListener("change", updatePreview);
+    });
+
+    [
+      selectors.teamSize,
+      selectors.hourlyRate,
+      selectors.launches
+    ].forEach((field) => {
+      field.addEventListener("input", updateCalculator);
+      field.addEventListener("change", updateCalculator);
+    });
+
+    selectors.downloadJson.addEventListener("click", () => {
+      const data = buildKitData();
+      const filename = `${slugify(data.project)}-launch-kit.json`;
+      downloadFile(filename, "application/json", JSON.stringify(data, null, 2));
+      showToast("Launch kit JSON downloaded.");
+    });
+
+    selectors.downloadMarkdown.addEventListener("click", () => {
+      const data = buildKitData();
+      const filename = `${slugify(data.project)}-launch-brief.md`;
+      downloadFile(filename, "text/markdown", buildMarkdownBrief());
+      showToast("Markdown brief downloaded.");
+    });
+
+    selectors.copyTokens.addEventListener("click", async () => {
+      const tokens = buildCssTokens();
+      try {
+        await navigator.clipboard.writeText(tokens);
+        showToast("CSS tokens copied.");
+      } catch (error) {
+        downloadFile("launchkit-tokens.css", "text/css", tokens);
+        showToast("Clipboard unavailable. CSS file downloaded.");
+      }
+    });
+
+    document.querySelectorAll(".download-card").forEach((card) => {
+      const button = card.querySelector(".download-action");
+      button.addEventListener("click", () => {
+        const pack = resourceContent[card.dataset.pack];
+        downloadFile(pack.filename, pack.type, pack.body);
+        showToast(`${card.querySelector("h3").textContent} downloaded.`);
+      });
+    });
+
+    document.querySelectorAll(".faq-question").forEach((button) => {
+      button.addEventListener("click", () => {
+        button.closest(".faq-item").classList.toggle("is-open");
+      });
+    });
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    const storedTheme = localStorage.getItem("launchkit-theme");
+    if (storedTheme === "dark") {
+      document.body.classList.add("theme-dark");
+    }
+
+    updatePreview();
+    updateCalculator();
+    handleScroll();
+  </script>
+</body>
+</html>
