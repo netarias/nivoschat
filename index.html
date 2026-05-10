@@ -3,363 +3,1130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Netaria Rank Studio | Modern Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <meta name="description" content="NovaSync - Modern iş akışınızı yönetin, dosyalarınızı senkronize edin ve ekibinizle mükemmel uyum içinde çalışın.">
+    <title>NovaSync | Geleceğin Çalışma Alanı</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
+        /* ==========================================================================
+           1. CSS DEĞİŞKENLERİ VE TEMA AYARLARI
+           ========================================================================== */
         :root {
-            --primary: #00d2ff;
-            --primary-hover: #a29bfe;
-            --bg-gradient-1: #0f2027;
-            --bg-gradient-2: #203a43;
-            --bg-gradient-3: #2c5364;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --text-main: #f5f6fa;
-            --text-muted: #b2bec3;
+            --primary: #6366f1; /* Indigo 500 */
+            --primary-hover: #4f46e5; /* Indigo 600 */
+            --secondary: #ec4899; /* Pink 500 */
+            --bg-dark: #0f172a; /* Slate 900 */
+            --bg-card: #1e293b; /* Slate 800 */
+            --text-main: #f8fafc; /* Slate 50 */
+            --text-muted: #94a3b8; /* Slate 400 */
+            --border-color: #334155; /* Slate 700 */
+            --success: #10b981;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            --transition: all 0.3s ease;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ==========================================================================
+           2. SIFIRLAMA (RESET) VE TEMEL STİLLER
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), #2d3436);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: var(--bg-dark);
             color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition);
         }
 
-        .app-container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 30px;
-            width: 100%;
-            max-width: 1100px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 30px;
+        ul {
+            list-style: none;
         }
 
-        /* Önizleme */
-        .preview-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 40px;
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            position: relative;
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
-        .preview-title {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            font-weight: 800;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
-        .canvas-wrapper {
-            background-image: linear-gradient(45deg, #111 25%, transparent 25%), linear-gradient(-45deg, #111 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #111 75%), linear-gradient(-45deg, transparent 75%, #111 75%);
-            background-size: 15px 15px;
-            background-color: #000;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        /* ==========================================================================
+           3. TİPOGRAFİ VE BAŞLIKLAR
+           ========================================================================== */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
         }
 
-        /* Kontroller */
-        .controls-section {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding-right: 10px;
+        h1 {
+            font-size: 3.5rem;
+            letter-spacing: -1px;
         }
 
-        .header h1 {
-            font-size: 24px;
-            font-weight: 800;
-            background: linear-gradient(to right, #fff, var(--primary));
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .text-gradient {
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .input-group { display: flex; flex-direction: column; gap: 5px; }
-        .input-group label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 10px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
-            outline: none;
-        }
-
-        .color-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .color-picker-wrap {
-            display: flex; align-items: center; justify-content: space-between;
-            background: rgba(0, 0, 0, 0.3); padding: 8px 12px; border-radius: 8px;
-        }
-
-        /* Rank Butonları Izgarası */
-        .preset-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-        }
-
-        .preset-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #ddd;
-            padding: 10px 5px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 10px;
-            font-weight: 600;
-            transition: all 0.2s;
+        .subtitle {
             text-align: center;
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: -2rem auto 4rem auto;
         }
 
-        .preset-btn:hover {
+        /* ==========================================================================
+           4. BUTONLAR VE FORMLAR
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            gap: 10px;
+        }
+
+        .btn-primary {
             background: var(--primary);
-            color: #000;
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--text-main);
             transform: translateY(-2px);
         }
 
-        .download-btn {
-            background: linear-gradient(135deg, var(--primary), #00a8ff);
-            color: #000;
-            border: none;
-            padding: 15px;
-            font-size: 14px;
-            font-weight: 800;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-top: 10px;
-            text-transform: uppercase;
+        /* ==========================================================================
+           5. NAVİGASYON (HEADER)
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 20px 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
 
-        /* Kaydırıcılar */
-        input[type="range"] { -webkit-appearance: none; width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 15px; height: 15px; background: var(--primary); border-radius: 50%; cursor: pointer; }
+        header.scrolled {
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
 
-        ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-        @media (max-width: 900px) { .app-container { grid-template-columns: 1fr; } }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo svg {
+            width: 32px;
+            height: 32px;
+            fill: url(#logo-grad);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .nav-links a:hover {
+            color: var(--text-main);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           6. HERO BÖLÜMÜ (ANA EKRAN)
+           ========================================================================== */
+        .hero {
+            padding: 180px 0 100px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, rgba(15,23,42,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            right: -10%;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(236,72,153,0.1) 0%, rgba(15,23,42,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 4rem;
+        }
+
+        .hero-image {
+            perspective: 1000px;
+        }
+
+        .hero-dashboard {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 10px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transform: rotateX(10deg) translateY(20px);
+            transition: var(--transition);
+        }
+
+        .hero-dashboard:hover {
+            transform: rotateX(0deg) translateY(0);
+        }
+
+        .mockup-header {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .mockup-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .dot-r { background-color: #ef4444; }
+        .dot-y { background-color: #eab308; }
+        .dot-g { background-color: #22c55e; }
+
+        .mockup-body {
+            height: 400px;
+            background: linear-gradient(180deg, rgba(30,41,59,1) 0%, rgba(15,23,42,1) 100%);
+            border-radius: 0 0 15px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        /* ==========================================================================
+           7. ÖZELLİKLER BÖLÜMÜ
+           ========================================================================== */
+        .features {
+            padding: 100px 0;
+            background: var(--bg-dark);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .feature-icon svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ==========================================================================
+           8. İNDİRME BÖLÜMÜ (CTA)
+           ========================================================================== */
+        .download-section {
+            padding: 100px 0;
+            background: linear-gradient(to right, var(--bg-card), var(--bg-dark));
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .download-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+        }
+
+        .download-content {
+            flex: 1;
+        }
+
+        .download-content h2 {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+
+        .store-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .store-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #000;
+            border: 1px solid var(--border-color);
+            padding: 10px 25px;
+            border-radius: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .store-btn:hover {
+            background: #111;
+            border-color: var(--text-main);
+        }
+
+        .store-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+
+        .store-text {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .store-text small {
+            font-size: 0.7rem;
+            color: #ccc;
+        }
+
+        .store-text span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .download-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            border: 12px solid #334155;
+            border-radius: 40px;
+            margin: 0 auto;
+            position: relative;
+            background: var(--bg-dark);
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        
+        .phone-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 25px;
+            background: #334155;
+            border-radius: 0 0 15px 15px;
+            z-index: 2;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* ==========================================================================
+           9. FİYATLANDIRMA BÖLÜMÜ
+           ========================================================================== */
+        .pricing {
+            padding: 100px 0;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .price-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-card.popular {
+            border-color: var(--primary);
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.2);
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gradient);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .price-header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 30px;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 15px 0;
+        }
+
+        .price-amount span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .price-features {
+            flex-grow: 1;
+            margin-bottom: 30px;
+        }
+
+        .price-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+        }
+
+        .price-features li svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--success);
+            flex-shrink: 0;
+        }
+
+        /* ==========================================================================
+           10. SSS (AKORDİYON) BÖLÜMÜ
+           ========================================================================== */
+        .faq {
+            padding: 80px 0 120px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .accordion {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            background: var(--bg-card);
+        }
+
+        .accordion-header {
+            width: 100%;
+            padding: 20px;
+            text-align: left;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .accordion-icon {
+            transition: var(--transition);
+        }
+
+        .accordion.active .accordion-icon {
+            transform: rotate(45deg);
+        }
+
+        .accordion-body {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .accordion.active .accordion-body {
+            padding: 0 20px 20px;
+            max-height: 200px; /* Yaklaşık yükseklik */
+        }
+
+        /* ==========================================================================
+           11. FOOTER
+           ========================================================================== */
+        footer {
+            background: #0b1120;
+            padding: 80px 0 30px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-about p {
+            color: var(--text-muted);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        .social-icons a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-links h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul a {
+            color: var(--text-muted);
+        }
+
+        .footer-links ul a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* ==========================================================================
+           12. ANİMASYONLAR (SCROLL REVEAL)
+           ========================================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           13. RESPONSIVE TASARIM (MOBİL UYUM)
+           ========================================================================== */
+        @media (max-width: 992px) {
+            h1 { font-size: 2.8rem; }
+            .download-wrapper { flex-direction: column; text-align: center; }
+            .download-content h2 { text-align: center; }
+            .store-buttons { justify-content: center; }
+            .price-card.popular { transform: scale(1); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: var(--bg-dark);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: var(--transition);
+            }
+            .nav-links.active { left: 0; }
+            .hero-buttons { flex-direction: column; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .social-icons { justify-content: center; }
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    
-    <div class="preview-section">
-        <div class="preview-title">Canlı Tasarım Ekranı</div>
-        <div class="canvas-wrapper">
-            <canvas id="rankCanvas"></canvas>
-        </div>
-    </div>
+    <header id="header">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <svg viewBox="0 0 24 24">
+                    <defs>
+                        <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#6366f1" />
+                            <stop offset="100%" style="stop-color:#ec4899" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+                NovaSync
+            </a>
+            
+            <nav class="nav-links" id="nav-links">
+                <a href="#features">Özellikler</a>
+                <a href="#download">İndir</a>
+                <a href="#pricing">Fiyatlar</a>
+                <a href="#faq">SSS</a>
+                <a href="#contact" class="btn btn-primary" style="color:white">Hemen Başla</a>
+            </nav>
 
-    <div class="controls-section">
-        <div class="header">
-            <h1>Netaria Studio</h1>
-            <p style="font-size: 12px; color: var(--text-muted);">Tüm rütbeler için profesyonel jeneratör.</p>
+            <button class="mobile-menu-btn" id="mobile-menu-btn">
+                ☰
+            </button>
         </div>
+    </header>
 
-        <div class="input-group">
-            <label>Metin</label>
-            <input type="text" id="rankText" value="KURUCU">
-        </div>
-
-        <div class="color-grid">
-            <div class="input-group">
-                <label>Gradyan 1</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="bgGrad1" value="#ff0000">
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content reveal">
+                <h1>İş Akışınızı <span class="text-gradient">Yapay Zeka</span> ile Şekillendirin</h1>
+                <p>NovaSync, dağınık dosyalarınızı, ekip iletişimini ve proje yönetimini tek bir akıllı bulut platformunda birleştirir. Sınırları kaldırın, üretkenliği artırın.</p>
+                <div class="hero-buttons">
+                    <a href="#download" class="btn btn-primary">
+                        Ücretsiz İndir
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </a>
+                    <a href="#features" class="btn btn-outline">Nasıl Çalışır?</a>
                 </div>
             </div>
-            <div class="input-group">
-                <label>Gradyan 2</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="bgGrad2" value="#800000">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Yazı</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="textColor" value="#ffffff">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Kenarlık</label>
-                <div class="color-picker-wrap">
-                    <input type="color" id="borderColor" value="#440000">
+
+            <div class="hero-image reveal">
+                <div class="hero-dashboard">
+                    <div class="mockup-header">
+                        <div class="mockup-dot dot-r"></div>
+                        <div class="mockup-dot dot-y"></div>
+                        <div class="mockup-dot dot-g"></div>
+                    </div>
+                    <div class="mockup-body">
+                        // NovaSync Dashboard Arayüzü<br>
+                        > Veriler senkronize ediliyor...<br>
+                        > Sistem durumu: %100 Çevrimiçi<br>
+                        > Şifreleme aktif.
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="color-grid">
-            <div class="input-group">
-                <label>Boyut: <span id="sizeValue">24</span>px</label>
-                <input type="range" id="fontSize" min="12" max="60" value="24">
-            </div>
-            <div class="input-group">
-                <label>Boşluk: <span id="padValue">10</span>px</label>
-                <input type="range" id="padding" min="4" max="30" value="10">
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="reveal">Neden NovaSync?</h2>
+            <p class="subtitle reveal">Sıradan depolama araçlarını unutun. Akıllı, güvenli ve ışık hızında bir deneyim için ihtiyacınız olan her şey burada.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </div>
+                    <h3>Uçtan Uca Şifreleme</h3>
+                    <p>Dosyalarınız askeri düzeyde AES-256 algoritmasıyla şifrelenir. Sizin izniniz olmadan kimse verilerinize erişemez.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    </div>
+                    <h3>Gerçek Zamanlı İşbirliği</h3>
+                    <p>Aynı dosya üzerinde ekibinizle eşzamanlı olarak çalışın. Değişiklikleri anında görün ve yorumlar ekleyin.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                    </div>
+                    <h3>Çapraz Platform</h3>
+                    <p>Windows, Mac, iOS, Android veya web tarayıcısı üzerinden tüm verilerinize eksiksiz erişin.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20v-6M6 20V10M18 20V4"></path></svg>
+                    </div>
+                    <h3>Yapay Zeka Analitik</h3>
+                    <p>Dosya kullanım alışkanlıklarınızı analiz eden yapay zeka ile depolama alanınızı otomatik optimize edin.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    </div>
+                    <h3>Akıllı Versiyonlama</h3>
+                    <p>Dosyalarınızın geçmiş tüm sürümlerine tek tıkla geri dönün. Yanlışlıkla silinen verileri anında kurtarın.</p>
+                </div>
+
+                <div class="feature-card reveal">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    </div>
+                    <h3>Otomatik Yedekleme</h3>
+                    <p>Arka planda sessizce çalışan senkronizasyon motorumuz ile veri kaybı riskini sonsuza dek ortadan kaldırın.</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="input-group">
-            <label>Hızlı Rank Seçimi</label>
-            <div class="preset-grid">
-                <button class="preset-btn" onclick="applyPreset('kurucu')">Kurucu</button>
-                <button class="preset-btn" onclick="applyPreset('admin')">Admin</button>
-                <button class="preset-btn" onclick="applyPreset('mod')">Moderatör</button>
-                <button class="preset-btn" onclick="applyPreset('yardimci')">Yardımcı</button>
-                <button class="preset-btn" onclick="applyPreset('rehber')">Rehber</button>
-                <button class="preset-btn" onclick="applyPreset('drehber')">D.Rehber</button>
-                <button class="preset-btn" onclick="applyPreset('vip')">VIP</button>
-                <button class="preset-btn" onclick="applyPreset('vipplus')">VIP+</button>
-                <button class="preset-btn" onclick="applyPreset('mvip')">MVIP</button>
-                <button class="preset-btn" onclick="applyPreset('mvipplus')">MVIP+</button>
-                <button class="preset-btn" onclick="applyPreset('oyuncu')">Oyuncu</button>
-                <button class="preset-btn" onclick="applyPreset('halk')">Halk</button>
-                <button class="preset-btn" onclick="applyPreset('netaria')">NetariaVip</button>
-                <button class="preset-btn" onclick="applyPreset('profesyonel')">Pro</button>
-                <button class="preset-btn" onclick="applyPreset('padisah')">Padişah</button>
+    <section class="download-section" id="download">
+        <div class="container download-wrapper">
+            <div class="download-content reveal">
+                <h2>Cebinizdeki Güç Merkezini Keşfedin</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 20px;">
+                    NovaSync mobil uygulaması ile nerede olursanız olun ofisiniz yanınızda. Çevrimdışı erişim, otomatik kamera yedekleme ve anlık bildirimlerle işiniz asla yarım kalmaz.
+                </p>
+                
+                <div class="store-buttons">
+                    <div class="store-btn">
+                        <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.19 2.31-.88 3.5-.88 1.5 0 2.8.62 3.61 1.6-3.01 1.76-2.53 5.76.62 6.94-1.02 2.1-2.01 3.8-2.81 4.51zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+                        <div class="store-text">
+                            <small>Şuradan İndirin</small>
+                            <span>App Store</span>
+                        </div>
+                    </div>
+                    
+                    <div class="store-btn">
+                        <svg viewBox="0 0 24 24"><path d="M3.5 2.5v19c0 .5.3.8.7.5l14.8-9.5c.4-.3.4-.8 0-1L4.2 2c-.4-.3-.7 0-.7.5z" fill="#4CAF50"/><path d="M4.2 2l9.8 8.5L3.5 12V2.5c0-.4.3-.6.7-.5z" fill="#FFC107"/><path d="M3.5 12l10.5 1.5L4.2 22c-.4.3-.7.1-.7-.5V12z" fill="#F44336"/><path d="M14 10.5l4.8-3c.4-.3.4-.8 0-1L14 10.5z" fill="#2196F3"/></svg>
+                        <div class="store-text">
+                            <small>ŞİMDİ ALIN</small>
+                            <span>Google Play</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="download-image reveal">
+                <div class="phone-mockup">
+                    <div class="phone-notch"></div>
+                    <div class="phone-screen">
+                        NovaSync<br>Mobile App
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <button class="download-btn" id="downloadBtn">PNG OLARAK KAYDET</button>
-    </div>
+    <section class="pricing" id="pricing">
+        <div class="container">
+            <h2 class="reveal">Esnek Fiyatlandırma</h2>
+            <p class="subtitle reveal">Bireysel kullanıcılardan büyük kurumsal ekiplere kadar herkes için uygun bir planımız var. İptal etmek her zaman ücretsiz.</p>
 
-</div>
+            <div class="pricing-grid">
+                <div class="price-card reveal">
+                    <div class="price-header">
+                        <h3>Başlangıç</h3>
+                        <p style="color:var(--text-muted)">Bireysel kullanım için</p>
+                        <div class="price-amount">₺0<span>/ay</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 15 GB Bulut Depolama</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Temel Şifreleme</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> E-posta Desteği</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 1 Cihaz Senkronizasyonu</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%">Ücretsiz Başla</button>
+                </div>
 
-<script>
-    const canvas = document.getElementById('rankCanvas');
-    const ctx = canvas.getContext('2d');
+                <div class="price-card popular reveal">
+                    <div class="badge">EN POPÜLER</div>
+                    <div class="price-header">
+                        <h3>Pro</h3>
+                        <p style="color:var(--text-muted)">Profesyoneller ve küçük ekipler</p>
+                        <div class="price-amount">₺149<span>/ay</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 2 TB Bulut Depolama</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Gelişmiş AES-256 Şifreleme</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 7/24 Öncelikli Destek</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Sınırsız Cihaz</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> 30 Gün Sürüm Geçmişi</li>
+                    </ul>
+                    <button class="btn btn-primary" style="width: 100%">14 Gün Ücretsiz Dene</button>
+                </div>
 
-    const els = {
-        text: document.getElementById('rankText'),
-        bg1: document.getElementById('bgGrad1'),
-        bg2: document.getElementById('bgGrad2'),
-        textColor: document.getElementById('textColor'),
-        borderColor: document.getElementById('borderColor'),
-        fontSize: document.getElementById('fontSize'),
-        padding: document.getElementById('padding'),
-        sizeVal: document.getElementById('sizeValue'),
-        padVal: document.getElementById('padValue'),
-    };
+                <div class="price-card reveal">
+                    <div class="price-header">
+                        <h3>Kurumsal</h3>
+                        <p style="color:var(--text-muted)">Büyük ölçekli şirketler için</p>
+                        <div class="price-amount">Özel<span>/ay</span></div>
+                    </div>
+                    <ul class="price-features">
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Sınırsız Depolama</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Özel Sunucu Kurulumu</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Özel Yönetici Paneli</li>
+                        <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"></path></svg> Gelişmiş API Erişimi</li>
+                    </ul>
+                    <button class="btn btn-outline" style="width: 100%">Satış Ekibiyle İletişime Geç</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    const presets = {
-        kurucu: { bg1: '#ff0000', bg2: '#800000', text: '#ffffff', border: '#440000', name: 'KURUCU' },
-        admin: { bg1: '#e67e22', bg2: '#d35400', text: '#ffffff', border: '#6e2c00', name: 'ADMIN' },
-        mod: { bg1: '#2ecc71', bg2: '#27ae60', text: '#ffffff', border: '#145a32', name: 'MODERATOR' },
-        yardimci: { bg1: '#3498db', bg2: '#2980b9', text: '#ffffff', border: '#1b4f72', name: 'YARDIMCI' },
-        rehber: { bg1: '#f1c40f', bg2: '#f39c12', text: '#ffffff', border: '#7e5109', name: 'REHBER' },
-        drehber: { bg1: '#1abc9c', bg2: '#16a085', text: '#ffffff', border: '#0e6251', name: 'D.REHBER' },
-        vip: { bg1: '#f1c40f', bg2: '#9a7d0a', text: '#ffffff', border: '#4d3d05', name: 'VIP' },
-        vipplus: { bg1: '#5dade2', bg2: '#2e86c1', text: '#ffffff', border: '#154360', name: 'VIP+' },
-        mvip: { bg1: '#a569bd', bg2: '#8e44ad', text: '#ffffff', border: '#4a235a', name: 'MVIP' },
-        mvipplus: { bg1: '#ec7063', bg2: '#cb4335', text: '#ffffff', border: '#641e16', name: 'MVIP+' },
-        oyuncu: { bg1: '#bdc3c7', bg2: '#7f8c8d', text: '#ffffff', border: '#2c3e50', name: 'OYUNCU' },
-        halk: { bg1: '#95a5a6', bg2: '#34495e', text: '#ffffff', border: '#17202a', name: 'HALK' },
-        netaria: { bg1: '#00d2ff', bg2: '#3a7bd5', text: '#ffffff', border: '#003366', name: 'NETARIAVIP' },
-        profesyonel: { bg1: '#5a34e0', bg2: '#a463d6', text: '#ffffff', border: '#2b1b54', name: 'PROFESYONEL' },
-        padisah: { bg1: '#3498db', bg2: '#85c1e9', text: '#ffffff', border: '#1b4f72', name: 'PADISAH' }
-    };
-
-    window.applyPreset = function(id) {
-        const p = presets[id];
-        els.bg1.value = p.bg1;
-        els.bg2.value = p.bg2;
-        els.textColor.value = p.text;
-        els.borderColor.value = p.border;
-        els.text.value = p.name;
-        drawCanvas();
-    };
-
-    function drawCanvas() {
-        const text = els.text.value || ' ';
-        const fontSize = parseInt(els.fontSize.value);
-        const padding = parseInt(els.padding.value);
+    <section class="faq" id="faq">
+        <h2 class="reveal">Sıkça Sorulan Sorular</h2>
         
-        ctx.font = `${fontSize}px 'Press Start 2P'`;
-        const tw = ctx.measureText(text).width;
+        <div class="accordion reveal">
+            <button class="accordion-header">
+                Ücretsiz deneme süresi bittiğinde ne olur?
+                <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+                <p>14 günlük Pro deneme süreniz sona erdiğinde, hesabınız otomatik olarak Başlangıç (Ücretsiz) planına düşürülür. 15 GB üzerindeki verileriniz silinmez, ancak alan açana kadar yeni dosya yükleyemezsiniz.</p>
+            </div>
+        </div>
+
+        <div class="accordion reveal">
+            <button class="accordion-header">
+                Verilerim nerede saklanıyor ve güvenli mi?
+                <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+                <p>Verileriniz, küresel çapta dağıtılmış ve SOC 2 Tip II sertifikalı veri merkezlerinde saklanır. İstemci tarafında şifreleme (zero-knowledge) sunduğumuz için verilerinizin içeriğini biz bile göremeyiz.</p>
+            </div>
+        </div>
+
+        <div class="accordion reveal">
+            <button class="accordion-header">
+                Büyük boyutlu dosyaları paylaşabilir miyim?
+                <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+                <p>Evet! Pro planında tek bir dosya için yükleme limiti 50 GB'dır. Dosyalarınızı zaman aşımı veya şifre korumalı özel bağlantılar oluşturarak güvenle paylaşabilirsiniz.</p>
+            </div>
+        </div>
         
-        canvas.width = tw + (padding * 2);
-        canvas.height = fontSize + (padding * 2);
+        <div class="accordion reveal">
+            <button class="accordion-header">
+                İstediğim zaman aboneliğimi iptal edebilir miyim?
+                <span class="accordion-icon">+</span>
+            </button>
+            <div class="accordion-body">
+                <p>Kesinlikle. Aboneliğinizi hiçbir taahhüt olmadan, dilediğiniz zaman hesap ayarlarınızdan tek tıkla iptal edebilirsiniz. Herhangi bir gizli ücret yoktur.</p>
+            </div>
+        </div>
+    </section>
 
-        // Gradyan Arkaplan
-        const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        gradient.addColorStop(0, els.bg1.value);
-        gradient.addColorStop(1, els.bg2.value);
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="#" class="logo">
+                        <svg viewBox="0 0 24 24">
+                            <defs>
+                                <linearGradient id="logo-footer" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#6366f1" />
+                                    <stop offset="100%" style="stop-color:#ec4899" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#logo-footer)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        </svg>
+                        NovaSync
+                    </a>
+                    <p>Dünyanın dört bir yanındaki takımlar için yeni nesil, güvenli ve ışık hızında bulut depolama ve işbirliği platformu.</p>
+                    <div class="social-icons">
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a>
+                    </div>
+                </div>
 
-        // Minecraft Tarzı İç Kenarlık
-        ctx.strokeStyle = els.borderColor.value;
-        ctx.lineWidth = 4;
-        ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+                <div class="footer-links">
+                    <h4>Ürün</h4>
+                    <ul>
+                        <li><a href="#">İndir</a></li>
+                        <li><a href="#">Özellikler</a></li>
+                        <li><a href="#">Entegrasyonlar</a></li>
+                        <li><a href="#">Fiyatlandırma</a></li>
+                        <li><a href="#">Sürüm Notları</a></li>
+                    </ul>
+                </div>
 
-        // Metin Ayarları
-        ctx.font = `${fontSize}px 'Press Start 2P'`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const x = canvas.width / 2;
-        const y = (canvas.height / 2) + (fontSize * 0.1);
+                <div class="footer-links">
+                    <h4>Şirket</h4>
+                    <ul>
+                        <li><a href="#">Hakkımızda</a></li>
+                        <li><a href="#">Kariyer</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">İletişim</a></li>
+                        <li><a href="#">Ortaklıklar</a></li>
+                    </ul>
+                </div>
 
-        // Sert Gölge
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-        ctx.fillText(text, x + 3, y + 3);
+                <div class="footer-links">
+                    <h4>Yasal</h4>
+                    <ul>
+                        <li><a href="#">Kullanım Koşulları</a></li>
+                        <li><a href="#">Gizlilik Politikası</a></li>
+                        <li><a href="#">Çerez Politikası</a></li>
+                        <li><a href="#">Güvenlik</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                &copy; 2026 NovaSync Technologies. Tüm hakları saklıdır.
+            </div>
+        </div>
+    </footer>
 
-        // Ana Metin
-        ctx.fillStyle = els.textColor.value;
-        ctx.fillText(text, x, y);
-    }
+    <script>
+        // 1. Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
 
-    Object.values(els).forEach(el => {
-        el.addEventListener('input', () => {
-            els.sizeVal.innerText = els.fontSize.value;
-            els.padVal.innerText = els.padding.value;
-            drawCanvas();
+        mobileBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            if(navLinks.classList.contains('active')) {
+                mobileBtn.innerHTML = '✕';
+            } else {
+                mobileBtn.innerHTML = '☰';
+            }
         });
-    });
 
-    document.getElementById('downloadBtn').addEventListener('click', () => {
-        const link = document.createElement('a');
-        link.download = `rank_${els.text.value.toLowerCase()}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-    });
+        // Kapatma işlemi (Linke tıklayınca)
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileBtn.innerHTML = '☰';
+            });
+        });
 
-    document.fonts.ready.then(() => drawCanvas());
-</script>
+        // 2. Sticky Header
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // 3. Scroll Reveal Animation (Sayfa kaydırdıkça elemanların belirmesi)
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            revealElements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                const revealPoint = 100; // Ekrana ne kadar girince tetiklenecek
+
+                if (elementTop < windowHeight - revealPoint) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealOnScroll);
+        // Sayfa yüklendiğinde bir kere çalıştır
+        revealOnScroll();
+
+        // 4. FAQ Accordion Logic
+        const accordions = document.querySelectorAll('.accordion');
+
+        accordions.forEach(acc => {
+            const header = acc.querySelector('.accordion-header');
+            header.addEventListener('click', () => {
+                // Tıklananı aç/kapat
+                acc.classList.toggle('active');
+
+                // İsteğe bağlı: Birisi açılınca diğerlerini kapatmak için:
+                accordions.forEach(otherAcc => {
+                    if (otherAcc !== acc) {
+                        otherAcc.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
